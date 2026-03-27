@@ -143,52 +143,52 @@ tr.sel td{background:rgba(124,92,252,.08)}
 <div class="g3">
 <div class="card">
 <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Crypto <input id="ov-sym-crypto" value="BITSTAMP:BTCUSD" onkeydown="if(event.key==='Enter')saveOvSym('crypto')" style="padding:3px 8px;border-radius:5px;border:1px solid var(--bd);background:var(--bg);color:var(--ac);font-size:9px;font-family:'JetBrains Mono',monospace;outline:none;width:130px;text-align:right"></div>
-<div class="tv-widget tv-sm" id="tv-mkt-crypto"></div>
+<div class="tv-widget tv-md" id="tv-mkt-crypto"></div>
 </div>
 <div class="card">
 <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Materie Prime <input id="ov-sym-comm" value="TVC:GOLD" onkeydown="if(event.key==='Enter')saveOvSym('comm')" style="padding:3px 8px;border-radius:5px;border:1px solid var(--bd);background:var(--bg);color:var(--ac);font-size:9px;font-family:'JetBrains Mono',monospace;outline:none;width:130px;text-align:right"></div>
-<div class="tv-widget tv-sm" id="tv-mkt-comm"></div>
+<div class="tv-widget tv-md" id="tv-mkt-comm"></div>
 </div>
 <div class="card">
 <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Forex <input id="ov-sym-fx" value="FX:EURUSD" onkeydown="if(event.key==='Enter')saveOvSym('fx')" style="padding:3px 8px;border-radius:5px;border:1px solid var(--bd);background:var(--bg);color:var(--ac);font-size:9px;font-family:'JetBrains Mono',monospace;outline:none;width:130px;text-align:right"></div>
-<div class="tv-widget tv-sm" id="tv-mkt-fx"></div>
+<div class="tv-widget tv-md" id="tv-mkt-fx"></div>
 </div>
 </div>
 </div>
 
 <!-- STOCKS -->
 <div class="sec" id="sec-stocks">
-<div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-lg" id="tv-chart-stocks"></div></div>
+<div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-xl" id="tv-chart-stocks"></div></div>
 <div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Azioni <div style="display:flex;gap:3px;align-items:center"><input class="tbl-search" id="search-stocks" placeholder="&#x1F50D; Cerca..." oninput="filterTable('stocks')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none;width:140px"><div class="srt" id="srt-stocks"></div><button class="add-btn" onclick="openAdd('stocks')">+</button></div></div><div id="tbl-stocks"></div></div>
 </div>
 
 <!-- ETFs -->
 <div class="sec" id="sec-etfs">
-<div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-lg" id="tv-chart-etfs"></div></div>
+<div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-xl" id="tv-chart-etfs"></div></div>
 <div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">ETF <div style="display:flex;gap:3px;align-items:center"><input class="tbl-search" id="search-etfs" placeholder="&#x1F50D; Cerca..." oninput="filterTable('etfs')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none;width:140px"><div class="srt" id="srt-etfs"></div><button class="add-btn" onclick="openAdd('etfs')">+</button></div></div><div id="tbl-etfs"></div></div>
 </div>
 
 <!-- BONDS -->
 <div class="sec" id="sec-bonds">
-<div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-lg" id="tv-chart-bonds"></div></div>
+<div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-xl" id="tv-chart-bonds"></div></div>
 <div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Obbligazioni <div style="display:flex;gap:3px;align-items:center"><input class="tbl-search" id="search-bonds" placeholder="&#x1F50D; Cerca..." oninput="filterTable('bonds')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none;width:140px"><div class="srt" id="srt-bonds"></div><button class="add-btn" onclick="openAdd('bonds')">+</button></div></div><div id="tbl-bonds"></div></div>
 </div>
 
 <!-- COMMODITIES -->
 <div class="sec" id="sec-commodities">
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Grafico <input id="comm-chart-sym" value="TVC:GOLD" onkeydown="if(event.key==='Enter')overrideCommChart()" style="padding:3px 8px;border-radius:5px;border:1px solid var(--bd);background:var(--bg);color:var(--ac);font-size:9px;font-family:'JetBrains Mono',monospace;outline:none;width:160px;text-align:right"></div><div class="tv-widget tv-lg" id="tv-chart-comm"></div></div>
+<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Grafico <input id="comm-chart-sym" value="TVC:GOLD" onkeydown="if(event.key==='Enter')overrideCommChart()" style="padding:3px 8px;border-radius:5px;border:1px solid var(--bd);background:var(--bg);color:var(--ac);font-size:9px;font-family:'JetBrains Mono',monospace;outline:none;width:160px;text-align:right"></div><div class="tv-widget tv-xl" id="tv-chart-comm"></div></div>
 <div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Materie Prime <div style="display:flex;gap:3px;align-items:center"><input class="tbl-search" id="search-comm" placeholder="&#x1F50D; Cerca..." oninput="filterTable('comm')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none;width:140px"><div class="srt" id="srt-comm"></div><button class="add-btn" onclick="openAdd('comm')">+</button></div></div><div id="tbl-comm"></div></div>
 </div>
 
 <!-- CRYPTO -->
 <div class="sec" id="sec-crypto">
-<div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-lg" id="tv-chart-crypto"></div></div>
+<div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-xl" id="tv-chart-crypto"></div></div>
 <div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Criptovalute <div style="display:flex;gap:3px;align-items:center"><input class="tbl-search" id="search-crypto" placeholder="&#x1F50D; Cerca..." oninput="filterTable('crypto')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none;width:140px"><div class="srt" id="srt-crypto"></div><button class="add-btn" onclick="openAdd('crypto')">+</button></div></div><div id="tbl-crypto"></div></div>
 </div>
 
 <!-- CURRENCIES -->
 <div class="sec" id="sec-currencies">
-<div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-lg" id="tv-chart-fx"></div></div>
+<div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-xl" id="tv-chart-fx"></div></div>
 <div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Valute <div style="display:flex;gap:3px;align-items:center"><input class="tbl-search" id="search-currencies" placeholder="&#x1F50D; Cerca..." oninput="filterTable('currencies')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none;width:140px"><div class="srt" id="srt-currencies"></div><button class="add-btn" onclick="openAdd('currencies')">+</button></div></div><div id="tbl-fx"></div></div>
 </div>
 
@@ -212,7 +212,7 @@ tr.sel td{background:rgba(124,92,252,.08)}
 
 <!-- APPLE -->
 <div class="sec" id="sec-apple">
-<div class="card"><div class="card-title">AAPL — Apple Inc.</div><div class="tv-widget tv-lg" id="tv-chart-apple"></div></div>
+<div class="card"><div class="card-title">AAPL — Apple Inc.</div><div class="tv-widget tv-xl" id="tv-chart-apple"></div></div>
 <div class="card" id="appleTracker">
 <div class="card-title">&#x1F34E; Apple Upgrade Tracker</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px" id="appleDropdowns">
