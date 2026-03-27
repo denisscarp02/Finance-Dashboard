@@ -429,6 +429,7 @@ async function loadAndMergeCustom(dk,tblId,isFX){
 }
 
 // ═══════════ YAHOO → TRADINGVIEW SYMBOL MAP ═══════════
+// For data tables (ticker tape, market overview) — futures OK
 function toTV(s){
   const m={'GC=F':'COMEX:GC1!','SI=F':'COMEX:SI1!','CL=F':'NYMEX:CL1!','BZ=F':'NYMEX:BB1!','NG=F':'NYMEX:NG1!','HG=F':'COMEX:HG1!','PL=F':'NYMEX:PL1!','PA=F':'NYMEX:PA1!','ZW=F':'CBOT:ZW1!','ZC=F':'CBOT:ZC1!','ZS=F':'CBOT:ZS1!','CC=F':'ICEUS:CC1!','KC=F':'ICEUS:KC1!','CT=F':'ICEUS:CT1!','SB=F':'ICEUS:SB1!','OJ=F':'ICEUS:OJ1!','LE=F':'CME:LE1!','HE=F':'CME:HE1!','BTC-USD':'BITSTAMP:BTCUSD','ETH-USD':'BITSTAMP:ETHUSD','XRP-USD':'BITSTAMP:XRPUSD','SOL-USD':'COINBASE:SOLUSD','ADA-USD':'BITSTAMP:ADAUSD','DOGE-USD':'BINANCE:DOGEUSD','DOT-USD':'BITSTAMP:DOTUSD','AVAX-USD':'COINBASE:AVAXUSD','MATIC-USD':'COINBASE:MATICUSD','LINK-USD':'COINBASE:LINKUSD','BNB-USD':'BINANCE:BNBUSD','UNI-USD':'COINBASE:UNIUSD'};
   if(m[s])return m[s];
@@ -444,6 +445,12 @@ function toTV(s){
   if(s.endsWith('.NS'))return'NSE:'+s.replace('.NS','');
   if(s.endsWith('.ST'))return'OMXSTO:'+s.replace('.ST','').replace('-','_');
   return s;
+}
+// For chart widgets — uses TVC: for commodities (futures blocked in free embeds)
+function toTVChart(s){
+  const cm={'GC=F':'TVC:GOLD','SI=F':'TVC:SILVER','CL=F':'TVC:USOIL','BZ=F':'TVC:UKOIL','NG=F':'PEPPERSTONE:NATGAS','HG=F':'TVC:COPPER','PL=F':'TVC:PLATINUM','PA=F':'TVC:PALLADIUM','ZW=F':'CBOT:ZW1!','ZC=F':'CBOT:ZC1!','ZS=F':'CBOT:ZS1!','CC=F':'TVC:COCOA','KC=F':'TVC:COFFEE','CT=F':'ICEUS:CT1!','SB=F':'TVC:SUGAR','OJ=F':'ICEUS:OJ1!','LE=F':'CME:LE1!','HE=F':'CME:HE1!'};
+  if(cm[s])return cm[s];
+  return toTV(s);
 }
 
 // ═══════════ TRADINGVIEW WIDGETS ═══════════
@@ -466,9 +473,9 @@ function tvWidget(containerId,widgetType,config){
   el.appendChild(wrap);
 }
 
-// Symbol Overview — works for stocks, ETFs, bonds
+// Symbol Overview — for Apple section
 function tvSymbolOverview(id,sym){
-  const tvSym=toTV(sym);
+  const tvSym=toTVChart(sym);
   tvWidget(id,'embed-widget-symbol-overview',{
     symbols:[[tvSym,tvSym]],
     chartOnly:false,width:'100%',height:'100%',
@@ -482,6 +489,20 @@ function tvSymbolOverview(id,sym){
     lineColor:'#7c5cfc',topColor:'rgba(124,92,252,0.3)',bottomColor:'rgba(124,92,252,0.02)',
     lineWidth:2,
     backgroundColor:'rgba(8,9,13,1)',gridLineColor:'rgba(26,29,46,0.6)'
+  });
+}
+
+// Advanced Chart — candlestick chart for all main sections
+function tvAdvancedChart(id,sym){
+  const tvSym=toTVChart(sym);
+  tvWidget(id,'embed-widget-advanced-chart',{
+    autosize:true,symbol:tvSym,interval:'D',timezone:'Europe/Rome',theme:'dark',
+    style:'1',locale:'it',
+    backgroundColor:'rgba(8,9,13,1)',gridColor:'rgba(26,29,46,0.6)',
+    hide_top_toolbar:false,hide_legend:false,allow_symbol_change:true,
+    save_image:false,calendar:false,hide_volume:false,
+    withdateranges:true,
+    support_host:'https://www.tradingview.com'
   });
 }
 
@@ -538,13 +559,13 @@ function initWidgets(){
     importanceFilter:'-1,0,1'
   });
 
-  // DEFAULT CHARTS
-  tvSymbolOverview('tv-chart-stocks','AAPL');
-  tvSymbolOverview('tv-chart-etfs','SPY');
-  tvSymbolOverview('tv-chart-bonds','TLT');
-  tvSymbolOverview('tv-chart-comm','GC=F');
-  tvSymbolOverview('tv-chart-crypto','BTC-USD');
-  tvSymbolOverview('tv-chart-fx','EURUSD=X');
+  // DEFAULT CHARTS — advanced candlestick for all sections
+  tvAdvancedChart('tv-chart-stocks','AAPL');
+  tvAdvancedChart('tv-chart-etfs','SPY');
+  tvAdvancedChart('tv-chart-bonds','TLT');
+  tvAdvancedChart('tv-chart-comm','GC=F');
+  tvAdvancedChart('tv-chart-crypto','BTC-USD');
+  tvAdvancedChart('tv-chart-fx','EURUSD=X');
   tvSymbolOverview('tv-chart-apple','AAPL');
 }
 
@@ -717,14 +738,14 @@ function selAsset(key,idx){
   const data=D[DK(key)];const d=data[idx];if(!d)return;
   document.querySelectorAll(`[id^="${key}_r"]`).forEach(r=>r.classList.remove('sel'));
   document.getElementById(key+'_r'+idx)?.classList.add('sel');
-  tvSymbolOverview('tv-chart-'+key,d.sym);
+  tvAdvancedChart('tv-chart-'+key,d.sym);
 }
 
 function selFX(key,idx){
   const d=D.currencies[idx];if(!d)return;
   document.querySelectorAll('[id^="currencies_r"]').forEach(r=>r.classList.remove('sel'));
   document.getElementById('currencies_r'+idx)?.classList.add('sel');
-  tvSymbolOverview('tv-chart-fx',d.ySym||d.pair.replace('/','')+'=X');
+  tvAdvancedChart('tv-chart-fx',d.ySym||d.pair.replace('/','')+'=X');
 }
 
 // ═══════════ FETCH ALL ═══════════
