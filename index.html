@@ -150,37 +150,37 @@ tr.sel td{background:rgba(124,92,252,.08)}
 <!-- STOCKS -->
 <div class="sec" id="sec-stocks">
 <div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-lg" id="tv-chart-stocks"></div></div>
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Azioni <div style="display:flex;gap:3px;align-items:center"><div class="srt" id="srt-stocks"></div><button class="add-btn" onclick="openAdd('stocks')">+</button></div></div><div id="tbl-stocks"></div></div>
+<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Azioni <div style="display:flex;gap:3px;align-items:center"><input class="tbl-search" id="search-stocks" placeholder="&#x1F50D; Cerca..." oninput="filterTable('stocks')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none;width:140px"><div class="srt" id="srt-stocks"></div><button class="add-btn" onclick="openAdd('stocks')">+</button></div></div><div id="tbl-stocks"></div></div>
 </div>
 
 <!-- ETFs -->
 <div class="sec" id="sec-etfs">
 <div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-lg" id="tv-chart-etfs"></div></div>
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">ETF <div style="display:flex;gap:3px;align-items:center"><div class="srt" id="srt-etfs"></div><button class="add-btn" onclick="openAdd('etfs')">+</button></div></div><div id="tbl-etfs"></div></div>
+<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">ETF <div style="display:flex;gap:3px;align-items:center"><input class="tbl-search" id="search-etfs" placeholder="&#x1F50D; Cerca..." oninput="filterTable('etfs')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none;width:140px"><div class="srt" id="srt-etfs"></div><button class="add-btn" onclick="openAdd('etfs')">+</button></div></div><div id="tbl-etfs"></div></div>
 </div>
 
 <!-- BONDS -->
 <div class="sec" id="sec-bonds">
 <div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-lg" id="tv-chart-bonds"></div></div>
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Obbligazioni <div style="display:flex;gap:3px;align-items:center"><div class="srt" id="srt-bonds"></div><button class="add-btn" onclick="openAdd('bonds')">+</button></div></div><div id="tbl-bonds"></div></div>
+<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Obbligazioni <div style="display:flex;gap:3px;align-items:center"><input class="tbl-search" id="search-bonds" placeholder="&#x1F50D; Cerca..." oninput="filterTable('bonds')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none;width:140px"><div class="srt" id="srt-bonds"></div><button class="add-btn" onclick="openAdd('bonds')">+</button></div></div><div id="tbl-bonds"></div></div>
 </div>
 
 <!-- COMMODITIES -->
 <div class="sec" id="sec-commodities">
 <div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-lg" id="tv-chart-comm"></div></div>
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Materie Prime <div style="display:flex;gap:3px;align-items:center"><div class="srt" id="srt-comm"></div><button class="add-btn" onclick="openAdd('comm')">+</button></div></div><div id="tbl-comm"></div></div>
+<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Materie Prime <div style="display:flex;gap:3px;align-items:center"><input class="tbl-search" id="search-comm" placeholder="&#x1F50D; Cerca..." oninput="filterTable('comm')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none;width:140px"><div class="srt" id="srt-comm"></div><button class="add-btn" onclick="openAdd('comm')">+</button></div></div><div id="tbl-comm"></div></div>
 </div>
 
 <!-- CRYPTO -->
 <div class="sec" id="sec-crypto">
 <div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-lg" id="tv-chart-crypto"></div></div>
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Criptovalute <div style="display:flex;gap:3px;align-items:center"><div class="srt" id="srt-crypto"></div><button class="add-btn" onclick="openAdd('crypto')">+</button></div></div><div id="tbl-crypto"></div></div>
+<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Criptovalute <div style="display:flex;gap:3px;align-items:center"><input class="tbl-search" id="search-crypto" placeholder="&#x1F50D; Cerca..." oninput="filterTable('crypto')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none;width:140px"><div class="srt" id="srt-crypto"></div><button class="add-btn" onclick="openAdd('crypto')">+</button></div></div><div id="tbl-crypto"></div></div>
 </div>
 
 <!-- CURRENCIES -->
 <div class="sec" id="sec-currencies">
 <div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-lg" id="tv-chart-fx"></div></div>
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Valute <div style="display:flex;gap:3px;align-items:center"><div class="srt" id="srt-currencies"></div><button class="add-btn" onclick="openAdd('currencies')">+</button></div></div><div id="tbl-fx"></div></div>
+<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Valute <div style="display:flex;gap:3px;align-items:center"><input class="tbl-search" id="search-currencies" placeholder="&#x1F50D; Cerca..." oninput="filterTable('currencies')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none;width:140px"><div class="srt" id="srt-currencies"></div><button class="add-btn" onclick="openAdd('currencies')">+</button></div></div><div id="tbl-fx"></div></div>
 </div>
 
 <!-- SCREENER -->
@@ -293,21 +293,9 @@ tr.sel td{background:rgba(124,92,252,.08)}
 <!-- ADD MODAL -->
 <div class="modal-bg" id="addModal" onclick="if(event.target===this)closeAdd()">
 <div class="modal">
-<h3><span id="addTitle">Aggiungi</span><button onclick="closeAdd()">&#x2715;</button></h3>
-<!-- TABS -->
-<div style="display:flex;gap:2px;background:var(--bg);border-radius:6px;padding:2px;border:1px solid var(--bd);margin-bottom:10px">
-<button class="add-tab on" onclick="switchAddTab('search',this)" style="flex:1;padding:6px;border:none;border-radius:5px;background:var(--ac);color:#fff;font-size:9px;font-weight:600;cursor:pointer;font-family:inherit">&#x1F50D; Cerca Ticker</button>
-<button class="add-tab" onclick="switchAddTab('url',this)" style="flex:1;padding:6px;border:none;border-radius:5px;background:transparent;color:var(--mt);font-size:9px;font-weight:600;cursor:pointer;font-family:inherit">&#x1F517; URL / ISIN</button>
-</div>
-<!-- SEARCH TAB -->
-<div id="addTabSearch">
-<input id="addInput" placeholder="Cerca ticker o nome..." oninput="onAddSearch()">
-<div class="modal-results" id="addResults"><div style="padding:20px;text-align:center;color:var(--mt);font-size:11px">Digita per cercare</div></div>
-</div>
-<!-- URL TAB -->
-<div id="addTabUrl" style="display:none">
+<h3><span id="addTitle">Aggiungi Asset</span><button onclick="closeAdd()">&#x2715;</button></h3>
 <div style="margin-bottom:8px">
-<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:4px">Incolla URL Yahoo Finance, Google Finance, MarketWatch, Investing.com...</label>
+<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:4px">Incolla URL da Yahoo Finance, Google Finance, MarketWatch, Investing.com, TradingView...</label>
 <input id="addUrl" placeholder="es. https://finance.yahoo.com/quote/AAPL" style="width:100%;padding:11px 14px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;outline:none;font-family:inherit;margin-bottom:6px">
 </div>
 <div style="margin-bottom:8px">
@@ -334,7 +322,6 @@ tr.sel td{background:rgba(124,92,252,.08)}
 &#x2022; <b style="color:var(--ac)">Borsa Italiana</b> — borsaitaliana.it/.../TICKER<br>
 &#x2022; <b style="color:var(--ac)">ISIN</b> — Codice a 12 caratteri (es. US0378331005)<br>
 &#x2022; <b style="color:var(--ac)">Manuale</b> — Inserisci ticker + nome direttamente
-</div>
 </div>
 </div>
 </div>
@@ -498,17 +485,7 @@ function tvSymbolOverview(id,sym){
   });
 }
 
-// Advanced Chart — supports ALL symbols including futures/commodities/crypto
-function tvIframeChart(id,sym){
-  const tvSym=toTV(sym);
-  tvWidget(id,'embed-widget-advanced-chart',{
-    autosize:true,symbol:tvSym,interval:'D',timezone:'Europe/Rome',theme:'dark',
-    style:'1',locale:'it',backgroundColor:'rgba(8,9,13,1)',gridColor:'rgba(26,29,46,0.6)',
-    hide_top_toolbar:false,hide_legend:false,allow_symbol_change:true,save_image:false,
-    calendar:false,hide_volume:false,support_host:'https://www.tradingview.com',
-    withdateranges:true
-  });
-}
+// All charts use Symbol Overview — universal support
 
 // Market Overview widget
 function tvMarketOverview(id,tabs){
@@ -565,8 +542,8 @@ function initWidgets(){
   tvSymbolOverview('tv-chart-stocks','AAPL');
   tvSymbolOverview('tv-chart-etfs','SPY');
   tvSymbolOverview('tv-chart-bonds','TLT');
-  tvIframeChart('tv-chart-comm','GC=F');
-  tvIframeChart('tv-chart-crypto','BTC-USD');
+  tvSymbolOverview('tv-chart-comm','GC=F');
+  tvSymbolOverview('tv-chart-crypto','BTC-USD');
   tvSymbolOverview('tv-chart-fx','EURUSD=X');
   tvSymbolOverview('tv-chart-apple','AAPL');
 }
@@ -708,8 +685,7 @@ function sortTable(key,sortType,btn){
 
 function buildTable(containerId,data,key,isFX){
   const el=document.getElementById(containerId);if(!el)return;
-  let h='<input class="tbl-search" id="search-'+key+'" placeholder="&#x1F50D; Cerca ticker o nome..." oninput="filterTable(\''+key+'\')" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:11px;font-family:inherit;outline:none;margin-bottom:8px">';
-  h+='<div class="tw"><table><thead><tr><th>Ticker</th><th>Nome</th><th>Prezzo</th><th>Val.</th><th>Var %</th><th>Segnale</th><th>Src</th></tr></thead><tbody>';
+  let h='<div class="tw"><table><thead><tr><th>Ticker</th><th>Nome</th><th>Prezzo</th><th>Val.</th><th>Var %</th><th>Segnale</th><th>Src</th></tr></thead><tbody>';
   data.forEach((d,i)=>{
     const dp=d.p<10?4:2;const sig=getSignal(d);
     const sym=isFX?d.pair:d.sym;const name=isFX?'':d.name||'';
@@ -741,11 +717,8 @@ function selAsset(key,idx){
   const data=D[DK(key)];const d=data[idx];if(!d)return;
   document.querySelectorAll(`[id^="${key}_r"]`).forEach(r=>r.classList.remove('sel'));
   document.getElementById(key+'_r'+idx)?.classList.add('sel');
-  const chartId='tv-chart-'+key;
-  const isFutureKey=key==='comm'||key==='crypto';
-    if(isFutureKey)tvIframeChart(chartId,d.sym);
-    else tvSymbolOverview(chartId,d.sym);
-  }
+  tvSymbolOverview('tv-chart-'+key,d.sym);
+}
 
 function selFX(key,idx){
   const d=D.currencies[idx];if(!d)return;
@@ -868,18 +841,8 @@ function updateRow(key,idx,d,isFX){
 
 // ═══════════ ADD MODAL ═══════════
 let addKey='';
-function openAdd(key){addKey=key;document.getElementById('addTitle').textContent='Aggiungi';document.getElementById('addInput').value='';document.getElementById('addResults').innerHTML='<div style="padding:20px;text-align:center;color:var(--mt);font-size:11px">Digita per cercare</div>';document.getElementById('addTabSearch').style.display='block';document.getElementById('addTabUrl').style.display='none';document.querySelectorAll('.add-tab').forEach((b,i)=>{b.style.background=i===0?'var(--ac)':'transparent';b.style.color=i===0?'#fff':'var(--mt)'});document.getElementById('addModal').classList.add('open');setTimeout(()=>document.getElementById('addInput').focus(),100)}
+function openAdd(key){addKey=key;document.getElementById('addTitle').textContent='Aggiungi Asset';document.getElementById('addUrl').value='';document.getElementById('addIsin').value='';document.getElementById('addManualSym').value='';document.getElementById('addManualName').value='';document.getElementById('addUrlResult').innerHTML='';document.getElementById('addModal').classList.add('open');setTimeout(()=>document.getElementById('addManualSym').focus(),100)}
 function closeAdd(){document.getElementById('addModal').classList.remove('open');addKey=''}
-let addTimer;
-function onAddSearch(){clearTimeout(addTimer);addTimer=setTimeout(_addSearch,300)}
-async function _addSearch(){
-  const q=document.getElementById('addInput').value.trim();const rEl=document.getElementById('addResults');
-  if(!q){rEl.innerHTML='<div style="padding:20px;text-align:center;color:var(--mt);font-size:11px">Digita per cercare</div>';return}
-  rEl.innerHTML='<div class="ld"><div class="sp"></div></div>';
-  const results=await fhSearch(q);
-  if(!results.length){rEl.innerHTML='<div style="padding:20px;text-align:center;color:var(--mt);font-size:11px">Nessun risultato. Prova un altro termine.</div>';return}
-  rEl.innerHTML=results.map(x=>`<div class="mr"><div><span class="mrs">${x.symbol}</span> <span class="mrn">${x.description||''} &#183; ${x.type||''}</span></div><button onclick="addAsset('${x.symbol.replace(/'/g,"\\'")}','${(x.description||x.symbol).replace(/'/g,"\\'")}')">+ Aggiungi</button></div>`).join('');
-}
 async function addAsset(sym,name){
   const dk=DK(addKey);
   if(D[dk]&&D[dk].find(x=>(x.sym||x.pair)===sym))return;
@@ -889,16 +852,9 @@ async function addAsset(sym,name){
   const tblMap={stocks:'tbl-stocks',etfs:'tbl-etfs',bonds:'tbl-bonds',comm:'tbl-comm',commodities:'tbl-comm',crypto:'tbl-crypto',currencies:'tbl-fx'};
   buildTable(tblMap[addKey]||tblMap[dk],D[dk],addKey,addKey==='currencies');
   saveCustomAssets(addKey);
-  _addSearch();
 }
 
 // ═══════════ ADD FROM URL / ISIN ═══════════
-function switchAddTab(tab,btn){
-  document.getElementById('addTabSearch').style.display=tab==='search'?'block':'none';
-  document.getElementById('addTabUrl').style.display=tab==='url'?'block':'none';
-  document.querySelectorAll('.add-tab').forEach(b=>{b.style.background='transparent';b.style.color='var(--mt)';b.classList.remove('on')});
-  if(btn){btn.style.background='var(--ac)';btn.style.color='#fff';btn.classList.add('on')}
-}
 
 // Extract ticker from various URL formats
 function extractTickerFromUrl(url){
