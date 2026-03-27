@@ -92,6 +92,12 @@ tr.sel td{background:rgba(124,92,252,.08)}
 
 /* RESPONSIVE */
 @media(max-width:768px){.topbar{padding:8px 12px}.main{padding:10px 12px}.g2,.g3{grid-template-columns:1fr}.tv-md{height:300px}.tv-lg{height:400px}}
+
+/* TRAVEL */
+.ac-wrap{position:relative}.ac-list{position:absolute;top:100%;left:0;right:0;background:var(--cd);border:1px solid var(--bd);border-radius:0 0 8px 8px;max-height:200px;overflow-y:auto;z-index:50;display:none}.ac-list.show{display:block}.ac-item{padding:8px 12px;font-size:11px;cursor:pointer;border-bottom:1px solid #121520;display:flex;justify-content:space-between}.ac-item:hover{background:rgba(124,92,252,.06)}.ac-item .ac-code{color:var(--ac);font-weight:700;font-family:'JetBrains Mono',monospace;font-size:10px}.ac-item .ac-city{color:var(--tx)}.ac-item .ac-country{color:var(--mt);font-size:9px}
+.advice-card{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-top:12px}
+.advice-good{border-left:3px solid var(--gn)}.advice-warn{border-left:3px solid var(--or)}.advice-bad{border-left:3px solid var(--rd)}
+@media(max-width:768px){#flightForm2{grid-template-columns:1fr 1fr!important}}
 </style>
 </head>
 <body>
@@ -144,37 +150,37 @@ tr.sel td{background:rgba(124,92,252,.08)}
 <!-- STOCKS -->
 <div class="sec" id="sec-stocks">
 <div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-lg" id="tv-chart-stocks"></div></div>
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Azioni <button class="add-btn" onclick="openAdd('stocks')">+</button></div><div id="tbl-stocks"></div></div>
+<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Azioni <div style="display:flex;gap:3px;align-items:center"><div class="srt" id="srt-stocks"></div><button class="add-btn" onclick="openAdd('stocks')">+</button></div></div><div id="tbl-stocks"></div></div>
 </div>
 
 <!-- ETFs -->
 <div class="sec" id="sec-etfs">
 <div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-lg" id="tv-chart-etfs"></div></div>
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">ETF <button class="add-btn" onclick="openAdd('etfs')">+</button></div><div id="tbl-etfs"></div></div>
+<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">ETF <div style="display:flex;gap:3px;align-items:center"><div class="srt" id="srt-etfs"></div><button class="add-btn" onclick="openAdd('etfs')">+</button></div></div><div id="tbl-etfs"></div></div>
 </div>
 
 <!-- BONDS -->
 <div class="sec" id="sec-bonds">
 <div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-lg" id="tv-chart-bonds"></div></div>
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Obbligazioni <button class="add-btn" onclick="openAdd('bonds')">+</button></div><div id="tbl-bonds"></div></div>
+<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Obbligazioni <div style="display:flex;gap:3px;align-items:center"><div class="srt" id="srt-bonds"></div><button class="add-btn" onclick="openAdd('bonds')">+</button></div></div><div id="tbl-bonds"></div></div>
 </div>
 
 <!-- COMMODITIES -->
 <div class="sec" id="sec-commodities">
 <div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-lg" id="tv-chart-comm"></div></div>
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Materie Prime <button class="add-btn" onclick="openAdd('comm')">+</button></div><div id="tbl-comm"></div></div>
+<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Materie Prime <div style="display:flex;gap:3px;align-items:center"><div class="srt" id="srt-comm"></div><button class="add-btn" onclick="openAdd('comm')">+</button></div></div><div id="tbl-comm"></div></div>
 </div>
 
 <!-- CRYPTO -->
 <div class="sec" id="sec-crypto">
 <div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-lg" id="tv-chart-crypto"></div></div>
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Criptovalute <button class="add-btn" onclick="openAdd('crypto')">+</button></div><div id="tbl-crypto"></div></div>
+<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Criptovalute <div style="display:flex;gap:3px;align-items:center"><div class="srt" id="srt-crypto"></div><button class="add-btn" onclick="openAdd('crypto')">+</button></div></div><div id="tbl-crypto"></div></div>
 </div>
 
 <!-- CURRENCIES -->
 <div class="sec" id="sec-currencies">
 <div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-lg" id="tv-chart-fx"></div></div>
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Valute <button class="add-btn" onclick="openAdd('currencies')">+</button></div><div id="tbl-fx"></div></div>
+<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Valute <div style="display:flex;gap:3px;align-items:center"><div class="srt" id="srt-currencies"></div><button class="add-btn" onclick="openAdd('currencies')">+</button></div></div><div id="tbl-fx"></div></div>
 </div>
 
 <!-- SCREENER -->
@@ -219,21 +225,40 @@ tr.sel td{background:rgba(124,92,252,.08)}
 <div class="sec" id="sec-viaggi">
 <div class="card">
 <div class="card-title">&#x2708;&#xFE0F; Ricerca Voli</div>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end;margin-bottom:14px" id="flightForm">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+<div class="ac-wrap">
+<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">&#x1F6EB; Aeroporto Partenza</label>
+<input id="flyFrom" placeholder="es. MXP — Milano Malpensa" oninput="acSearch('flyFrom','acListFrom')" autocomplete="off" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none">
+<div class="ac-list" id="acListFrom"></div>
+</div>
+<div class="ac-wrap">
+<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">&#x1F6EC; Aeroporto Arrivo</label>
+<input id="flyTo" placeholder="es. LHR — Londra Heathrow" oninput="acSearch('flyTo','acListTo')" autocomplete="off" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none">
+<div class="ac-list" id="acListTo"></div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end;margin-bottom:10px">
 <div>
-<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">Da</label>
-<input id="flyFrom" placeholder="es. Milano, Roma..." style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none">
+<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">Data Andata</label>
+<input id="flyDateOut" type="date" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none;color-scheme:dark">
 </div>
 <div>
-<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">A</label>
-<input id="flyTo" placeholder="es. Londra, Parigi..." style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none">
+<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">Data Ritorno</label>
+<input id="flyDateRet" type="date" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none;color-scheme:dark">
 </div>
 <div>
-<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">Data</label>
-<input id="flyDate" type="date" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none;color-scheme:dark">
+<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">Date</label>
+<select id="flyFlex" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none;cursor:pointer">
+<option value="exact">Date esatte</option>
+<option value="flex3">± 3 giorni</option>
+<option value="flex7">± 1 settimana</option>
+<option value="month">Mese intero</option>
+<option value="cheap">Mese più economico</option>
+</select>
 </div>
 <button onclick="searchFlights()" style="padding:10px 20px;border:none;border-radius:8px;background:var(--ac);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;height:40px">&#x1F50D; Cerca</button>
 </div>
+<div id="bookingAdvice" style="display:none;margin-bottom:12px"></div>
 <div id="flightResults" style="min-height:100px"></div>
 </div>
 <div class="g2">
@@ -252,23 +277,7 @@ tr.sel td{background:rgba(124,92,252,.08)}
 <div>
 <label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">Valuta</label>
 <select id="travelCur" onchange="convertTravel()" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none;cursor:pointer">
-<option value="USD">USD — Dollaro USA</option>
-<option value="GBP">GBP — Sterlina</option>
-<option value="CHF">CHF — Franco Svizzero</option>
-<option value="JPY">JPY — Yen</option>
-<option value="TRY">TRY — Lira Turca</option>
-<option value="THB">THB — Baht</option>
-<option value="AED">AED — Dirham</option>
-<option value="MAD">MAD — Dirham Marocco</option>
-<option value="BRL">BRL — Real</option>
-<option value="AUD">AUD — Dollaro AUS</option>
-<option value="CAD">CAD — Dollaro CAN</option>
-<option value="MXN">MXN — Peso Messicano</option>
-<option value="EGP">EGP — Lira Egiziana</option>
-<option value="HRK">HRK — Kuna Croata</option>
-<option value="NOK">NOK — Corona Norvegese</option>
-<option value="SEK">SEK — Corona Svedese</option>
-<option value="ISK">ISK — Corona Islandese</option>
+<option value="USD">USD — Dollaro USA</option><option value="GBP">GBP — Sterlina</option><option value="CHF">CHF — Franco Svizzero</option><option value="JPY">JPY — Yen</option><option value="TRY">TRY — Lira Turca</option><option value="THB">THB — Baht</option><option value="AED">AED — Dirham</option><option value="MAD">MAD — Dirham Marocco</option><option value="BRL">BRL — Real</option><option value="AUD">AUD — Dollaro AUS</option><option value="CAD">CAD — Dollaro CAN</option><option value="MXN">MXN — Peso</option><option value="EGP">EGP — Lira Egiziana</option><option value="HRK">HRK — Kuna Croata</option><option value="NOK">NOK — Corona Norv.</option><option value="SEK">SEK — Corona Sved.</option><option value="ISK">ISK — Corona Isl.</option><option value="CZK">CZK — Corona Ceca</option><option value="PLN">PLN — Zloty</option><option value="HUF">HUF — Fiorino Ung.</option><option value="INR">INR — Rupia Indiana</option><option value="CNY">CNY — Yuan</option><option value="KRW">KRW — Won</option><option value="SGD">SGD — Dollaro Sing.</option><option value="ZAR">ZAR — Rand</option>
 </select>
 </div>
 <button onclick="convertTravel()" style="padding:10px 16px;border:none;border-radius:8px;background:var(--gn);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;height:40px">Converti</button>
@@ -338,7 +347,7 @@ function tvWidget(containerId,widgetType,config){
   el.appendChild(wrap);
 }
 
-// Symbol Overview — works for EVERYTHING (futures, forex, crypto, bonds, stocks)
+// Symbol Overview — works for stocks, ETFs, bonds
 function tvSymbolOverview(id,sym){
   const tvSym=toTV(sym);
   tvWidget(id,'embed-widget-symbol-overview',{
@@ -352,6 +361,38 @@ function tvSymbolOverview(id,sym){
     noTimeScale:false,valuesTracking:'1',changeMode:'price-and-percent',
     chartType:'area',
     lineColor:'#7c5cfc',topColor:'rgba(124,92,252,0.3)',bottomColor:'rgba(124,92,252,0.02)',
+    lineWidth:2,
+    backgroundColor:'rgba(8,9,13,1)',gridLineColor:'rgba(26,29,46,0.6)'
+  });
+}
+
+// Advanced Chart — for futures, commodities, crypto (better symbol support)
+function tvChart(id,sym){
+  const tvSym=toTV(sym);
+  const el=document.getElementById(id);if(!el)return;
+  el.innerHTML='';
+  const wrap=document.createElement('div');wrap.className='tradingview-widget-container';wrap.style.cssText='width:100%;height:100%';
+  const inner=document.createElement('div');inner.className='tradingview-widget-container__widget';inner.style.cssText='width:100%;height:100%';
+  wrap.appendChild(inner);
+  const sc=document.createElement('script');sc.type='text/javascript';sc.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';sc.async=true;
+  sc.textContent=JSON.stringify({autosize:true,symbol:tvSym,interval:'D',timezone:'Europe/Rome',theme:'dark',style:'3',locale:'it',backgroundColor:'rgba(8,9,13,1)',gridColor:'rgba(26,29,46,0.6)',hide_top_toolbar:false,hide_legend:false,allow_symbol_change:true,save_image:false,calendar:false,hide_volume:false,support_host:'https://www.tradingview.com'});
+  wrap.appendChild(sc);el.appendChild(wrap);
+}
+
+// Technical Analysis widget — best for futures/commodities/crypto (always works)
+function tvTechAnalysis(id,sym){
+  const tvSym=toTV(sym);
+  tvWidget(id,'embed-widget-symbol-overview',{
+    symbols:[[tvSym,tvSym]],
+    chartOnly:true,width:'100%',height:'100%',
+    locale:'it',colorTheme:'dark',autosize:true,
+    showVolume:true,showMA:true,
+    hideDateRanges:false,hideMarketStatus:false,hideSymbolLogo:false,
+    scalePosition:'right',scaleMode:'Normal',
+    fontFamily:'Outfit, sans-serif',fontSize:'10',
+    noTimeScale:false,valuesTracking:'1',changeMode:'price-and-percent',
+    chartType:'area',
+    lineColor:'#10b981',topColor:'rgba(16,185,129,0.3)',bottomColor:'rgba(16,185,129,0.02)',
     lineWidth:2,
     backgroundColor:'rgba(8,9,13,1)',gridLineColor:'rgba(26,29,46,0.6)'
   });
@@ -412,8 +453,8 @@ function initWidgets(){
   tvSymbolOverview('tv-chart-stocks','AAPL');
   tvSymbolOverview('tv-chart-etfs','SPY');
   tvSymbolOverview('tv-chart-bonds','TLT');
-  tvSymbolOverview('tv-chart-comm','GC=F');
-  tvSymbolOverview('tv-chart-crypto','BTC-USD');
+  tvChart('tv-chart-comm','GC=F');
+  tvTechAnalysis('tv-chart-crypto','BTC-USD');
   tvSymbolOverview('tv-chart-fx','EURUSD=X');
   tvSymbolOverview('tv-chart-apple','AAPL');
 }
@@ -439,10 +480,11 @@ async function fmpQuote(sym){
   if(Array.isArray(d)&&d[0]){const q=d[0];const p=q.price||0;if(p>0)return{p,ch:q.changesPercentage||0,o:q.open||0,h:q.dayHigh||0,l:q.dayLow||0,cur:q.currency||'',src:'FMP'}}}catch(e){}return null}
 
 // Yahoo via CORS proxy
-const PX=[u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u),u=>'https://corsproxy.io/?url='+encodeURIComponent(u),u=>'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(u)];
+const PX=[u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u),u=>'https://corsproxy.io/?url='+encodeURIComponent(u),u=>'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(u),u=>'https://cors-anywhere.herokuapp.com/'+u,u=>'https://thingproxy.freeboard.io/fetch/'+u,u=>'https://cors.bridged.cc/'+u];
 let pxi=0;
 async function yhQuote(s){
-  const url='https://query1.finance.yahoo.com/v8/finance/chart/'+encodeURIComponent(s)+'?interval=1d&range=5d';
+  const urls=['https://query1.finance.yahoo.com/v8/finance/chart/'+encodeURIComponent(s)+'?interval=1d&range=5d','https://query2.finance.yahoo.com/v8/finance/chart/'+encodeURIComponent(s)+'?interval=1d&range=5d'];
+  const url=urls[Math.random()>0.5?1:0];
   for(let i=0;i<PX.length;i++){
     const idx=(pxi+i)%PX.length;
     try{const res=await fetch(PX[idx](url),{signal:AbortSignal.timeout(8000)});if(!res.ok)continue;
@@ -507,7 +549,51 @@ const A_FX=[
 const ALL_DB={stocks:A_STOCKS,etfs:A_ETFS,bonds:A_BONDS,comm:A_COMM,crypto:A_CRYPTO,currencies:A_FX};
 const DK=k=>k==='comm'?'commodities':k;
 
-// ═══════════ BUILD TABLE ═══════════
+// ═══════════ SORT & BUILD TABLE ═══════════
+let currentSort={};
+
+function initSortButtons(key){
+  const srtEl=document.getElementById('srt-'+key);
+  if(!srtEl)return;
+  const btns=[
+    {label:'Migliori ▲',sort:'best',icon:'🟢'},
+    {label:'Peggiori ▼',sort:'worst',icon:'🔴'},
+    {label:'Prezzo ▲',sort:'priceHigh',icon:'💰'},
+    {label:'Prezzo ▼',sort:'priceLow',icon:'📉'},
+    {label:'Default',sort:'default',icon:'↩'}
+  ];
+  srtEl.innerHTML=btns.map(b=>`<button onclick="sortTable('${key}','${b.sort}',this)" class="${currentSort[key]===b.sort?'on':''}">${b.label}</button>`).join('');
+}
+
+function sortTable(key,sortType,btn){
+  const dk=DK(key);
+  const isFX=key==='currencies';
+  const tblMap={stocks:'tbl-stocks',etfs:'tbl-etfs',bonds:'tbl-bonds',comm:'tbl-comm',commodities:'tbl-comm',crypto:'tbl-crypto',currencies:'tbl-fx'};
+  const containerId=tblMap[key]||tblMap[dk];
+  
+  if(currentSort[key]===sortType){currentSort[key]='default';sortType='default';}
+  else{currentSort[key]=sortType;}
+  
+  // Update button states
+  const srtEl=document.getElementById('srt-'+key);
+  if(srtEl)srtEl.querySelectorAll('button').forEach(b=>b.classList.remove('on'));
+  if(btn&&sortType!=='default')btn.classList.add('on');
+  
+  const data=[...D[dk]];
+  switch(sortType){
+    case'best':data.sort((a,b)=>(b.ch||0)-(a.ch||0));break;
+    case'worst':data.sort((a,b)=>(a.ch||0)-(b.ch||0));break;
+    case'priceHigh':data.sort((a,b)=>(b.p||0)-(a.p||0));break;
+    case'priceLow':data.sort((a,b)=>(a.p||0)-(b.p||0));break;
+    default:break;// keep original order
+  }
+  
+  // Rebuild with sorted data but keep D[dk] reference
+  if(sortType!=='default')D[dk]=[...data];
+  buildTable(containerId,D[dk],key,isFX);
+  initSortButtons(key);
+}
+
 function buildTable(containerId,data,key,isFX){
   const el=document.getElementById(containerId);if(!el)return;
   let h='<div class="tw"><table><thead><tr><th>Ticker</th><th>Nome</th><th>Prezzo</th><th>Val.</th><th>Var %</th><th>Segnale</th><th>Src</th></tr></thead><tbody>';
@@ -524,6 +610,7 @@ function buildTable(containerId,data,key,isFX){
   });
   h+='</tbody></table></div>';
   el.innerHTML=h;
+  initSortButtons(key);
 }
 
 function selAsset(key,idx){
@@ -531,8 +618,10 @@ function selAsset(key,idx){
   document.querySelectorAll(`[id^="${key}_r"]`).forEach(r=>r.classList.remove('sel'));
   document.getElementById(key+'_r'+idx)?.classList.add('sel');
   const chartId='tv-chart-'+key;
-  tvSymbolOverview(chartId,d.sym);
-}
+  const isFutureKey=key==='comm'||key==='crypto';
+    if(isFutureKey)tvTechAnalysis(chartId,d.sym);
+    else tvSymbolOverview(chartId,d.sym);
+  }
 
 function selFX(key,idx){
   const d=D.currencies[idx];if(!d)return;
@@ -616,10 +705,11 @@ async function refreshData(data,key){
   for(let i=0;i<data.length;i+=3){
     const batch=data.slice(i,i+3);
     await Promise.allSettled(batch.map(async d=>{
-      const q=isFuture?await yhQuote(d.sym):await getQuote(d.sym,d.fh||d.sym);
+      const q=isFuture?(await yhQuote(d.sym)||await fmpQuote(d.sym)):await getQuote(d.sym,d.fh||d.sym);
       if(q&&q.p>0){d.p=q.p;d.ch=q.ch;d.o=q.o;d.h=q.h;d.l=q.l;d.cur=q.cur;d.src=q.src}
       updateRow(key,data.indexOf(d),d);
     }));
+    await new Promise(r=>setTimeout(r,500)); // delay between batches to avoid rate limits
   }
 }
 async function refreshFX(){
@@ -677,30 +767,34 @@ function go(id,btn){
 
 // ═══════════ APPLE TRACKER (Full — 148+ devices, 12 categories) ═══════════
 const APPLE_DB=[
-// iPhone
-{cat:'iPhone',name:'iPhone 6s',chip:'A9',year:2015,price:229},{cat:'iPhone',name:'iPhone 7',chip:'A10',year:2016,price:349},{cat:'iPhone',name:'iPhone 8',chip:'A11',year:2017,price:399},{cat:'iPhone',name:'iPhone X',chip:'A11',year:2017,price:999},{cat:'iPhone',name:'iPhone XR',chip:'A12',year:2018,price:749},{cat:'iPhone',name:'iPhone XS',chip:'A12',year:2018,price:999},{cat:'iPhone',name:'iPhone XS Max',chip:'A12',year:2018,price:1099},{cat:'iPhone',name:'iPhone 11',chip:'A13',year:2019,price:699},{cat:'iPhone',name:'iPhone 11 Pro',chip:'A13',year:2019,price:999},{cat:'iPhone',name:'iPhone 11 Pro Max',chip:'A13',year:2019,price:1099},{cat:'iPhone',name:'iPhone SE (2nd)',chip:'A13',year:2020,price:399},{cat:'iPhone',name:'iPhone 12 mini',chip:'A14',year:2020,price:729},{cat:'iPhone',name:'iPhone 12',chip:'A14',year:2020,price:829},{cat:'iPhone',name:'iPhone 12 Pro',chip:'A14',year:2020,price:1059},{cat:'iPhone',name:'iPhone 12 Pro Max',chip:'A14',year:2020,price:1179},{cat:'iPhone',name:'iPhone 13 mini',chip:'A15',year:2021,price:729},{cat:'iPhone',name:'iPhone 13',chip:'A15',year:2021,price:829},{cat:'iPhone',name:'iPhone 13 Pro',chip:'A15 Pro',year:2021,price:1059},{cat:'iPhone',name:'iPhone 13 Pro Max',chip:'A15 Pro',year:2021,price:1179},{cat:'iPhone',name:'iPhone SE (3rd)',chip:'A15',year:2022,price:529},{cat:'iPhone',name:'iPhone 14',chip:'A15',year:2022,price:869},{cat:'iPhone',name:'iPhone 14 Plus',chip:'A15',year:2022,price:979},{cat:'iPhone',name:'iPhone 14 Pro',chip:'A16 Pro',year:2022,price:1179},{cat:'iPhone',name:'iPhone 14 Pro Max',chip:'A16 Pro',year:2022,price:1309},{cat:'iPhone',name:'iPhone 15',chip:'A16',year:2023,price:879},{cat:'iPhone',name:'iPhone 15 Plus',chip:'A16',year:2023,price:989},{cat:'iPhone',name:'iPhone 15 Pro',chip:'A17 Pro',year:2023,price:1199},{cat:'iPhone',name:'iPhone 15 Pro Max',chip:'A17 Pro',year:2023,price:1449},{cat:'iPhone',name:'iPhone 16',chip:'A18',year:2024,price:899},{cat:'iPhone',name:'iPhone 16 Plus',chip:'A18',year:2024,price:999},{cat:'iPhone',name:'iPhone 16 Pro',chip:'A18 Pro',year:2024,price:1199},{cat:'iPhone',name:'iPhone 16 Pro Max',chip:'A18 Pro',year:2024,price:1449},{cat:'iPhone',name:'iPhone 16e',chip:'A18',year:2025,price:599},{cat:'iPhone',name:'iPhone 17',chip:'A19',year:2025,price:899},{cat:'iPhone',name:'iPhone 17 Air',chip:'A19',year:2025,price:999},{cat:'iPhone',name:'iPhone 17 Pro',chip:'A19 Pro',year:2025,price:1199},{cat:'iPhone',name:'iPhone 17 Pro Max',chip:'A19 Pro',year:2025,price:1499},
-// iPad
-{cat:'iPad',name:'iPad (9th)',chip:'A13',year:2021,price:389},{cat:'iPad',name:'iPad (10th)',chip:'A14',year:2022,price:529},{cat:'iPad',name:'iPad mini (6th)',chip:'A15',year:2021,price:549},{cat:'iPad',name:'iPad Air (5th) M1',chip:'M1',year:2022,price:699},{cat:'iPad',name:'iPad Air 11" M2',chip:'M2',year:2024,price:699},{cat:'iPad',name:'iPad Air 13" M2',chip:'M2',year:2024,price:899},{cat:'iPad',name:'iPad Air 11" M3',chip:'M3',year:2025,price:699},{cat:'iPad',name:'iPad Air 13" M3',chip:'M3',year:2025,price:899},{cat:'iPad',name:'iPad Pro 11" M2',chip:'M2',year:2022,price:899},{cat:'iPad',name:'iPad Pro 12.9" M2',chip:'M2',year:2022,price:1199},{cat:'iPad',name:'iPad Pro 11" M4',chip:'M4',year:2024,price:1099},{cat:'iPad',name:'iPad Pro 13" M4',chip:'M4',year:2024,price:1399},{cat:'iPad',name:'iPad mini (7th) A17 Pro',chip:'A17 Pro',year:2024,price:599},
-// MacBook Air
-{cat:'MacBook Air',name:'MacBook Air 13" M1',chip:'M1',year:2020,price:1149},{cat:'MacBook Air',name:'MacBook Air 13" M2',chip:'M2',year:2022,price:1249},{cat:'MacBook Air',name:'MacBook Air 15" M2',chip:'M2',year:2023,price:1449},{cat:'MacBook Air',name:'MacBook Air 13" M3',chip:'M3',year:2024,price:1249},{cat:'MacBook Air',name:'MacBook Air 15" M3',chip:'M3',year:2024,price:1449},{cat:'MacBook Air',name:'MacBook Air 13" M4',chip:'M4',year:2025,price:1249},{cat:'MacBook Air',name:'MacBook Air 15" M4',chip:'M4',year:2025,price:1449},
-// MacBook Pro
-{cat:'MacBook Pro',name:'MacBook Pro 13" M1',chip:'M1',year:2020,price:1449},{cat:'MacBook Pro',name:'MacBook Pro 14" M1 Pro',chip:'M1 Pro',year:2021,price:2249},{cat:'MacBook Pro',name:'MacBook Pro 16" M1 Pro',chip:'M1 Pro',year:2021,price:2749},{cat:'MacBook Pro',name:'MacBook Pro 16" M1 Max',chip:'M1 Max',year:2021,price:3499},{cat:'MacBook Pro',name:'MacBook Pro 14" M2 Pro',chip:'M2 Pro',year:2023,price:2249},{cat:'MacBook Pro',name:'MacBook Pro 16" M2 Pro',chip:'M2 Pro',year:2023,price:2749},{cat:'MacBook Pro',name:'MacBook Pro 16" M2 Max',chip:'M2 Max',year:2023,price:3499},{cat:'MacBook Pro',name:'MacBook Pro 14" M3',chip:'M3',year:2023,price:1799},{cat:'MacBook Pro',name:'MacBook Pro 14" M3 Pro',chip:'M3 Pro',year:2023,price:2249},{cat:'MacBook Pro',name:'MacBook Pro 16" M3 Pro',chip:'M3 Pro',year:2023,price:2749},{cat:'MacBook Pro',name:'MacBook Pro 14" M3 Max',chip:'M3 Max',year:2023,price:3499},{cat:'MacBook Pro',name:'MacBook Pro 16" M3 Max',chip:'M3 Max',year:2023,price:3999},{cat:'MacBook Pro',name:'MacBook Pro 14" M4',chip:'M4',year:2024,price:1799},{cat:'MacBook Pro',name:'MacBook Pro 14" M4 Pro',chip:'M4 Pro',year:2024,price:2249},{cat:'MacBook Pro',name:'MacBook Pro 16" M4 Pro',chip:'M4 Pro',year:2024,price:2749},{cat:'MacBook Pro',name:'MacBook Pro 14" M4 Max',chip:'M4 Max',year:2024,price:3499},{cat:'MacBook Pro',name:'MacBook Pro 16" M4 Max',chip:'M4 Max',year:2024,price:3999},
-// Mac
-{cat:'Mac',name:'iMac 24" M1',chip:'M1',year:2021,price:1449},{cat:'Mac',name:'iMac 24" M3',chip:'M3',year:2023,price:1449},{cat:'Mac',name:'iMac 24" M4',chip:'M4',year:2024,price:1449},{cat:'Mac',name:'Mac mini M1',chip:'M1',year:2020,price:699},{cat:'Mac',name:'Mac mini M2',chip:'M2',year:2023,price:699},{cat:'Mac',name:'Mac mini M2 Pro',chip:'M2 Pro',year:2023,price:1449},{cat:'Mac',name:'Mac mini M4',chip:'M4',year:2024,price:699},{cat:'Mac',name:'Mac mini M4 Pro',chip:'M4 Pro',year:2024,price:1499},{cat:'Mac',name:'Mac Studio M1 Max',chip:'M1 Max',year:2022,price:2299},{cat:'Mac',name:'Mac Studio M1 Ultra',chip:'M1 Ultra',year:2022,price:4499},{cat:'Mac',name:'Mac Studio M2 Max',chip:'M2 Max',year:2023,price:2299},{cat:'Mac',name:'Mac Studio M2 Ultra',chip:'M2 Ultra',year:2023,price:4499},{cat:'Mac',name:'Mac Studio M4 Max',chip:'M4 Max',year:2025,price:2299},{cat:'Mac',name:'Mac Pro M2 Ultra',chip:'M2 Ultra',year:2023,price:7999},
-// Apple Watch
-{cat:'Apple Watch',name:'Apple Watch Series 7',chip:'S7',year:2021,price:429},{cat:'Apple Watch',name:'Apple Watch Series 8',chip:'S8',year:2022,price:459},{cat:'Apple Watch',name:'Apple Watch SE (2nd)',chip:'S8',year:2022,price:279},{cat:'Apple Watch',name:'Apple Watch Ultra',chip:'S8',year:2022,price:899},{cat:'Apple Watch',name:'Apple Watch Series 9',chip:'S9',year:2023,price:459},{cat:'Apple Watch',name:'Apple Watch Ultra 2',chip:'S9',year:2023,price:899},{cat:'Apple Watch',name:'Apple Watch Series 10',chip:'S10',year:2024,price:459},{cat:'Apple Watch',name:'Apple Watch SE (3rd)',chip:'S10',year:2025,price:249},{cat:'Apple Watch',name:'Apple Watch Series 11',chip:'S11',year:2025,price:459},{cat:'Apple Watch',name:'Apple Watch Ultra 3',chip:'S11',year:2025,price:899},
-// AirPods
-{cat:'AirPods',name:'AirPods (2nd)',chip:'H1',year:2019,price:149},{cat:'AirPods',name:'AirPods (3rd)',chip:'H1',year:2021,price:199},{cat:'AirPods',name:'AirPods (4th)',chip:'H2',year:2024,price:149},{cat:'AirPods',name:'AirPods (4th ANC)',chip:'H2',year:2024,price:199},{cat:'AirPods',name:'AirPods Pro (1st)',chip:'H1',year:2019,price:249},{cat:'AirPods',name:'AirPods Pro (2nd) USB-C',chip:'H2',year:2023,price:279},{cat:'AirPods',name:'AirPods Pro 3',chip:'H3',year:2025,price:279},{cat:'AirPods',name:'AirPods Max',chip:'H1',year:2020,price:579},{cat:'AirPods',name:'AirPods Max (2nd) USB-C',chip:'H2',year:2024,price:579},
-// Apple TV
-{cat:'Apple TV',name:'Apple TV 4K (2nd)',chip:'A12',year:2021,price:179},{cat:'Apple TV',name:'Apple TV 4K (3rd)',chip:'A15',year:2022,price:169},
-// HomePod
-{cat:'HomePod',name:'HomePod mini',chip:'S5',year:2020,price:109},{cat:'HomePod',name:'HomePod (2nd)',chip:'S7',year:2023,price:329},
-// Display
-{cat:'Display',name:'Studio Display',chip:'A13',year:2022,price:1799},{cat:'Display',name:'Pro Display XDR',chip:'—',year:2019,price:5499},
-// Apple Vision
+// ── iPhone (COMPLETO da 2007) ──
+{cat:'iPhone',name:'iPhone (1st gen)',chip:'ARM 1176',year:2007,price:499},{cat:'iPhone',name:'iPhone 3G',chip:'ARM 1176',year:2008,price:199},{cat:'iPhone',name:'iPhone 3GS',chip:'ARM Cortex',year:2009,price:199},{cat:'iPhone',name:'iPhone 4',chip:'A4',year:2010,price:199},{cat:'iPhone',name:'iPhone 4S',chip:'A5',year:2011,price:199},{cat:'iPhone',name:'iPhone 5',chip:'A6',year:2012,price:199},{cat:'iPhone',name:'iPhone 5C',chip:'A6',year:2013,price:99},{cat:'iPhone',name:'iPhone 5S',chip:'A7',year:2013,price:199},{cat:'iPhone',name:'iPhone 6',chip:'A8',year:2014,price:199},{cat:'iPhone',name:'iPhone 6 Plus',chip:'A8',year:2014,price:299},{cat:'iPhone',name:'iPhone 6s',chip:'A9',year:2015,price:229},{cat:'iPhone',name:'iPhone 6s Plus',chip:'A9',year:2015,price:329},{cat:'iPhone',name:'iPhone SE (1st)',chip:'A9',year:2016,price:399},{cat:'iPhone',name:'iPhone 7',chip:'A10',year:2016,price:349},{cat:'iPhone',name:'iPhone 7 Plus',chip:'A10',year:2016,price:449},{cat:'iPhone',name:'iPhone 8',chip:'A11',year:2017,price:399},{cat:'iPhone',name:'iPhone 8 Plus',chip:'A11',year:2017,price:499},{cat:'iPhone',name:'iPhone X',chip:'A11',year:2017,price:999},{cat:'iPhone',name:'iPhone XR',chip:'A12',year:2018,price:749},{cat:'iPhone',name:'iPhone XS',chip:'A12',year:2018,price:999},{cat:'iPhone',name:'iPhone XS Max',chip:'A12',year:2018,price:1099},{cat:'iPhone',name:'iPhone 11',chip:'A13',year:2019,price:699},{cat:'iPhone',name:'iPhone 11 Pro',chip:'A13',year:2019,price:999},{cat:'iPhone',name:'iPhone 11 Pro Max',chip:'A13',year:2019,price:1099},{cat:'iPhone',name:'iPhone SE (2nd)',chip:'A13',year:2020,price:399},{cat:'iPhone',name:'iPhone 12 mini',chip:'A14',year:2020,price:729},{cat:'iPhone',name:'iPhone 12',chip:'A14',year:2020,price:829},{cat:'iPhone',name:'iPhone 12 Pro',chip:'A14',year:2020,price:1059},{cat:'iPhone',name:'iPhone 12 Pro Max',chip:'A14',year:2020,price:1179},{cat:'iPhone',name:'iPhone 13 mini',chip:'A15',year:2021,price:729},{cat:'iPhone',name:'iPhone 13',chip:'A15',year:2021,price:829},{cat:'iPhone',name:'iPhone 13 Pro',chip:'A15 Pro',year:2021,price:1059},{cat:'iPhone',name:'iPhone 13 Pro Max',chip:'A15 Pro',year:2021,price:1179},{cat:'iPhone',name:'iPhone SE (3rd)',chip:'A15',year:2022,price:529},{cat:'iPhone',name:'iPhone 14',chip:'A15',year:2022,price:869},{cat:'iPhone',name:'iPhone 14 Plus',chip:'A15',year:2022,price:979},{cat:'iPhone',name:'iPhone 14 Pro',chip:'A16 Pro',year:2022,price:1179},{cat:'iPhone',name:'iPhone 14 Pro Max',chip:'A16 Pro',year:2022,price:1309},{cat:'iPhone',name:'iPhone 15',chip:'A16',year:2023,price:879},{cat:'iPhone',name:'iPhone 15 Plus',chip:'A16',year:2023,price:989},{cat:'iPhone',name:'iPhone 15 Pro',chip:'A17 Pro',year:2023,price:1199},{cat:'iPhone',name:'iPhone 15 Pro Max',chip:'A17 Pro',year:2023,price:1449},{cat:'iPhone',name:'iPhone 16',chip:'A18',year:2024,price:899},{cat:'iPhone',name:'iPhone 16 Plus',chip:'A18',year:2024,price:999},{cat:'iPhone',name:'iPhone 16 Pro',chip:'A18 Pro',year:2024,price:1199},{cat:'iPhone',name:'iPhone 16 Pro Max',chip:'A18 Pro',year:2024,price:1449},{cat:'iPhone',name:'iPhone 16e',chip:'A18',year:2025,price:599},{cat:'iPhone',name:'iPhone 17',chip:'A19',year:2025,price:899},{cat:'iPhone',name:'iPhone 17 Air',chip:'A19',year:2025,price:999},{cat:'iPhone',name:'iPhone 17 Pro',chip:'A19 Pro',year:2025,price:1199},{cat:'iPhone',name:'iPhone 17 Pro Max',chip:'A19 Pro',year:2025,price:1499},
+// ── iPod ──
+{cat:'iPod',name:'iPod Touch (7th)',chip:'A10',year:2019,price:199},{cat:'iPod',name:'iPod Touch (6th)',chip:'A8',year:2015,price:199},{cat:'iPod',name:'iPod Touch (5th)',chip:'A5',year:2012,price:199},{cat:'iPod',name:'iPod Touch (4th)',chip:'A4',year:2010,price:229},{cat:'iPod',name:'iPod Classic 160GB',chip:'—',year:2009,price:249},{cat:'iPod',name:'iPod nano (7th)',chip:'—',year:2012,price:149},{cat:'iPod',name:'iPod Shuffle (4th)',chip:'—',year:2010,price:49},
+// ── iPad (COMPLETO da 2010) ──
+{cat:'iPad',name:'iPad (1st gen)',chip:'A4',year:2010,price:499},{cat:'iPad',name:'iPad 2',chip:'A5',year:2011,price:499},{cat:'iPad',name:'iPad (3rd gen)',chip:'A5X',year:2012,price:499},{cat:'iPad',name:'iPad (4th gen)',chip:'A6X',year:2012,price:499},{cat:'iPad',name:'iPad Air (1st)',chip:'A7',year:2013,price:499},{cat:'iPad',name:'iPad Air 2',chip:'A8X',year:2014,price:499},{cat:'iPad',name:'iPad mini (1st)',chip:'A5',year:2012,price:329},{cat:'iPad',name:'iPad mini 2',chip:'A7',year:2013,price:399},{cat:'iPad',name:'iPad mini 3',chip:'A7',year:2014,price:399},{cat:'iPad',name:'iPad mini 4',chip:'A8',year:2015,price:399},{cat:'iPad',name:'iPad mini (5th)',chip:'A12',year:2019,price:449},{cat:'iPad',name:'iPad Pro 9.7"',chip:'A9X',year:2016,price:599},{cat:'iPad',name:'iPad Pro 10.5"',chip:'A10X',year:2017,price:649},{cat:'iPad',name:'iPad Pro 11" (1st)',chip:'A12X',year:2018,price:799},{cat:'iPad',name:'iPad Pro 12.9" (1st)',chip:'A9X',year:2015,price:799},{cat:'iPad',name:'iPad Pro 12.9" (2nd)',chip:'A10X',year:2017,price:799},{cat:'iPad',name:'iPad Pro 12.9" (3rd)',chip:'A12X',year:2018,price:999},{cat:'iPad',name:'iPad (5th gen)',chip:'A9',year:2017,price:329},{cat:'iPad',name:'iPad (6th gen)',chip:'A10',year:2018,price:329},{cat:'iPad',name:'iPad (7th gen)',chip:'A10',year:2019,price:329},{cat:'iPad',name:'iPad (8th gen)',chip:'A12',year:2020,price:379},{cat:'iPad',name:'iPad (9th gen)',chip:'A13',year:2021,price:389},{cat:'iPad',name:'iPad (10th gen)',chip:'A14',year:2022,price:529},{cat:'iPad',name:'iPad mini (6th)',chip:'A15',year:2021,price:549},{cat:'iPad',name:'iPad Air (3rd) A12',chip:'A12',year:2019,price:549},{cat:'iPad',name:'iPad Air (4th) A14',chip:'A14',year:2020,price:669},{cat:'iPad',name:'iPad Air (5th) M1',chip:'M1',year:2022,price:699},{cat:'iPad',name:'iPad Air 11" M2',chip:'M2',year:2024,price:699},{cat:'iPad',name:'iPad Air 13" M2',chip:'M2',year:2024,price:899},{cat:'iPad',name:'iPad Air 11" M3',chip:'M3',year:2025,price:699},{cat:'iPad',name:'iPad Air 13" M3',chip:'M3',year:2025,price:899},{cat:'iPad',name:'iPad Pro 11" M1',chip:'M1',year:2021,price:799},{cat:'iPad',name:'iPad Pro 12.9" M1',chip:'M1',year:2021,price:1099},{cat:'iPad',name:'iPad Pro 11" M2',chip:'M2',year:2022,price:899},{cat:'iPad',name:'iPad Pro 12.9" M2',chip:'M2',year:2022,price:1199},{cat:'iPad',name:'iPad Pro 11" M4',chip:'M4',year:2024,price:1099},{cat:'iPad',name:'iPad Pro 13" M4',chip:'M4',year:2024,price:1399},{cat:'iPad',name:'iPad mini (7th) A17 Pro',chip:'A17 Pro',year:2024,price:599},
+// ── MacBook Air ──
+{cat:'MacBook Air',name:'MacBook Air 11" (2010)',chip:'Core 2 Duo',year:2010,price:999},{cat:'MacBook Air',name:'MacBook Air 13" (2010)',chip:'Core 2 Duo',year:2010,price:1299},{cat:'MacBook Air',name:'MacBook Air 11" (2011)',chip:'i5',year:2011,price:999},{cat:'MacBook Air',name:'MacBook Air 13" (2011)',chip:'i5',year:2011,price:1299},{cat:'MacBook Air',name:'MacBook Air 11" (2012)',chip:'i5',year:2012,price:999},{cat:'MacBook Air',name:'MacBook Air 13" (2012)',chip:'i5',year:2012,price:1199},{cat:'MacBook Air',name:'MacBook Air 11" (2013)',chip:'i5 Haswell',year:2013,price:999},{cat:'MacBook Air',name:'MacBook Air 13" (2013)',chip:'i5 Haswell',year:2013,price:1099},{cat:'MacBook Air',name:'MacBook Air 11" (2015)',chip:'i5 Broadwell',year:2015,price:899},{cat:'MacBook Air',name:'MacBook Air 13" (2015)',chip:'i5 Broadwell',year:2015,price:999},{cat:'MacBook Air',name:'MacBook Air 13" Retina (2018)',chip:'i5',year:2018,price:1199},{cat:'MacBook Air',name:'MacBook Air 13" (2019)',chip:'i5',year:2019,price:1099},{cat:'MacBook Air',name:'MacBook Air 13" (2020 Intel)',chip:'i3',year:2020,price:999},{cat:'MacBook Air',name:'MacBook Air 13" M1',chip:'M1',year:2020,price:1149},{cat:'MacBook Air',name:'MacBook Air 13" M2',chip:'M2',year:2022,price:1249},{cat:'MacBook Air',name:'MacBook Air 15" M2',chip:'M2',year:2023,price:1449},{cat:'MacBook Air',name:'MacBook Air 13" M3',chip:'M3',year:2024,price:1249},{cat:'MacBook Air',name:'MacBook Air 15" M3',chip:'M3',year:2024,price:1449},{cat:'MacBook Air',name:'MacBook Air 13" M4',chip:'M4',year:2025,price:1249},{cat:'MacBook Air',name:'MacBook Air 15" M4',chip:'M4',year:2025,price:1449},
+// ── MacBook Pro ──
+{cat:'MacBook Pro',name:'MacBook Pro 13" (2012 Retina)',chip:'i5',year:2012,price:1699},{cat:'MacBook Pro',name:'MacBook Pro 15" (2012 Retina)',chip:'i7',year:2012,price:2199},{cat:'MacBook Pro',name:'MacBook Pro 13" (2013)',chip:'i5 Haswell',year:2013,price:1299},{cat:'MacBook Pro',name:'MacBook Pro 15" (2013)',chip:'i7 Haswell',year:2013,price:1999},{cat:'MacBook Pro',name:'MacBook Pro 13" (2014)',chip:'i5 Haswell',year:2014,price:1299},{cat:'MacBook Pro',name:'MacBook Pro 15" (2014)',chip:'i7 Haswell',year:2014,price:1999},{cat:'MacBook Pro',name:'MacBook Pro 13" (2015)',chip:'i5 Broadwell',year:2015,price:1299},{cat:'MacBook Pro',name:'MacBook Pro 15" (2015)',chip:'i7 Haswell',year:2015,price:1999},{cat:'MacBook Pro',name:'MacBook Pro 13" Touch Bar (2016)',chip:'i5 Skylake',year:2016,price:1799},{cat:'MacBook Pro',name:'MacBook Pro 15" Touch Bar (2016)',chip:'i7 Skylake',year:2016,price:2399},{cat:'MacBook Pro',name:'MacBook Pro 13" (2017)',chip:'i5 Kaby Lake',year:2017,price:1299},{cat:'MacBook Pro',name:'MacBook Pro 15" (2017)',chip:'i7 Kaby Lake',year:2017,price:2399},{cat:'MacBook Pro',name:'MacBook Pro 13" (2018)',chip:'i5',year:2018,price:1799},{cat:'MacBook Pro',name:'MacBook Pro 15" (2018)',chip:'i7',year:2018,price:2399},{cat:'MacBook Pro',name:'MacBook Pro 13" (2019)',chip:'i5',year:2019,price:1299},{cat:'MacBook Pro',name:'MacBook Pro 16" (2019)',chip:'i7/i9',year:2019,price:2399},{cat:'MacBook Pro',name:'MacBook Pro 13" (2020 Intel)',chip:'i5',year:2020,price:1299},{cat:'MacBook Pro',name:'MacBook Pro 13" M1',chip:'M1',year:2020,price:1449},{cat:'MacBook Pro',name:'MacBook Pro 14" M1 Pro',chip:'M1 Pro',year:2021,price:2249},{cat:'MacBook Pro',name:'MacBook Pro 16" M1 Pro',chip:'M1 Pro',year:2021,price:2749},{cat:'MacBook Pro',name:'MacBook Pro 16" M1 Max',chip:'M1 Max',year:2021,price:3499},{cat:'MacBook Pro',name:'MacBook Pro 13" M2',chip:'M2',year:2022,price:1449},{cat:'MacBook Pro',name:'MacBook Pro 14" M2 Pro',chip:'M2 Pro',year:2023,price:2249},{cat:'MacBook Pro',name:'MacBook Pro 16" M2 Pro',chip:'M2 Pro',year:2023,price:2749},{cat:'MacBook Pro',name:'MacBook Pro 16" M2 Max',chip:'M2 Max',year:2023,price:3499},{cat:'MacBook Pro',name:'MacBook Pro 14" M3',chip:'M3',year:2023,price:1799},{cat:'MacBook Pro',name:'MacBook Pro 14" M3 Pro',chip:'M3 Pro',year:2023,price:2249},{cat:'MacBook Pro',name:'MacBook Pro 16" M3 Pro',chip:'M3 Pro',year:2023,price:2749},{cat:'MacBook Pro',name:'MacBook Pro 14" M3 Max',chip:'M3 Max',year:2023,price:3499},{cat:'MacBook Pro',name:'MacBook Pro 16" M3 Max',chip:'M3 Max',year:2023,price:3999},{cat:'MacBook Pro',name:'MacBook Pro 14" M4',chip:'M4',year:2024,price:1799},{cat:'MacBook Pro',name:'MacBook Pro 14" M4 Pro',chip:'M4 Pro',year:2024,price:2249},{cat:'MacBook Pro',name:'MacBook Pro 16" M4 Pro',chip:'M4 Pro',year:2024,price:2749},{cat:'MacBook Pro',name:'MacBook Pro 14" M4 Max',chip:'M4 Max',year:2024,price:3499},{cat:'MacBook Pro',name:'MacBook Pro 16" M4 Max',chip:'M4 Max',year:2024,price:3999},
+// ── Mac Desktop ──
+{cat:'Mac',name:'iMac 21.5" (2012)',chip:'i5',year:2012,price:1299},{cat:'Mac',name:'iMac 27" (2012)',chip:'i5',year:2012,price:1799},{cat:'Mac',name:'iMac 21.5" (2013)',chip:'i5 Haswell',year:2013,price:1299},{cat:'Mac',name:'iMac 27" (2013)',chip:'i5 Haswell',year:2013,price:1799},{cat:'Mac',name:'iMac 21.5" 4K (2015)',chip:'i5',year:2015,price:1499},{cat:'Mac',name:'iMac 27" 5K (2015)',chip:'i5',year:2015,price:1999},{cat:'Mac',name:'iMac 21.5" 4K (2017)',chip:'i5 Kaby Lake',year:2017,price:1299},{cat:'Mac',name:'iMac 27" 5K (2017)',chip:'i5 Kaby Lake',year:2017,price:1799},{cat:'Mac',name:'iMac 21.5" 4K (2019)',chip:'i3',year:2019,price:1299},{cat:'Mac',name:'iMac 27" 5K (2019)',chip:'i5',year:2019,price:1799},{cat:'Mac',name:'iMac 27" 5K (2020)',chip:'i5',year:2020,price:1799},{cat:'Mac',name:'iMac 24" M1',chip:'M1',year:2021,price:1449},{cat:'Mac',name:'iMac 24" M3',chip:'M3',year:2023,price:1449},{cat:'Mac',name:'iMac 24" M4',chip:'M4',year:2024,price:1449},{cat:'Mac',name:'Mac mini (2012)',chip:'i5',year:2012,price:599},{cat:'Mac',name:'Mac mini (2014)',chip:'i5',year:2014,price:499},{cat:'Mac',name:'Mac mini (2018)',chip:'i3',year:2018,price:799},{cat:'Mac',name:'Mac mini M1',chip:'M1',year:2020,price:699},{cat:'Mac',name:'Mac mini M2',chip:'M2',year:2023,price:699},{cat:'Mac',name:'Mac mini M2 Pro',chip:'M2 Pro',year:2023,price:1449},{cat:'Mac',name:'Mac mini M4',chip:'M4',year:2024,price:699},{cat:'Mac',name:'Mac mini M4 Pro',chip:'M4 Pro',year:2024,price:1499},{cat:'Mac',name:'Mac Studio M1 Max',chip:'M1 Max',year:2022,price:2299},{cat:'Mac',name:'Mac Studio M1 Ultra',chip:'M1 Ultra',year:2022,price:4499},{cat:'Mac',name:'Mac Studio M2 Max',chip:'M2 Max',year:2023,price:2299},{cat:'Mac',name:'Mac Studio M2 Ultra',chip:'M2 Ultra',year:2023,price:4499},{cat:'Mac',name:'Mac Studio M4 Max',chip:'M4 Max',year:2025,price:2299},{cat:'Mac',name:'Mac Pro (2013 Cilindro)',chip:'Xeon E5',year:2013,price:2999},{cat:'Mac',name:'Mac Pro (2019 Tower)',chip:'Xeon W',year:2019,price:5999},{cat:'Mac',name:'Mac Pro M2 Ultra',chip:'M2 Ultra',year:2023,price:7999},
+// ── Apple Watch ──
+{cat:'Apple Watch',name:'Apple Watch (1st gen)',chip:'S1',year:2015,price:349},{cat:'Apple Watch',name:'Apple Watch Series 1',chip:'S1P',year:2016,price:269},{cat:'Apple Watch',name:'Apple Watch Series 2',chip:'S2',year:2016,price:369},{cat:'Apple Watch',name:'Apple Watch Series 3',chip:'S3',year:2017,price:329},{cat:'Apple Watch',name:'Apple Watch Series 4',chip:'S4',year:2018,price:399},{cat:'Apple Watch',name:'Apple Watch Series 5',chip:'S5',year:2019,price:399},{cat:'Apple Watch',name:'Apple Watch SE (1st)',chip:'S5',year:2020,price:279},{cat:'Apple Watch',name:'Apple Watch Series 6',chip:'S6',year:2020,price:399},{cat:'Apple Watch',name:'Apple Watch Series 7',chip:'S7',year:2021,price:429},{cat:'Apple Watch',name:'Apple Watch Series 8',chip:'S8',year:2022,price:459},{cat:'Apple Watch',name:'Apple Watch SE (2nd)',chip:'S8',year:2022,price:279},{cat:'Apple Watch',name:'Apple Watch Ultra',chip:'S8',year:2022,price:899},{cat:'Apple Watch',name:'Apple Watch Series 9',chip:'S9',year:2023,price:459},{cat:'Apple Watch',name:'Apple Watch Ultra 2',chip:'S9',year:2023,price:899},{cat:'Apple Watch',name:'Apple Watch Series 10',chip:'S10',year:2024,price:459},{cat:'Apple Watch',name:'Apple Watch SE (3rd)',chip:'S10',year:2025,price:249},{cat:'Apple Watch',name:'Apple Watch Series 11',chip:'S11',year:2025,price:459},{cat:'Apple Watch',name:'Apple Watch Ultra 3',chip:'S11',year:2025,price:899},
+// ── AirPods ──
+{cat:'AirPods',name:'AirPods (1st gen)',chip:'W1',year:2016,price:159},{cat:'AirPods',name:'AirPods (2nd gen)',chip:'H1',year:2019,price:149},{cat:'AirPods',name:'AirPods (3rd gen)',chip:'H1',year:2021,price:199},{cat:'AirPods',name:'AirPods (4th gen)',chip:'H2',year:2024,price:149},{cat:'AirPods',name:'AirPods (4th ANC)',chip:'H2',year:2024,price:199},{cat:'AirPods',name:'AirPods Pro (1st)',chip:'H1',year:2019,price:249},{cat:'AirPods',name:'AirPods Pro (2nd) Lightning',chip:'H2',year:2022,price:279},{cat:'AirPods',name:'AirPods Pro (2nd) USB-C',chip:'H2',year:2023,price:279},{cat:'AirPods',name:'AirPods Pro 3',chip:'H3',year:2025,price:279},{cat:'AirPods',name:'AirPods Max (1st)',chip:'H1',year:2020,price:579},{cat:'AirPods',name:'AirPods Max (2nd) USB-C',chip:'H2',year:2024,price:579},
+// ── Apple TV ──
+{cat:'Apple TV',name:'Apple TV (3rd gen)',chip:'A5',year:2012,price:99},{cat:'Apple TV',name:'Apple TV HD (4th gen)',chip:'A8',year:2015,price:149},{cat:'Apple TV',name:'Apple TV 4K (1st)',chip:'A10X',year:2017,price:179},{cat:'Apple TV',name:'Apple TV 4K (2nd)',chip:'A12',year:2021,price:179},{cat:'Apple TV',name:'Apple TV 4K (3rd)',chip:'A15',year:2022,price:169},
+// ── HomePod ──
+{cat:'HomePod',name:'HomePod (1st gen)',chip:'A8',year:2018,price:349},{cat:'HomePod',name:'HomePod mini',chip:'S5',year:2020,price:109},{cat:'HomePod',name:'HomePod (2nd gen)',chip:'S7',year:2023,price:329},
+// ── Display ──
+{cat:'Display',name:'Thunderbolt Display',chip:'—',year:2011,price:999},{cat:'Display',name:'Studio Display',chip:'A13',year:2022,price:1799},{cat:'Display',name:'Pro Display XDR',chip:'—',year:2019,price:5499},
+// ── Apple Vision ──
 {cat:'Apple Vision',name:'Apple Vision Pro',chip:'M2 + R1',year:2024,price:3999},
-// Accessories
-{cat:'Accessori',name:'Apple Pencil (2nd)',chip:'—',year:2018,price:149},{cat:'Accessori',name:'Apple Pencil USB-C',chip:'—',year:2023,price:89},{cat:'Accessori',name:'Apple Pencil Pro',chip:'—',year:2024,price:149},{cat:'Accessori',name:'Magic Keyboard iPad Pro',chip:'—',year:2024,price:349},{cat:'Accessori',name:'AirTag',chip:'U1',year:2021,price:35},{cat:'Accessori',name:'AirTag (2nd)',chip:'U2',year:2025,price:39},{cat:'Accessori',name:'MagSafe Charger',chip:'—',year:2020,price:45},{cat:'Accessori',name:'Magic Mouse',chip:'—',year:2022,price:99},{cat:'Accessori',name:'Magic Keyboard Touch ID',chip:'—',year:2022,price:219},{cat:'Accessori',name:'Magic Trackpad',chip:'—',year:2022,price:149}
+// ── MacBook (12") ──
+{cat:'MacBook',name:'MacBook 12" (2015)',chip:'Core M',year:2015,price:1299},{cat:'MacBook',name:'MacBook 12" (2016)',chip:'Core m3',year:2016,price:1299},{cat:'MacBook',name:'MacBook 12" (2017)',chip:'Core m3',year:2017,price:1299},
+// ── Accessori ──
+{cat:'Accessori',name:'Apple Pencil (1st)',chip:'—',year:2015,price:99},{cat:'Accessori',name:'Apple Pencil (2nd)',chip:'—',year:2018,price:149},{cat:'Accessori',name:'Apple Pencil USB-C',chip:'—',year:2023,price:89},{cat:'Accessori',name:'Apple Pencil Pro',chip:'—',year:2024,price:149},{cat:'Accessori',name:'Smart Keyboard Folio',chip:'—',year:2018,price:199},{cat:'Accessori',name:'Magic Keyboard iPad Pro',chip:'—',year:2024,price:349},{cat:'Accessori',name:'AirTag',chip:'U1',year:2021,price:35},{cat:'Accessori',name:'AirTag (2nd)',chip:'U2',year:2025,price:39},{cat:'Accessori',name:'MagSafe Charger',chip:'—',year:2020,price:45},{cat:'Accessori',name:'Magic Mouse',chip:'—',year:2022,price:99},{cat:'Accessori',name:'Magic Keyboard Touch ID',chip:'—',year:2022,price:219},{cat:'Accessori',name:'Magic Trackpad',chip:'—',year:2022,price:149}
 ];
 
 const APPLE_CATS=[...new Set(APPLE_DB.map(d=>d.cat))];
@@ -775,53 +869,150 @@ function appleCompare(){
 }
 
 // ═══════════ VIAGGI ═══════════
-const POPULAR_DEST=[
-  {city:'Londra',code:'london',flag:'🇬🇧',cur:'GBP'},{city:'Parigi',code:'paris',flag:'🇫🇷',cur:'EUR'},
-  {city:'Barcellona',code:'barcelona',flag:'🇪🇸',cur:'EUR'},{city:'Amsterdam',code:'amsterdam',flag:'🇳🇱',cur:'EUR'},
-  {city:'New York',code:'new york',flag:'🇺🇸',cur:'USD'},{city:'Tokyo',code:'tokyo',flag:'🇯🇵',cur:'JPY'},
-  {city:'Dubai',code:'dubai',flag:'🇦🇪',cur:'AED'},{city:'Istanbul',code:'istanbul',flag:'🇹🇷',cur:'TRY'},
-  {city:'Lisbona',code:'lisbon',flag:'🇵🇹',cur:'EUR'},{city:'Praga',code:'prague',flag:'🇨🇿',cur:'CZK'},
-  {city:'Atene',code:'athens',flag:'🇬🇷',cur:'EUR'},{city:'Bangkok',code:'bangkok',flag:'🇹🇭',cur:'THB'}
+const AIRPORTS=[
+// ── ITALIA ──
+{code:'MXP',city:'Milano Malpensa',country:'IT'},{code:'LIN',city:'Milano Linate',country:'IT'},{code:'BGY',city:'Bergamo Orio al Serio',country:'IT'},{code:'FCO',city:'Roma Fiumicino',country:'IT'},{code:'CIA',city:'Roma Ciampino',country:'IT'},{code:'VCE',city:'Venezia Marco Polo',country:'IT'},{code:'TSF',city:'Treviso',country:'IT'},{code:'NAP',city:'Napoli Capodichino',country:'IT'},{code:'BLQ',city:'Bologna',country:'IT'},{code:'CTA',city:'Catania',country:'IT'},{code:'PMO',city:'Palermo',country:'IT'},{code:'FLR',city:'Firenze',country:'IT'},{code:'PSA',city:'Pisa',country:'IT'},{code:'BRI',city:'Bari',country:'IT'},{code:'TRN',city:'Torino Caselle',country:'IT'},{code:'VRN',city:'Verona',country:'IT'},{code:'GOA',city:'Genova',country:'IT'},{code:'CAG',city:'Cagliari',country:'IT'},{code:'OLB',city:'Olbia',country:'IT'},{code:'SUF',city:'Lamezia Terme',country:'IT'},{code:'TRS',city:'Trieste',country:'IT'},
+// ── EUROPA ──
+{code:'LHR',city:'Londra Heathrow',country:'GB'},{code:'LGW',city:'Londra Gatwick',country:'GB'},{code:'STN',city:'Londra Stansted',country:'GB'},{code:'LTN',city:'Londra Luton',country:'GB'},{code:'MAN',city:'Manchester',country:'GB'},{code:'EDI',city:'Edimburgo',country:'GB'},{code:'CDG',city:'Parigi Charles de Gaulle',country:'FR'},{code:'ORY',city:'Parigi Orly',country:'FR'},{code:'BVA',city:'Parigi Beauvais',country:'FR'},{code:'NCE',city:'Nizza',country:'FR'},{code:'MRS',city:'Marsiglia',country:'FR'},{code:'LYS',city:'Lione',country:'FR'},{code:'FRA',city:'Francoforte',country:'DE'},{code:'MUC',city:'Monaco di Baviera',country:'DE'},{code:'BER',city:'Berlino Brandenburg',country:'DE'},{code:'DUS',city:'Dusseldorf',country:'DE'},{code:'HAM',city:'Amburgo',country:'DE'},{code:'CGN',city:'Colonia',country:'DE'},{code:'STR',city:'Stoccarda',country:'DE'},{code:'MAD',city:'Madrid Barajas',country:'ES'},{code:'BCN',city:'Barcellona El Prat',country:'ES'},{code:'AGP',city:'Malaga',country:'ES'},{code:'PMI',city:'Palma di Maiorca',country:'ES'},{code:'ALC',city:'Alicante',country:'ES'},{code:'SVQ',city:'Siviglia',country:'ES'},{code:'IBZ',city:'Ibiza',country:'ES'},{code:'TFS',city:'Tenerife Sud',country:'ES'},{code:'LPA',city:'Gran Canaria',country:'ES'},{code:'VLC',city:'Valencia',country:'ES'},{code:'AMS',city:'Amsterdam Schiphol',country:'NL'},{code:'EIN',city:'Eindhoven',country:'NL'},{code:'BRU',city:'Bruxelles',country:'BE'},{code:'CRL',city:'Bruxelles Charleroi',country:'BE'},{code:'ZRH',city:'Zurigo',country:'CH'},{code:'GVA',city:'Ginevra',country:'CH'},{code:'BSL',city:'Basilea',country:'CH'},{code:'VIE',city:'Vienna',country:'AT'},{code:'LIS',city:'Lisbona',country:'PT'},{code:'OPO',city:'Porto',country:'PT'},{code:'FAO',city:'Faro',country:'PT'},{code:'ATH',city:'Atene',country:'GR'},{code:'SKG',city:'Salonicco',country:'GR'},{code:'HER',city:'Heraklion Creta',country:'GR'},{code:'RHO',city:'Rodi',country:'GR'},{code:'CFU',city:'Corfu',country:'GR'},{code:'JMK',city:'Mykonos',country:'GR'},{code:'JTR',city:'Santorini',country:'GR'},{code:'PRG',city:'Praga',country:'CZ'},{code:'BUD',city:'Budapest',country:'HU'},{code:'WAW',city:'Varsavia',country:'PL'},{code:'KRK',city:'Cracovia',country:'PL'},{code:'WRO',city:'Breslavia',country:'PL'},{code:'OTP',city:'Bucarest',country:'RO'},{code:'SOF',city:'Sofia',country:'BG'},{code:'ZAG',city:'Zagabria',country:'HR'},{code:'SPU',city:'Spalato',country:'HR'},{code:'DBV',city:'Dubrovnik',country:'HR'},{code:'BEG',city:'Belgrado',country:'RS'},{code:'LJU',city:'Lubiana',country:'SI'},{code:'TIA',city:'Tirana',country:'AL'},{code:'SKP',city:'Skopje',country:'MK'},{code:'CPH',city:'Copenaghen',country:'DK'},{code:'ARN',city:'Stoccolma Arlanda',country:'SE'},{code:'GOT',city:'Goteborg',country:'SE'},{code:'OSL',city:'Oslo',country:'NO'},{code:'HEL',city:'Helsinki',country:'FI'},{code:'KEF',city:'Reykjavik Keflavik',country:'IS'},{code:'DUB',city:'Dublino',country:'IE'},{code:'IST',city:'Istanbul',country:'TR'},{code:'SAW',city:'Istanbul Sabiha Gokcen',country:'TR'},{code:'AYT',city:'Antalya',country:'TR'},{code:'ADB',city:'Smirne',country:'TR'},{code:'KIV',city:'Chisinau',country:'MD'},{code:'TLL',city:'Tallinn',country:'EE'},{code:'RIX',city:'Riga',country:'LV'},{code:'VNO',city:'Vilnius',country:'LT'},{code:'MSQ',city:'Minsk',country:'BY'},{code:'SVO',city:'Mosca Sheremetyevo',country:'RU'},{code:'LED',city:'San Pietroburgo',country:'RU'},
+// ── MEDIO ORIENTE / AFRICA ──
+{code:'DXB',city:'Dubai',country:'AE'},{code:'AUH',city:'Abu Dhabi',country:'AE'},{code:'DOH',city:'Doha',country:'QA'},{code:'RUH',city:'Riyadh',country:'SA'},{code:'JED',city:'Gedda',country:'SA'},{code:'TLV',city:'Tel Aviv',country:'IL'},{code:'AMM',city:'Amman',country:'JO'},{code:'BEY',city:'Beirut',country:'LB'},{code:'CAI',city:'Il Cairo',country:'EG'},{code:'HRG',city:'Hurghada',country:'EG'},{code:'SSH',city:'Sharm el-Sheikh',country:'EG'},{code:'CMN',city:'Casablanca',country:'MA'},{code:'RAK',city:'Marrakech',country:'MA'},{code:'TUN',city:'Tunisi',country:'TN'},{code:'JNB',city:'Johannesburg',country:'ZA'},{code:'CPT',city:'Città del Capo',country:'ZA'},{code:'NBO',city:'Nairobi',country:'KE'},{code:'ADD',city:'Addis Abeba',country:'ET'},{code:'DSS',city:'Dakar',country:'SN'},{code:'LOS',city:'Lagos',country:'NG'},
+// ── ASIA ──
+{code:'BKK',city:'Bangkok Suvarnabhumi',country:'TH'},{code:'DMK',city:'Bangkok Don Mueang',country:'TH'},{code:'HKT',city:'Phuket',country:'TH'},{code:'SIN',city:'Singapore Changi',country:'SG'},{code:'KUL',city:'Kuala Lumpur',country:'MY'},{code:'CGK',city:'Jakarta',country:'ID'},{code:'DPS',city:'Bali Denpasar',country:'ID'},{code:'MNL',city:'Manila',country:'PH'},{code:'SGN',city:'Ho Chi Minh City',country:'VN'},{code:'HAN',city:'Hanoi',country:'VN'},{code:'PNH',city:'Phnom Penh',country:'KH'},{code:'REP',city:'Siem Reap',country:'KH'},{code:'RGN',city:'Yangon',country:'MM'},{code:'CMB',city:'Colombo',country:'LK'},{code:'MLE',city:'Male Maldive',country:'MV'},{code:'DEL',city:'Nuova Delhi',country:'IN'},{code:'BOM',city:'Mumbai',country:'IN'},{code:'BLR',city:'Bangalore',country:'IN'},{code:'MAA',city:'Chennai',country:'IN'},{code:'GOI',city:'Goa',country:'IN'},{code:'PEK',city:'Pechino',country:'CN'},{code:'PVG',city:'Shanghai Pudong',country:'CN'},{code:'CAN',city:'Guangzhou',country:'CN'},{code:'HKG',city:'Hong Kong',country:'HK'},{code:'NRT',city:'Tokyo Narita',country:'JP'},{code:'HND',city:'Tokyo Haneda',country:'JP'},{code:'KIX',city:'Osaka Kansai',country:'JP'},{code:'ICN',city:'Seoul Incheon',country:'KR'},{code:'TPE',city:'Taipei',country:'TW'},
+// ── AMERICHE ──
+{code:'JFK',city:'New York JFK',country:'US'},{code:'EWR',city:'New York Newark',country:'US'},{code:'LGA',city:'New York LaGuardia',country:'US'},{code:'LAX',city:'Los Angeles',country:'US'},{code:'SFO',city:'San Francisco',country:'US'},{code:'ORD',city:'Chicago O\'Hare',country:'US'},{code:'MIA',city:'Miami',country:'US'},{code:'ATL',city:'Atlanta',country:'US'},{code:'DFW',city:'Dallas Fort Worth',country:'US'},{code:'DEN',city:'Denver',country:'US'},{code:'SEA',city:'Seattle',country:'US'},{code:'BOS',city:'Boston',country:'US'},{code:'LAS',city:'Las Vegas',country:'US'},{code:'IAD',city:'Washington Dulles',country:'US'},{code:'HNL',city:'Honolulu',country:'US'},{code:'YYZ',city:'Toronto Pearson',country:'CA'},{code:'YVR',city:'Vancouver',country:'CA'},{code:'YUL',city:'Montreal',country:'CA'},{code:'MEX',city:'Città del Messico',country:'MX'},{code:'CUN',city:'Cancun',country:'MX'},{code:'GRU',city:'San Paolo Guarulhos',country:'BR'},{code:'GIG',city:'Rio de Janeiro',country:'BR'},{code:'EZE',city:'Buenos Aires Ezeiza',country:'AR'},{code:'SCL',city:'Santiago del Cile',country:'CL'},{code:'BOG',city:'Bogota',country:'CO'},{code:'LIM',city:'Lima',country:'PE'},{code:'PTY',city:'Panama City',country:'PA'},{code:'HAV',city:'L\'Avana',country:'CU'},{code:'SJO',city:'San Jose Costa Rica',country:'CR'},
+// ── OCEANIA ──
+{code:'SYD',city:'Sydney',country:'AU'},{code:'MEL',city:'Melbourne',country:'AU'},{code:'BNE',city:'Brisbane',country:'AU'},{code:'PER',city:'Perth',country:'AU'},{code:'AKL',city:'Auckland',country:'NZ'},{code:'NAN',city:'Nadi Fiji',country:'FJ'},{code:'PPT',city:'Tahiti Papeete',country:'PF'},
+// ── SPECIALI ──
+{code:'ANYWHERE',city:'\u2708\uFE0F Ovunque — Qualsiasi destinazione',country:''},
+{code:'FLEX',city:'\uD83D\uDD04 Date flessibili',country:''}
 ];
 
+const POPULAR_DEST=[
+  {city:'Londra',code:'LHR',flag:'\uD83C\uDDEC\uD83C\uDDE7',cur:'GBP'},{city:'Parigi',code:'CDG',flag:'\uD83C\uDDEB\uD83C\uDDF7',cur:'EUR'},
+  {city:'Barcellona',code:'BCN',flag:'\uD83C\uDDEA\uD83C\uDDF8',cur:'EUR'},{city:'Amsterdam',code:'AMS',flag:'\uD83C\uDDF3\uD83C\uDDF1',cur:'EUR'},
+  {city:'New York',code:'JFK',flag:'\uD83C\uDDFA\uD83C\uDDF8',cur:'USD'},{city:'Tokyo',code:'NRT',flag:'\uD83C\uDDEF\uD83C\uDDF5',cur:'JPY'},
+  {city:'Dubai',code:'DXB',flag:'\uD83C\uDDE6\uD83C\uDDEA',cur:'AED'},{city:'Istanbul',code:'IST',flag:'\uD83C\uDDF9\uD83C\uDDF7',cur:'TRY'},
+  {city:'Lisbona',code:'LIS',flag:'\uD83C\uDDF5\uD83C\uDDF9',cur:'EUR'},{city:'Praga',code:'PRG',flag:'\uD83C\uDDE8\uD83C\uDDFF',cur:'CZK'},
+  {city:'Atene',code:'ATH',flag:'\uD83C\uDDEC\uD83C\uDDF7',cur:'EUR'},{city:'Bangkok',code:'BKK',flag:'\uD83C\uDDF9\uD83C\uDDED',cur:'THB'}
+];
+
+// Autocomplete for airports
+function acSearch(inputId,listId){
+  const val=document.getElementById(inputId).value.toLowerCase().trim();
+  const listEl=document.getElementById(listId);
+  if(!val||val.length<1){listEl.classList.remove('show');return}
+  const matches=AIRPORTS.filter(a=>a.city.toLowerCase().includes(val)||a.code.toLowerCase().includes(val)||a.country.toLowerCase().includes(val)).slice(0,12);
+  if(!matches.length){listEl.classList.remove('show');return}
+  listEl.innerHTML=matches.map(a=>`<div class="ac-item" onclick="acSelect('${inputId}','${listId}','${a.code}','${a.city.replace(/'/g,"\\'")}')"><div><span class="ac-city">${a.city}</span> <span class="ac-country">${a.country}</span></div><span class="ac-code">${a.code}</span></div>`).join('');
+  listEl.classList.add('show');
+}
+function acSelect(inputId,listId,code,city){
+  document.getElementById(inputId).value=city+' ('+code+')';
+  document.getElementById(inputId).dataset.code=code;
+  document.getElementById(listId).classList.remove('show');
+}
+// Close autocomplete on click outside
+document.addEventListener('click',e=>{if(!e.target.closest('.ac-wrap')){document.querySelectorAll('.ac-list').forEach(l=>l.classList.remove('show'))}});
+
+function getBookingAdvice(dateOut,dateRet){
+  if(!dateOut)return null;
+  const now=new Date();const dep=new Date(dateOut);
+  const daysAhead=Math.ceil((dep-now)/(1000*60*60*24));
+  const month=dep.getMonth();
+  const isPeak=[5,6,7,11].includes(month);// Jun-Aug, Dec
+  const isShoulder=[3,4,8,9].includes(month);// Apr-May, Sep-Oct
+  let tripDays=0;
+  if(dateRet){tripDays=Math.ceil((new Date(dateRet)-dep)/(1000*60*60*24))}
+
+  let advice={},period={};
+  // Booking timing advice
+  if(daysAhead<0){advice={text:'La data selezionata è nel passato.',cls:'advice-bad',icon:'⛔'}
+  }else if(daysAhead<=7){advice={text:'Prenotazione last-minute! I prezzi saranno probabilmente alti. Prenota subito se hai trovato un buon prezzo, altrimenti valuta di spostare.',cls:'advice-bad',icon:'🔴'}
+  }else if(daysAhead<=21){advice={text:'Prenotazione a breve termine. I prezzi potrebbero essere alti. Se il prezzo è buono, prenota ora — non aspettare.',cls:'advice-warn',icon:'🟡'}
+  }else if(daysAhead<=60){advice={text:'Buon momento per prenotare! In genere 3-8 settimane prima è il periodo ottimale per trovare buoni prezzi.',cls:'advice-good',icon:'🟢'}
+  }else if(daysAhead<=120){advice={text:'Anticipo ragionevole. Monitora i prezzi e attiva alert. Per le tratte popolari, prenotare ora può essere vantaggioso.',cls:'advice-good',icon:'🟢'}
+  }else{advice={text:'Molto in anticipo. I prezzi potrebbero scendere man mano che ci si avvicina. Imposta un alert e attendi, a meno che non trovi un\'offerta imperdibile.',cls:'advice-warn',icon:'🟡'}
+  }
+
+  // Season advice
+  if(isPeak){period={text:'Periodo di alta stagione (estate/Natale). I prezzi saranno più alti del solito. Prenota con almeno 2-3 mesi di anticipo.',icon:'🔥'}
+  }else if(isShoulder){period={text:'Mezza stagione — ottimo periodo! Prezzi ragionevoli, meno folla, meteo generalmente buono.',icon:'✨'}
+  }else{period={text:'Bassa stagione — periodo ideale per risparmiare. Meno turisti, prezzi più bassi, ma controlla il meteo della destinazione.',icon:'💰'}
+  }
+
+  return{advice,period,daysAhead,tripDays};
+}
+
 function buildTravel(){
-  // Set default date to tomorrow
   const tom=new Date();tom.setDate(tom.getDate()+7);
-  document.getElementById('flyDate').value=tom.toISOString().split('T')[0];
-  // Popular destinations
+  const ret=new Date();ret.setDate(ret.getDate()+14);
+  document.getElementById('flyDateOut').value=tom.toISOString().split('T')[0];
+  document.getElementById('flyDateRet').value=ret.toISOString().split('T')[0];
+  document.getElementById('flyFrom').value='Milano Malpensa (MXP)';
+  document.getElementById('flyFrom').dataset.code='MXP';
   const el=document.getElementById('popularDest');
-  el.innerHTML=POPULAR_DEST.map(d=>`<div onclick="document.getElementById('flyTo').value='${d.city}';searchFlights()" style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--bg);border:1px solid var(--bd);border-radius:8px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--ac)'" onmouseout="this.style.borderColor='var(--bd)'"><span style="font-size:20px">${d.flag}</span><div><div style="font-size:12px;font-weight:600">${d.city}</div><div style="font-size:9px;color:var(--mt)">${d.cur}</div></div></div>`).join('');
+  el.innerHTML=POPULAR_DEST.map(d=>`<div onclick="document.getElementById('flyTo').value='${d.city} (${d.code})';document.getElementById('flyTo').dataset.code='${d.code}';searchFlights()" style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--bg);border:1px solid var(--bd);border-radius:8px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--ac)'" onmouseout="this.style.borderColor='var(--bd)'"><span style="font-size:20px">${d.flag}</span><div><div style="font-size:12px;font-weight:600">${d.city}</div><div style="font-size:9px;color:var(--mt)">${d.code} · ${d.cur}</div></div></div>`).join('');
   convertTravel();
 }
 
 async function searchFlights(){
-  const from=document.getElementById('flyFrom').value.trim()||'Milano';
-  const to=document.getElementById('flyTo').value.trim();
-  const date=document.getElementById('flyDate').value;
+  const fromInput=document.getElementById('flyFrom');
+  const toInput=document.getElementById('flyTo');
+  const from=fromInput.value.trim()||'Milano Malpensa (MXP)';
+  const to=toInput.value.trim();
+  const dateOut=document.getElementById('flyDateOut').value;
+  const dateRet=document.getElementById('flyDateRet').value;
+  const flexVal=document.getElementById('flyFlex').value;
+  const flex=flexVal!=='exact';
   const resEl=document.getElementById('flightResults');
-  if(!to){resEl.innerHTML='<div style="padding:20px;text-align:center;color:var(--mt);font-size:11px">Inserisci una destinazione per cercare voli.</div>';return}
-  resEl.innerHTML='<div class="ld"><div class="sp"></div><span style="font-size:11px;color:var(--mt)">Ricerca voli '+from+' → '+to+'...</span></div>';
-  // Search via SerpAPI or Kiwi or fallback to display links
-  try{
-    const links=[
-      {name:'Google Flights',url:`https://www.google.com/travel/flights?q=flights+from+${encodeURIComponent(from)}+to+${encodeURIComponent(to)}+on+${date}`,color:'var(--ac)'},
-      {name:'Skyscanner',url:`https://www.skyscanner.it/trasporti/voli/${encodeURIComponent(from)}/${encodeURIComponent(to)}/${date.replace(/-/g,'').substring(2)}/`,color:'var(--cy)'},
-      {name:'Kayak',url:`https://www.kayak.it/flights/${encodeURIComponent(from)}-${encodeURIComponent(to)}/${date}`,color:'var(--or)'},
-      {name:'Ryanair',url:`https://www.ryanair.com/it/it/trip/flights/select?adults=1&dateOut=${date}&originIata=MXP&destinationIata=`,color:'var(--or)'},
-      {name:'easyJet',url:`https://www.easyjet.com/it/`,color:'var(--or)'},
-      {name:'Booking.com',url:`https://www.booking.com/searchresults.it.html?ss=${encodeURIComponent(to)}&checkin=${date}`,color:'var(--gn)'}
-    ];
-    resEl.innerHTML=`
-    <div style="padding:14px 0">
-      <div style="font-size:12px;font-weight:600;margin-bottom:10px;color:var(--tx)">✈️ ${from} → ${to} · ${new Date(date).toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px">
-        ${links.map(l=>`<a href="${l.url}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:${l.color};font-size:11px;font-weight:600;text-decoration:none;transition:border-color .15s;font-family:inherit" onmouseover="this.style.borderColor='var(--ac)'" onmouseout="this.style.borderColor='var(--bd)'">${l.name} ↗</a>`).join('')}
-      </div>
-      <div style="font-size:9px;color:var(--mt);margin-top:10px;text-align:center">Clicca per aprire il sito e confrontare prezzi</div>
+  const advEl=document.getElementById('bookingAdvice');
+  if(!to){resEl.innerHTML='<div style="padding:20px;text-align:center;color:var(--mt);font-size:11px">Inserisci una destinazione per cercare voli.</div>';advEl.innerHTML='';return}
+
+  // Extract codes if available
+  const fromCode=(fromInput.dataset.code||from.match(/\(([A-Z]{3})\)/)?.[1]||'MXP').toUpperCase();
+  const toCode=(toInput.dataset.code||to.match(/\(([A-Z]{3})\)/)?.[1]||'').toUpperCase();
+  const isAnywhere=toCode==='ANYWHERE'||to.toLowerCase().includes('ovunque');
+  const fromCity=from.replace(/\s*\([A-Z]{3}\)/,'');
+  const toCity=to.replace(/\s*\([A-Z]{3}\)/,'');
+
+  // Show booking advice
+  const ba=getBookingAdvice(dateOut,dateRet);
+  if(ba){
+    advEl.innerHTML=`
+    <div class="advice-card ${ba.advice.cls}">
+      <div style="font-size:12px;font-weight:600;margin-bottom:4px">${ba.advice.icon} Consiglio prenotazione</div>
+      <div style="font-size:11px;color:var(--tx);line-height:1.5">${ba.advice.text}</div>
+      <div style="font-size:10px;color:var(--mt);margin-top:6px">${ba.period.icon} ${ba.period.text}</div>
+      ${ba.tripDays>0?'<div style="font-size:9px;color:var(--mt);margin-top:4px">Durata viaggio: '+ba.tripDays+' giorni · Partenza tra '+ba.daysAhead+' giorni</div>':''}
     </div>`;
-  }catch(e){
-    resEl.innerHTML='<div style="padding:20px;text-align:center;color:var(--rd);font-size:11px">Errore nella ricerca. Riprova.</div>';
   }
+
+  resEl.innerHTML='<div class="ld"><div class="sp"></div><span style="font-size:11px;color:var(--mt)">Ricerca voli '+fromCity+' \u2192 '+toCity+'...</span></div>';
+
+  const dateOutFmt=dateOut.replace(/-/g,'').substring(2);
+  const dateRetFmt=dateRet?dateRet.replace(/-/g,'').substring(2):'';
+  const flexParam=flex?'+-3':'';
+
+  const links=[
+    {name:'Google Flights',url:'https://www.google.com/travel/flights?q=flights+from+'+encodeURIComponent(fromCity)+'+to+'+(isAnywhere?'anywhere':encodeURIComponent(toCity))+'+on+'+dateOut+(dateRet?'+return+'+dateRet:''),color:'var(--ac)',icon:'\u2708\uFE0F'},
+    {name:'Skyscanner',url:'https://www.skyscanner.it/trasporti/voli/'+fromCode.toLowerCase()+'/'+(isAnywhere?'ovunque':toCode.toLowerCase())+'/'+dateOutFmt+'/'+(dateRetFmt||''),color:'#0770e3',icon:'\uD83D\uDD0D'},
+    {name:'Kayak',url:'https://www.kayak.it/flights/'+fromCode+'-'+(isAnywhere?'anywhere':toCode)+'/'+dateOut+(dateRet?'/'+dateRet:'')+(flex?'/flexible':''),color:'#FF690F',icon:'\uD83D\uDEB6'},
+    {name:'Trip.com',url:'https://www.trip.com/flights/'+(isAnywhere?'':toCity.toLowerCase().replace(/\s+/g,'-'))+'-flights'+(toCode?'-city-'+toCode.toLowerCase():'')+'.html?dcity='+fromCode+'&acity='+(isAnywhere?'':toCode)+'&ddate='+dateOut+(dateRet?'&rdate='+dateRet:''),color:'#287DFA',icon:'\uD83C\uDF0F'},
+    {name:'Ryanair',url:'https://www.ryanair.com/it/it/trip/flights/select?adults=1&dateOut='+dateOut+(dateRet?'&dateIn='+dateRet:'')+'&originIata='+fromCode+(toCode&&!isAnywhere?'&destinationIata='+toCode:''),color:'#073590',icon:'\u2708\uFE0F'},
+    {name:'easyJet',url:'https://www.easyjet.com/it/',color:'#FF6600',icon:'\uD83D\uDFE0'},
+    {name:'Wizz Air',url:'https://wizzair.com/it-it/flights/'+fromCode+'/'+(isAnywhere?'':toCode)+(dateOut?'/'+dateOut:''),color:'#C6007E',icon:'\uD83D\uDFE3'},
+    {name:'Booking.com',url:'https://www.booking.com/searchresults.it.html?ss='+encodeURIComponent(toCity||'ovunque')+'&checkin='+dateOut+(dateRet?'&checkout='+dateRet:''),color:'#003580',icon:'\uD83C\uDFE8'}
+  ];
+
+  resEl.innerHTML=`
+  <div style="padding:14px 0">
+    <div style="font-size:12px;font-weight:600;margin-bottom:4px;color:var(--tx)">\u2708\uFE0F ${fromCity} (${fromCode}) \u2192 ${isAnywhere?'\uD83C\uDF0D Ovunque':toCity+(toCode?' ('+toCode+')':'')}${flex?' · ±3 giorni':''}</div>
+    <div style="font-size:10px;color:var(--mt);margin-bottom:10px">${new Date(dateOut).toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short'})}${dateRet?' — '+new Date(dateRet).toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short'}):' · Solo andata'}</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px">
+      ${links.map(l=>`<a href="${l.url}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:5px;padding:11px 8px;background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:${l.color};font-size:10px;font-weight:600;text-decoration:none;transition:all .15s;font-family:inherit" onmouseover="this.style.borderColor='${l.color}';this.style.background='rgba(124,92,252,.03)'" onmouseout="this.style.borderColor='var(--bd)';this.style.background='var(--bg)'">${l.icon} ${l.name} \u2197</a>`).join('')}
+    </div>
+    <div style="font-size:9px;color:var(--mt);margin-top:10px;text-align:center">Clicca per aprire il comparatore e confrontare prezzi in tempo reale</div>
+  </div>`;
 }
 
 let travelRates={};
