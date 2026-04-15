@@ -432,13 +432,33 @@ async function fhQuote(sym){
   return null;
 }
 
-// Method 2: Yahoo via proxy
-async function yq(tickers){
-  const url=`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${tickers.join(',')}`;
+// Method 2: Yahoo v8 Chart (works without auth, v7 is DEAD)
+async function yv8(ticker){
+  const url=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?range=1d&interval=1d&includePrePost=false`;
   for(const px of PX){
-    try{const r=await fetch(px(url),{signal:AbortSignal.timeout(10000)});if(!r.ok)continue;let d;try{d=await r.json();}catch(e){continue;}if(d?.quoteResponse?.result?.length)return d.quoteResponse.result;}catch(e){continue;}
+    try{
+      const r=await fetch(px(url),{signal:AbortSignal.timeout(10000)});
+      if(!r.ok)continue;
+      let d;try{d=await r.json();}catch(e){continue;}
+      const meta=d?.chart?.result?.[0]?.meta;
+      if(meta&&meta.regularMarketPrice>0){
+        const price=meta.regularMarketPrice;
+        const prev=meta.previousClose||meta.chartPreviousClose||price;
+        const chg=prev?((price-prev)/prev*100):0;
+        return{symbol:meta.symbol||ticker,shortName:meta.shortName||meta.symbol||ticker,regularMarketPrice:price,regularMarketChangePercent:chg,quoteType:meta.instrumentType||'EQUITY'};
+      }
+    }catch(e){continue;}
   }
-  return [];
+  return null;
+}
+async function yBatch(tickers){
+  const results=[];
+  for(const t of tickers){
+    const r=await yv8(t);
+    if(r)results.push(r);
+    await slp(300);
+  }
+  return results;
 }
 
 // Method 3: CoinGecko (CORS native)
@@ -451,40 +471,35 @@ async function cgPrices(ids){
 
 const slp=ms=>new Promise(r=>setTimeout(r,ms));
 
-// Smart fetch: try Finnhub first (US stocks), then Yahoo
+// Smart fetch: Finnhub for US stocks, Yahoo v8 for everything else
 async function fetchList(list,type){
   const results=[];
-  // Try Finnhub for simple US tickers first
   const usSimple=list.filter(x=>!x.t.includes('.')&&!x.t.includes('=')&&!x.t.includes('-')&&!x.t.includes('^'));
   const rest=list.filter(x=>!usSimple.includes(x));
 
-  // Fetch US stocks via Finnhub (parallel, max 5 at a time)
-  for(let i=0;i<usSimple.length;i+=5){
-    const batch=usSimple.slice(i,i+5);
+  // 1) Finnhub for US stocks (2 at a time to avoid rate limit)
+  for(let i=0;i<usSimple.length;i+=2){
+    const batch=usSimple.slice(i,i+2);
     const proms=batch.map(x=>fhQuote(x.t).then(d=>{if(d){d.shortName=x.n||d.shortName;return d;}return null;}));
     const res=await Promise.all(proms);
     results.push(...res.filter(Boolean));
-    if(i+5<usSimple.length)await slp(200);
+    if(i+2<usSimple.length)await slp(350);
   }
 
-  // Fetch rest via Yahoo proxy
-  if(rest.length>0){
-    for(let i=0;i<rest.length;i+=3){
-      const batch=rest.slice(i,i+3).map(x=>x.t);
-      try{const d=await yq(batch);results.push(...d);}catch(e){}
-      if(i+3<rest.length)await slp(500);
-    }
+  // 2) Yahoo v8 for EU/Asian/special tickers
+  for(const item of rest){
+    const d=await yv8(item.t);
+    if(d){d.shortName=item.n||d.shortName;results.push(d);}
+    await slp(350);
   }
 
-  // Any US tickers that Finnhub missed, try Yahoo
-  const gotSymbols=new Set(results.map(r=>r.symbol));
-  const missed=usSimple.filter(x=>!gotSymbols.has(x.t));
-  if(missed.length>0){
-    for(let i=0;i<missed.length;i+=3){
-      const batch=missed.slice(i,i+3).map(x=>x.t);
-      try{const d=await yq(batch);results.push(...d);}catch(e){}
-      if(i+3<missed.length)await slp(500);
-    }
+  // 3) Any US tickers Finnhub missed → try Yahoo v8
+  const got=new Set(results.map(r=>r.symbol));
+  const missed=usSimple.filter(x=>!got.has(x.t));
+  for(const item of missed){
+    const d=await yv8(item.t);
+    if(d){d.shortName=item.n||d.shortName;results.push(d);}
+    await slp(350);
   }
 
   return results;
@@ -517,10 +532,10 @@ async function fetchAll(){
   try{
     st=await fetchList(STK,'stocks');showSts(`Azioni: ${st.length}/${STK.length}. ETF...`);
     et=await fetchList(ETFL,'etf');showSts(`ETF: ${et.length}. Obbligazioni...`);
-    bo=await fetchList(BNDL,'bonds');showSts(`Bond: ${bo.length}. Materie Prime...`);
-    co=await fetchList(COML,'comm');showSts(`Commodities: ${co.length}. Crypto...`);
+    bo=await yBatch(BNDL.map(x=>x.t));showSts(`Bond: ${bo.length}. Materie Prime...`);
+    co=await yBatch(COML.map(x=>x.t));showSts(`Commodities: ${co.length}. Crypto...`);
     cr=await fetchCrypto();if(cr.length===0)cr=await fetchList(CRYL,'crypto');showSts(`Crypto: ${cr.length}. Forex...`);
-    fx=await fetchList(FXLL,'fx');showSts(`Tutto caricato! Rendering...`);
+    fx=await yBatch(FXLL.map(x=>x.t));showSts(`Tutto caricato! Rendering...`);
   }catch(e){showSts('Errore: '+e.message,true);}
 
   [...st,...et,...bo,...co,...cr,...fx].forEach(q=>{if(q?.symbol)AP[q.symbol]=q;});
