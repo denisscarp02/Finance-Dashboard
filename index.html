@@ -3,1379 +3,650 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FinScope v10 — Dashboard Finanziaria</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x1F4CA;</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>FinScope Terminal</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#08090d;--cd:#0f1118;--bd:#1a1d2e;--tx:#d4d8e8;--mt:#505878;--ac:#7c5cfc;--gn:#10b981;--rd:#ef4444;--or:#f59e0b;--cy:#06b6d4}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden}
-code,.mono{font-family:'JetBrains Mono',monospace}
+:root{
+  --bg:#0a0e17;
+  --text:#f1f5f9;--text2:#94a3b8;--text3:#64748b;
+  --accent:#38bdf8;--accent2:#06d6a0;
+  --green:#34d399;--red:#f87171;--orange:#fbbf24;--purple:#a78bfa;
+  --sw:224px;--th:62px;--r:16px;--rs:10px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;color:var(--text);min-height:100vh;overflow-x:hidden;
+  background:var(--bg);
+  /* Colored blobs behind glass */
+  background-image:
+    radial-gradient(ellipse 50% 50% at 15% 10%,rgba(56,189,248,0.12),transparent),
+    radial-gradient(ellipse 40% 40% at 85% 20%,rgba(167,139,250,0.08),transparent),
+    radial-gradient(ellipse 50% 40% at 50% 80%,rgba(6,214,160,0.07),transparent),
+    radial-gradient(ellipse 30% 30% at 70% 60%,rgba(244,114,182,0.05),transparent);
+  background-attachment:fixed;
+}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.07);border-radius:2px}
 
-/* LOGIN */
-#LS{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center}
-.lb{background:var(--cd);border:1px solid var(--bd);border-radius:20px;padding:40px;width:380px;max-width:90vw;text-align:center}
-.lb h1{font-size:22px;font-weight:700;margin-bottom:6px;letter-spacing:-.5px}.lb h1 b{color:var(--gn);font-size:10px;vertical-align:super;margin-left:3px}
-.lb p{color:var(--mt);font-size:12px;margin-bottom:20px}
-.lb input{width:100%;padding:13px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:13px;outline:none;margin-bottom:10px;text-align:center;font-family:inherit}
-.lb input:focus{border-color:var(--ac)}
-.lb button{width:100%;padding:13px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--ac),#a855f7);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:.3px}
-#LE{color:var(--rd);font-size:12px;margin-top:8px;display:none}
+/* ===== GLASS ===== */
+.glass{
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(28px) saturate(140%);-webkit-backdrop-filter:blur(28px) saturate(140%);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:var(--r);
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 -1px 0 rgba(255,255,255,0.02);
+  transition:border-color .3s;
+}
+.glass:hover{border-color:rgba(255,255,255,0.18)}
+.glass-strong{
+  background:rgba(255,255,255,0.09);
+  border-color:rgba(255,255,255,0.16);
+  box-shadow:0 8px 40px rgba(0,0,0,0.25),inset 0 1px 0 rgba(255,255,255,0.1);
+}
 
-/* TICKER TAPE */
-.ticker-wrap{width:100%;overflow:hidden;border-bottom:1px solid var(--bd);height:46px;background:var(--cd)}
+/* ===== LOGIN ===== */
+.lo{position:fixed;inset:0;z-index:9999;
+  background:var(--bg);
+  background-image:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(56,189,248,0.1),transparent),radial-gradient(ellipse 40% 40% at 80% 70%,rgba(167,139,250,0.06),transparent);
+  display:flex;align-items:center;justify-content:center;transition:opacity .5s,visibility .5s}
+.lo.h{opacity:0;visibility:hidden;pointer-events:none}
+.lo-card{
+  background:rgba(255,255,255,0.07);
+  backdrop-filter:blur(40px) saturate(150%);-webkit-backdrop-filter:blur(40px) saturate(150%);
+  border:1px solid rgba(255,255,255,0.15);border-radius:22px;
+  padding:44px 40px;width:410px;max-width:92vw;text-align:center;
+  box-shadow:0 12px 64px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.lo-br{font-size:12px;letter-spacing:5px;text-transform:uppercase;color:var(--accent);margin-bottom:28px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:10px}
+.lo-dots{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}.lo-dots span{background:var(--accent);border-radius:2px;width:7px;height:7px}
+.lo-card h1{font-size:24px;font-weight:700;margin-bottom:4px}
+.lo-card .sub{color:var(--text2);font-size:13px;margin-bottom:30px}
+.lo-f{position:relative;margin-bottom:14px}
+.lo-f svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text3);width:16px;height:16px}
+.lo-f input{width:100%;padding:13px 14px 13px 42px;border-radius:var(--rs);border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:var(--text);font-size:13px;font-family:inherit;outline:none;transition:border .2s}
+.lo-f input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(56,189,248,0.08)}
+.lo-f input::placeholder{color:var(--text3)}
+.lo-btn{width:100%;padding:13px;border:none;border-radius:var(--rs);background:linear-gradient(135deg,rgba(56,189,248,0.85),rgba(14,165,233,0.95));color:#fff;font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;transition:all .2s;box-shadow:0 4px 16px rgba(56,189,248,0.15)}
+.lo-btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(56,189,248,0.25)}
+.lo-divider{display:flex;align-items:center;gap:12px;margin:18px 0;color:var(--text3);font-size:11px}
+.lo-divider::before,.lo-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.08)}
+.lo-bio{width:100%;padding:13px;border:none;border-radius:var(--rs);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--text);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.lo-bio:hover{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15)}
+.lo-bio svg{width:20px;height:20px}
+.lo-err{color:var(--red);font-size:12px;margin-top:12px;display:none}
+.lo-foot{color:var(--text3);font-size:11px;margin-top:18px}
 
-/* NAV */
-.topbar{display:flex;align-items:center;gap:10px;padding:10px 20px;border-bottom:1px solid var(--bd);background:var(--cd);position:sticky;top:0;z-index:100;flex-wrap:wrap}
-.topbar .brand{font-size:15px;font-weight:700;letter-spacing:-.5px;white-space:nowrap}.topbar .brand b{color:var(--gn);font-size:8px;vertical-align:super;margin-left:2px}
-.tabs{display:flex;gap:2px;background:var(--bg);border-radius:8px;padding:3px;border:1px solid var(--bd);overflow-x:auto}
-.tab{padding:6px 12px;border:none;border-radius:6px;background:transparent;color:var(--mt);font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .15s}
-.tab:hover{color:var(--tx)}.tab.on{background:var(--ac);color:#fff}
-.clock{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--mt);white-space:nowrap}
+/* ===== APP ===== */
+.app{display:none;min-height:100vh}.app.on{display:flex}
 
-/* MAIN */
-.main{padding:16px 20px 40px;max-width:1600px;margin:0 auto}
-.sec{display:none}.sec.ac{display:block}
-.card{background:var(--cd);border-radius:12px;padding:16px;border:1px solid var(--bd);margin-bottom:12px}
-.card-title{font-size:10px;color:var(--mt);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+/* ===== SIDEBAR ===== */
+.sb{
+  width:var(--sw);position:fixed;top:0;left:0;bottom:0;z-index:100;
+  background:rgba(255,255,255,0.04);
+  backdrop-filter:blur(28px) saturate(130%);-webkit-backdrop-filter:blur(28px) saturate(130%);
+  border-right:1px solid rgba(255,255,255,0.08);
+  display:flex;flex-direction:column;padding:16px 10px;transition:transform .3s;
+}
+.sb-hd{display:flex;align-items:center;gap:8px;padding:4px 10px 20px;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:12px}
+.sb-lg{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}.sb-lg span{background:var(--accent);border-radius:2px;width:6px;height:6px}
+.sb-nm{font-weight:700;font-size:13px;letter-spacing:3px;text-transform:uppercase}
+.sb-nav{flex:1;overflow-y:auto}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:var(--rs);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;margin-bottom:1px;border:1px solid transparent}
+.ni:hover{background:rgba(255,255,255,0.05);color:var(--text)}
+.ni.on{background:linear-gradient(135deg,rgba(56,189,248,0.14),rgba(56,189,248,0.05));color:var(--accent);border-color:rgba(56,189,248,0.18);font-weight:600}
+.ni svg{width:16px;height:16px;flex-shrink:0}
+.sb-ft{padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);margin-top:auto}
 
-/* TV WIDGET CONTAINERS */
-.tv-widget{width:100%;border-radius:8px;overflow:hidden;background:#090c12}
-.tv-sm{height:220px}.tv-md{height:400px}.tv-lg{height:500px}.tv-xl{height:600px}
+/* ===== TOPBAR ===== */
+.tb{position:fixed;top:0;left:var(--sw);right:0;height:var(--th);background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;padding:0 22px;z-index:90}
+.tb-hi{font-size:15px;font-weight:700}.tb-hi em{font-style:normal}
+.tb-sub{font-size:10px;color:var(--text3)}
+.tb-r{display:flex;align-items:center;gap:7px}
+.tb-pill{display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);font-size:9.5px;color:var(--text2);font-family:'JetBrains Mono',monospace}
+.tb-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pls 2s infinite}
+@keyframes pls{0%,100%{opacity:1}50%{opacity:.3}}
+.tb-b{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;color:var(--text2);cursor:pointer;transition:all .2s}
+.tb-b:hover{border-color:var(--accent);color:var(--accent)}
+.mob{display:none!important}
 
-/* TABLE */
-.tw{overflow-x:auto;max-height:450px;overflow-y:auto}
-table{width:100%;border-collapse:collapse}
-th{padding:6px 8px;text-align:right;border-bottom:1px solid var(--bd);color:var(--mt);font-size:9px;letter-spacing:.04em;text-transform:uppercase;font-weight:600;white-space:nowrap;position:sticky;top:0;background:var(--cd);z-index:1}
-th:first-child,th:nth-child(2){text-align:left}
-td{padding:7px 8px;text-align:right;border-bottom:1px solid #121520;font-size:11px;white-space:nowrap;font-family:'JetBrains Mono',monospace}
-td:first-child,td:nth-child(2){text-align:left;font-family:'Outfit',sans-serif}
-tr{cursor:pointer;transition:background .1s}tr:hover td{background:rgba(124,92,252,.04)}
-tr.sel td{background:rgba(124,92,252,.08)}
-.tk{font-weight:700;color:var(--ac)}.nm2{color:var(--mt);font-size:10px}
-.po{color:var(--gn);font-weight:600}.ne{color:var(--rd);font-weight:600}
-.sr{font-size:7px;padding:2px 5px;border-radius:3px;font-weight:600}
-.s-fh{background:rgba(6,182,212,.12);color:var(--cy)}.s-yh{background:rgba(245,158,11,.12);color:var(--or)}.s-fp{background:rgba(124,92,252,.12);color:var(--ac)}.s-na{background:rgba(80,88,120,.1);color:var(--mt)}
+/* ===== MAIN ===== */
+.mn{margin-left:var(--sw);margin-top:var(--th);padding:20px 22px}
+.pg{display:none}.pg.on{display:block;animation:fi .3s ease}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sh h2{font-size:17px;font-weight:700}
+.sh-lk{color:var(--accent);font-size:11px;cursor:pointer}
+.card-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.card-h span{font-weight:600;font-size:12.5px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.g4{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.mt{margin-top:16px}
+.p0{padding:0!important}
 
-/* LOADING */
-.ld{display:flex;align-items:center;justify-content:center;gap:8px;padding:24px}.sp{width:16px;height:16px;border:2px solid var(--ac);border-top-color:transparent;border-radius:50%;animation:sp .7s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+/* ===== MARKET CARD ===== */
+.mk{background:rgba(255,255,255,0.05);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.09);border-radius:var(--r);padding:14px;cursor:pointer;transition:all .3s}
+.mk:hover{border-color:rgba(255,255,255,0.2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,0.25)}
+.mk-h{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.mk-badge{padding:3px 6px;border-radius:4px;font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.mk-n{font-weight:600;font-size:11.5px}.mk-t{font-size:9px;color:var(--text3)}
+.mk-c{font-size:10px;font-weight:600;margin-left:auto}
+.mk-ch{height:36px;margin:3px 0}
+.mk-p{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700}
 
-/* SIGNAL BADGES */
-.sg-buy{background:rgba(16,185,129,.15);color:var(--gn);font-size:8px;padding:2px 6px;border-radius:4px;font-weight:700;white-space:nowrap}
-.sg-sell{background:rgba(239,68,68,.15);color:var(--rd);font-size:8px;padding:2px 6px;border-radius:4px;font-weight:700;white-space:nowrap}
-.sg-hold{background:rgba(245,158,11,.15);color:var(--or);font-size:8px;padding:2px 6px;border-radius:4px;font-weight:700;white-space:nowrap}
-.sg-wait{background:rgba(80,88,120,.12);color:var(--mt);font-size:8px;padding:2px 6px;border-radius:4px;font-weight:700;white-space:nowrap}
+/* ===== TABLE ===== */
+.at{width:100%;border-collapse:collapse}
+.at th{text-align:left;padding:9px 11px;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);border-bottom:1px solid rgba(255,255,255,0.06);font-weight:500}
+.at td{padding:9px 11px;border-bottom:1px solid rgba(255,255,255,0.025);font-size:12px}
+.at tbody tr{transition:background .2s;cursor:pointer}.at tbody tr:hover{background:rgba(255,255,255,0.03)}
+.at-n{font-weight:600}.at-t{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent)}
+.at-m{font-family:'JetBrains Mono',monospace;font-weight:600}
+.bd{padding:2px 6px;border-radius:4px;font-size:8.5px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.bd-b{background:rgba(52,211,153,.12);color:var(--green)}.bd-s{background:rgba(248,113,113,.12);color:var(--red)}.bd-h{background:rgba(251,191,36,.12);color:var(--orange)}
 
-/* ADD MODAL */
-.modal-bg{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.6);align-items:center;justify-content:center}
-.modal-bg.open{display:flex}
-.modal{background:var(--cd);border:1px solid var(--bd);border-radius:16px;padding:20px;width:440px;max-width:92vw;max-height:80vh;display:flex;flex-direction:column}
-.modal h3{font-size:15px;font-weight:600;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
-.modal h3 button{background:none;border:none;color:var(--mt);font-size:18px;cursor:pointer}
-.modal input{width:100%;padding:11px 14px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:13px;outline:none;margin-bottom:10px;font-family:inherit}
-.modal input:focus{border-color:var(--ac)}
-.modal-results{flex:1;overflow-y:auto;max-height:320px}
-.mr{padding:8px 10px;cursor:pointer;font-size:11px;border-bottom:1px solid #121520;display:flex;justify-content:space-between;align-items:center;border-radius:4px;transition:background .1s}
-.mr:hover{background:rgba(124,92,252,.06)}
-.mr .mrs{font-weight:700;color:var(--ac);font-size:12px}
-.mr .mrn{color:var(--mt);font-size:10px}
-.mr button{background:var(--ac);color:#fff;border:none;padding:4px 12px;border-radius:6px;font-size:9px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit}
-.add-btn{background:var(--ac);color:#fff;border:none;width:28px;height:28px;border-radius:7px;font-size:16px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+/* ===== DONUT ===== */
+.dn-w{display:flex;align-items:center;justify-content:center;position:relative}
+.dn-c{position:absolute;text-align:center}
+.dn-c .p{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700}
+.dn-c .l{font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:1px}
+.lg{display:flex;flex-direction:column;gap:7px}.lg-i{display:flex;align-items:center;gap:6px}
+.lg-d{width:7px;height:7px;border-radius:50%}.lg-n{font-size:11px;color:var(--text2)}.lg-p{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;margin-left:auto}
 
-/* SORT */
-.srt{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:8px}
-.srt span{font-size:8px;color:var(--mt);font-weight:600}
-.srt button{padding:3px 8px;border:1px solid var(--bd);border-radius:5px;background:transparent;color:var(--mt);font-size:8px;cursor:pointer;font-weight:600;font-family:inherit;white-space:nowrap}
-.srt button:hover{border-color:var(--ac);color:var(--tx)}.srt button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+/* ===== FILTERS ===== */
+.flt{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
+.fb{padding:5px 11px;border-radius:6px;font-size:10px;font-weight:600;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--text2);cursor:pointer;transition:all .2s;font-family:inherit}
+.fb:hover{border-color:var(--accent);color:var(--accent)}
+.fb.on{background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.2);color:var(--accent)}
 
-/* RESPONSIVE */
-@media(max-width:768px){.topbar{padding:8px 12px}.main{padding:10px 12px}.g2,.g3{grid-template-columns:1fr}.tv-md{height:300px}.tv-lg{height:400px}}
+/* ===== SEARCH ===== */
+.ts{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:4px 8px}
+.ts input{border:none;background:transparent;color:var(--text);font-size:11px;outline:none;width:110px;font-family:inherit}
 
-/* TRAVEL */
-.ac-wrap{position:relative}.ac-list{position:absolute;top:100%;left:0;right:0;background:var(--cd);border:1px solid var(--bd);border-radius:0 0 8px 8px;max-height:200px;overflow-y:auto;z-index:50;display:none}.ac-list.show{display:block}.ac-item{padding:8px 12px;font-size:11px;cursor:pointer;border-bottom:1px solid #121520;display:flex;justify-content:space-between}.ac-item:hover{background:rgba(124,92,252,.06)}.ac-item .ac-code{color:var(--ac);font-weight:700;font-family:'JetBrains Mono',monospace;font-size:10px}.ac-item .ac-city{color:var(--tx)}.ac-item .ac-country{color:var(--mt);font-size:9px}
-.advice-card{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-top:12px}
-.advice-good{border-left:3px solid var(--gn)}.advice-warn{border-left:3px solid var(--or)}.advice-bad{border-left:3px solid var(--rd)}
-@media(max-width:768px){#flightForm2{grid-template-columns:1fr 1fr!important}}
+/* ===== ADD MODAL ===== */
+.add-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:1100;display:none;align-items:center;justify-content:center;padding:24px}
+.add-bg.on{display:flex}
+.add-box{background:rgba(255,255,255,0.07);backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,0.14);border-radius:18px;padding:28px;width:460px;max-width:95vw;box-shadow:0 16px 60px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,0.08)}
+.add-box h3{font-size:16px;font-weight:700;margin-bottom:16px}
+.add-tabs{display:flex;gap:4px;margin-bottom:16px}
+.add-tab{padding:6px 14px;border-radius:7px;font-size:11px;font-weight:600;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--text2);cursor:pointer}
+.add-tab.on{background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.2);color:var(--accent)}
+.add-field{margin-bottom:12px}
+.add-field label{display:block;font-size:10px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.add-field input,.add-field select{width:100%;padding:10px 12px;border-radius:var(--rs);border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:var(--text);font-size:12px;font-family:inherit;outline:none}
+.add-field input:focus{border-color:var(--accent)}
+.add-submit{padding:10px 20px;border:none;border-radius:var(--rs);background:linear-gradient(135deg,var(--accent),#0ea5e9);color:#fff;font-size:12px;font-weight:600;cursor:pointer;margin-top:4px}
+.add-msg{font-size:11px;margin-top:8px;color:var(--green);display:none}
+
+/* ===== CHART MODAL ===== */
+.mo-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(5px);z-index:1000;display:none;align-items:center;justify-content:center;padding:24px}
+.mo-bg.on{display:flex}
+.mo{background:rgba(16,20,30,.92);backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,0.12);border-radius:16px;width:100%;max-width:920px;overflow:hidden;box-shadow:0 20px 70px rgba(0,0,0,.4)}
+.mo-t{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.mo-ti{font-size:14px;font-weight:700}
+.mo-x{width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px}
+.mo-x:hover{border-color:var(--red);color:var(--red)}
+.mo-b iframe{width:100%;height:480px;border:none}
+
+/* ===== STATUS ===== */
+.sts{padding:10px 14px;border-radius:var(--rs);background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.1);color:var(--accent);font-size:11px;margin-bottom:12px;display:none;align-items:center;gap:7px}
+.sts.on{display:flex}.sts.err{background:rgba(248,113,113,.05);border-color:rgba(248,113,113,.1);color:var(--red)}
+.spin{width:12px;height:12px;border:2px solid rgba(56,189,248,.2);border-top-color:var(--accent);border-radius:50%;animation:sp .6s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.sel{width:100%;padding:10px;border-radius:var(--rs);border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--text);font-size:12px;font-family:inherit;outline:none;appearance:none;cursor:pointer}
+.sel option{background:#1a2035}
+
+@media(max-width:1024px){.sb{transform:translateX(-100%)}.sb.open{transform:translateX(0)}.mn,.tb{margin-left:0!important;left:0!important}.g2,.g3{grid-template-columns:1fr}.mob{display:flex!important}.tb{padding:0 12px}.mn{padding:14px 10px}}
 </style>
 </head>
 <body>
 
 <!-- LOGIN -->
-<div id="LS"><div class="lb"><h1>FinScope<b>10</b></h1><p>Dashboard Finanziaria Privata</p><input type="password" id="LP" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()"><button onclick="doLogin()">Accedi</button><div id="LE">Password errata.</div><p style="color:#3a4560;font-size:9px;margin-top:16px">Accesso riservato</p></div></div>
+<div class="lo" id="LO">
+<div class="lo-card">
+  <div class="lo-br"><div class="lo-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>FINSCOPE</div>
+  <h1>Please Log In</h1>
+  <div class="sub">to your FinScope Workspace</div>
+  <div class="lo-f"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><input type="password" id="pw" placeholder="Password" autocomplete="off"></div>
+  <button class="lo-btn" onclick="doLogin()">Sign In</button>
+  <div class="lo-divider">oppure</div>
+  <button class="lo-bio" id="bioBtn" onclick="bioLogin()" style="display:none">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 11c0 3.517-1.009 6.799-2.753 9.571"/><path d="M2.05 12.056a10 10 0 0 1 .78-3.06"/><path d="M6.46 17.38a10.14 10.14 0 0 1-3.42-5.33"/><path d="M8.54 2.99A10 10 0 0 1 22 12c0 .28-.01.56-.03.84"/><path d="M12 2a10 10 0 0 0-9.95 9"/><path d="M15 12.5a3 3 0 1 1-6 0"/></svg>
+    Accedi con Touch ID
+  </button>
+  <div class="lo-err" id="lerr">Password non valida</div>
+  <div class="lo-foot">FinScope Terminal v4.0</div>
+</div>
+</div>
 
 <!-- APP -->
-<div id="APP" style="display:none">
+<div class="app" id="APP">
+<aside class="sb" id="SB">
+  <div class="sb-hd"><div class="sb-lg"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="sb-nm">FinScope</div></div>
+  <div class="sb-nav" id="navItems"></div>
+  <div class="sb-ft">
+    <div class="ni" onclick="fetchAll()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>Aggiorna</div>
+    <div class="ni" onclick="sessionStorage.clear();location.reload()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</div>
+  </div>
+</aside>
 
-<!-- TICKER TAPE -->
-<div class="ticker-wrap" id="tickerTape"></div>
+<header class="tb">
+  <div style="display:flex;align-items:center;gap:8px">
+    <div class="tb-b mob" onclick="document.getElementById('SB').classList.toggle('open')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></div>
+    <div><div class="tb-hi">Hi, Deniss! <em>👋</em></div><div class="tb-sub">Welcome to your Workspace</div></div>
+  </div>
+  <div class="tb-r">
+    <div class="tb-pill"><span class="tb-dot"></span><span id="clk">—</span></div>
+    <div class="tb-b" onclick="fetchAll()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></div>
+    <div class="tb-b" onclick="showAdd()" title="Aggiungi asset" style="color:var(--accent);font-weight:700;font-size:16px">+</div>
+    <div class="tb-b" style="border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:700;font-size:11px;border:none">D</div>
+  </div>
+</header>
 
-<!-- TOP BAR -->
-<div class="topbar">
-<div class="brand">FinScope<b>10</b></div>
-<div class="tabs" id="tabs">
-<button class="tab on" onclick="go('overview',this)">Overview</button>
-<button class="tab" onclick="go('stocks',this)">Azioni</button>
-<button class="tab" onclick="go('etfs',this)">ETF</button>
-<button class="tab" onclick="go('bonds',this)">Obbligazioni</button>
-<button class="tab" onclick="go('commodities',this)">Materie Prime</button>
-<button class="tab" onclick="go('crypto',this)">Crypto</button>
-<button class="tab" onclick="go('currencies',this)">Valute</button>
-<button class="tab" onclick="go('screener',this)">Screener</button>
-<button class="tab" onclick="go('news',this)">News</button>
-<button class="tab" onclick="go('calendar',this)">Calendario</button>
-<button class="tab" onclick="go('apple',this)">Apple</button>
-<button class="tab" onclick="go('viaggi',this)">Viaggi</button>
-</div>
-<div class="clock mono" id="CK"></div>
-</div>
-
-<!-- MAIN CONTENT -->
-<div class="main">
-
-<!-- OVERVIEW -->
-<div class="sec ac" id="sec-overview">
-<div class="g2">
-<div class="card"><div class="card-title">Mercato USA</div><div class="tv-widget tv-md" id="tv-mkt-us"></div></div>
-<div class="card"><div class="card-title">Mercato Europa</div><div class="tv-widget tv-md" id="tv-mkt-eu"></div></div>
-</div>
-<div class="g3">
-<div class="card">
-<div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Crypto <input id="ov-sym-crypto" value="BITSTAMP:BTCUSD" onkeydown="if(event.key==='Enter')saveOvSym('crypto')" style="padding:3px 8px;border-radius:5px;border:1px solid var(--bd);background:var(--bg);color:var(--ac);font-size:9px;font-family:'JetBrains Mono',monospace;outline:none;width:130px;text-align:right"></div>
-<div class="tv-widget tv-md" id="tv-mkt-crypto"></div>
-</div>
-<div class="card">
-<div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Materie Prime <input id="ov-sym-comm" value="TVC:GOLD" onkeydown="if(event.key==='Enter')saveOvSym('comm')" style="padding:3px 8px;border-radius:5px;border:1px solid var(--bd);background:var(--bg);color:var(--ac);font-size:9px;font-family:'JetBrains Mono',monospace;outline:none;width:130px;text-align:right"></div>
-<div class="tv-widget tv-md" id="tv-mkt-comm"></div>
-</div>
-<div class="card">
-<div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Forex <input id="ov-sym-fx" value="FX:EURUSD" onkeydown="if(event.key==='Enter')saveOvSym('fx')" style="padding:3px 8px;border-radius:5px;border:1px solid var(--bd);background:var(--bg);color:var(--ac);font-size:9px;font-family:'JetBrains Mono',monospace;outline:none;width:130px;text-align:right"></div>
-<div class="tv-widget tv-md" id="tv-mkt-fx"></div>
-</div>
-</div>
+<main class="mn" id="mainContent"></main>
 </div>
 
-<!-- STOCKS -->
-<div class="sec" id="sec-stocks">
-<div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-xl" id="tv-chart-stocks"></div></div>
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Azioni <div style="display:flex;gap:3px;align-items:center"><input class="tbl-search" id="search-stocks" placeholder="&#x1F50D; Cerca..." oninput="filterTable('stocks')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none;width:140px"><div class="srt" id="srt-stocks"></div><button class="add-btn" onclick="openAdd('stocks')">+</button></div></div><div id="tbl-stocks"></div></div>
-</div>
-
-<!-- ETFs -->
-<div class="sec" id="sec-etfs">
-<div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-xl" id="tv-chart-etfs"></div></div>
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">ETF <div style="display:flex;gap:3px;align-items:center"><input class="tbl-search" id="search-etfs" placeholder="&#x1F50D; Cerca..." oninput="filterTable('etfs')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none;width:140px"><div class="srt" id="srt-etfs"></div><button class="add-btn" onclick="openAdd('etfs')">+</button></div></div><div id="tbl-etfs"></div></div>
-</div>
-
-<!-- BONDS -->
-<div class="sec" id="sec-bonds">
-<div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-xl" id="tv-chart-bonds"></div></div>
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Obbligazioni <div style="display:flex;gap:3px;align-items:center"><input class="tbl-search" id="search-bonds" placeholder="&#x1F50D; Cerca..." oninput="filterTable('bonds')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none;width:140px"><div class="srt" id="srt-bonds"></div><button class="add-btn" onclick="openAdd('bonds')">+</button></div></div><div id="tbl-bonds"></div></div>
-</div>
-
-<!-- COMMODITIES -->
-<div class="sec" id="sec-commodities">
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Grafico <input id="comm-chart-sym" value="TVC:GOLD" onkeydown="if(event.key==='Enter')overrideCommChart()" style="padding:3px 8px;border-radius:5px;border:1px solid var(--bd);background:var(--bg);color:var(--ac);font-size:9px;font-family:'JetBrains Mono',monospace;outline:none;width:160px;text-align:right"></div><div class="tv-widget tv-xl" id="tv-chart-comm"></div></div>
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Materie Prime <div style="display:flex;gap:3px;align-items:center"><input class="tbl-search" id="search-comm" placeholder="&#x1F50D; Cerca..." oninput="filterTable('comm')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none;width:140px"><div class="srt" id="srt-comm"></div><button class="add-btn" onclick="openAdd('comm')">+</button></div></div><div id="tbl-comm"></div></div>
-</div>
-
-<!-- CRYPTO -->
-<div class="sec" id="sec-crypto">
-<div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-xl" id="tv-chart-crypto"></div></div>
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Criptovalute <div style="display:flex;gap:3px;align-items:center"><input class="tbl-search" id="search-crypto" placeholder="&#x1F50D; Cerca..." oninput="filterTable('crypto')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none;width:140px"><div class="srt" id="srt-crypto"></div><button class="add-btn" onclick="openAdd('crypto')">+</button></div></div><div id="tbl-crypto"></div></div>
-</div>
-
-<!-- CURRENCIES -->
-<div class="sec" id="sec-currencies">
-<div class="card"><div class="card-title">Grafico</div><div class="tv-widget tv-xl" id="tv-chart-fx"></div></div>
-<div class="card"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Valute <div style="display:flex;gap:3px;align-items:center"><input class="tbl-search" id="search-currencies" placeholder="&#x1F50D; Cerca..." oninput="filterTable('currencies')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none;width:140px"><div class="srt" id="srt-currencies"></div><button class="add-btn" onclick="openAdd('currencies')">+</button></div></div><div id="tbl-fx"></div></div>
-</div>
-
-<!-- SCREENER -->
-<div class="sec" id="sec-screener">
-<div class="card"><div class="card-title">Screener Azioni</div><div class="tv-widget tv-xl" id="tv-screener"></div></div>
-</div>
-
-<!-- NEWS -->
-<div class="sec" id="sec-news">
-<div class="g2">
-<div class="card"><div class="card-title">Notizie Generali</div><div class="tv-widget tv-xl" id="tv-news"></div></div>
-<div class="card"><div class="card-title">Notizie Crypto</div><div class="tv-widget tv-xl" id="tv-news-crypto"></div></div>
+<!-- ADD ASSET MODAL -->
+<div class="add-bg" id="addBg" onclick="if(event.target===this)hideAdd()">
+<div class="add-box">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <h3>Aggiungi Asset</h3>
+    <button class="mo-x" onclick="hideAdd()">✕</button>
+  </div>
+  <div class="add-tabs">
+    <div class="add-tab on" onclick="switchAddTab('url',this)">Da URL</div>
+    <div class="add-tab" onclick="switchAddTab('manual',this)">Manuale</div>
+    <div class="add-tab" onclick="switchAddTab('isin',this)">ISIN</div>
+  </div>
+  <div id="addUrl">
+    <div class="add-field"><label>Incolla URL (Yahoo Finance, Google Finance, TradingView, Investing.com, Borsa Italiana)</label><input id="addUrlInput" placeholder="https://finance.yahoo.com/quote/AAPL"></div>
+  </div>
+  <div id="addManual" style="display:none">
+    <div class="add-field"><label>Ticker</label><input id="addTicker" placeholder="AAPL, VWCE.DE, BTC-USD..."></div>
+    <div class="add-field"><label>Nome (opzionale)</label><input id="addName" placeholder="Apple Inc."></div>
+  </div>
+  <div id="addIsin" style="display:none">
+    <div class="add-field"><label>Codice ISIN</label><input id="addIsinInput" placeholder="US0378331005"></div>
+  </div>
+  <div class="add-field"><label>Sezione</label>
+    <select class="sel" id="addSection"><option value="stocks">Azioni</option><option value="etf">ETF</option><option value="bonds">Obbligazioni</option><option value="comm">Materie Prime</option><option value="crypto">Crypto</option><option value="fx">Valute</option></select>
+  </div>
+  <button class="add-submit" onclick="addAsset()">+ Aggiungi</button>
+  <div class="add-msg" id="addMsg"></div>
 </div>
 </div>
 
-<!-- CALENDAR -->
-<div class="sec" id="sec-calendar">
-<div class="card"><div class="card-title">Calendario Economico</div><div class="tv-widget tv-xl" id="tv-calendar"></div></div>
-</div>
-
-<!-- APPLE -->
-<div class="sec" id="sec-apple">
-<div class="card"><div class="card-title">AAPL — Apple Inc.</div><div class="tv-widget tv-xl" id="tv-chart-apple"></div></div>
-<div class="card" id="appleTracker">
-<div class="card-title">&#x1F34E; Apple Upgrade Tracker</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px" id="appleDropdowns">
-<div>
-<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">&#x1F4F1; Il mio attuale</label>
-<select id="appleMio" onchange="appleCompare()" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none;cursor:pointer"><option value="">Seleziona dispositivo...</option></select>
-</div>
-<div>
-<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">&#x1F680; Voglio passare a</label>
-<select id="appleTarget" onchange="appleCompare()" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none;cursor:pointer"><option value="">Seleziona dispositivo...</option></select>
-</div>
-</div>
-<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px" id="appleCatBtns"></div>
-<div id="appleResult" style="display:none"></div>
-</div>
-</div>
-
-<!-- VIAGGI -->
-<div class="sec" id="sec-viaggi">
-<div class="card">
-<div class="card-title">&#x2708;&#xFE0F; Ricerca Voli</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-<div class="ac-wrap">
-<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">&#x1F6EB; Aeroporto Partenza</label>
-<input id="flyFrom" placeholder="es. MXP — Milano Malpensa" oninput="acSearch('flyFrom','acListFrom')" autocomplete="off" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none">
-<div class="ac-list" id="acListFrom"></div>
-</div>
-<div class="ac-wrap">
-<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">&#x1F6EC; Aeroporto Arrivo</label>
-<input id="flyTo" placeholder="es. LHR — Londra Heathrow" oninput="acSearch('flyTo','acListTo')" autocomplete="off" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none">
-<div class="ac-list" id="acListTo"></div>
-</div>
-</div>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end;margin-bottom:10px">
-<div>
-<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">Data Andata</label>
-<input id="flyDateOut" type="date" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none;color-scheme:dark">
-</div>
-<div>
-<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">Data Ritorno</label>
-<input id="flyDateRet" type="date" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none;color-scheme:dark">
-</div>
-<div>
-<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">Date</label>
-<select id="flyFlex" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none;cursor:pointer">
-<option value="exact">Date esatte</option>
-<option value="flex3">± 3 giorni</option>
-<option value="flex7">± 1 settimana</option>
-<option value="month">Mese intero</option>
-<option value="cheap">Mese più economico</option>
-</select>
-</div>
-<button onclick="searchFlights()" style="padding:10px 20px;border:none;border-radius:8px;background:var(--ac);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;height:40px">&#x1F50D; Cerca</button>
-</div>
-<div id="bookingAdvice" style="margin-bottom:12px"></div>
-<div id="flightResults" style="min-height:100px"></div>
-</div>
-<div class="g2">
-<div class="card">
-<div class="card-title">&#x1F30D; Destinazioni Popolari</div>
-<div id="popularDest" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
-</div>
-<div class="card">
-<div class="card-title">&#x1F4B1; Cambio Valute Viaggio</div>
-<div style="display:grid;grid-template-columns:1fr auto 1fr auto;gap:10px;align-items:end;margin-bottom:14px">
-<div>
-<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">Importo EUR</label>
-<input id="travelAmt" type="number" value="1000" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none">
-</div>
-<span style="color:var(--mt);font-size:18px;padding-bottom:4px">&#x2192;</span>
-<div>
-<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">Valuta</label>
-<select id="travelCur" onchange="convertTravel()" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none;cursor:pointer">
-<option value="USD">USD — Dollaro USA</option><option value="GBP">GBP — Sterlina</option><option value="CHF">CHF — Franco Svizzero</option><option value="JPY">JPY — Yen</option><option value="TRY">TRY — Lira Turca</option><option value="THB">THB — Baht</option><option value="AED">AED — Dirham</option><option value="MAD">MAD — Dirham Marocco</option><option value="BRL">BRL — Real</option><option value="AUD">AUD — Dollaro AUS</option><option value="CAD">CAD — Dollaro CAN</option><option value="MXN">MXN — Peso</option><option value="EGP">EGP — Lira Egiziana</option><option value="HRK">HRK — Kuna Croata</option><option value="NOK">NOK — Corona Norv.</option><option value="SEK">SEK — Corona Sved.</option><option value="ISK">ISK — Corona Isl.</option><option value="CZK">CZK — Corona Ceca</option><option value="PLN">PLN — Zloty</option><option value="HUF">HUF — Fiorino Ung.</option><option value="INR">INR — Rupia Indiana</option><option value="CNY">CNY — Yuan</option><option value="KRW">KRW — Won</option><option value="SGD">SGD — Dollaro Sing.</option><option value="ZAR">ZAR — Rand</option>
-</select>
-</div>
-<button onclick="convertTravel()" style="padding:10px 16px;border:none;border-radius:8px;background:var(--gn);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;height:40px">Converti</button>
-</div>
-<div id="travelConvResult" style="text-align:center;padding:16px;font-size:20px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--gn)"></div>
-</div>
-</div>
-</div>
-
-</div><!-- /main -->
-</div><!-- /APP -->
-
-<!-- ADD MODAL -->
-<div class="modal-bg" id="addModal" onclick="if(event.target===this)closeAdd()">
-<div class="modal">
-<h3><span id="addTitle">Aggiungi Asset</span><button onclick="closeAdd()">&#x2715;</button></h3>
-<div style="margin-bottom:8px">
-<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:4px">Incolla URL da Yahoo Finance, Google Finance, MarketWatch, Investing.com, TradingView...</label>
-<input id="addUrl" placeholder="es. https://finance.yahoo.com/quote/AAPL" style="width:100%;padding:11px 14px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;outline:none;font-family:inherit;margin-bottom:6px">
-</div>
-<div style="margin-bottom:8px">
-<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:4px">Oppure inserisci ISIN</label>
-<input id="addIsin" placeholder="es. US0378331005 (Apple)" style="width:100%;padding:11px 14px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;outline:none;font-family:inherit;margin-bottom:6px">
-</div>
-<div style="margin-bottom:8px">
-<label style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:4px">Oppure inserisci manualmente</label>
-<div style="display:grid;grid-template-columns:1fr 2fr;gap:6px">
-<input id="addManualSym" placeholder="Ticker (es. AAPL)" style="padding:11px 14px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;outline:none;font-family:inherit">
-<input id="addManualName" placeholder="Nome (es. Apple Inc.)" style="padding:11px 14px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:12px;outline:none;font-family:inherit">
-</div>
-</div>
-<button onclick="addFromUrl()" style="width:100%;padding:11px;border:none;border-radius:8px;background:linear-gradient(135deg,var(--ac),#a855f7);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:4px">+ Aggiungi Asset</button>
-<div id="addUrlResult" style="margin-top:8px;font-size:11px;text-align:center"></div>
-<div style="margin-top:12px;padding:10px;background:var(--bg);border:1px solid var(--bd);border-radius:8px">
-<div style="font-size:9px;color:var(--mt);font-weight:600;margin-bottom:6px">SITI SUPPORTATI:</div>
-<div style="font-size:10px;color:var(--tx);line-height:1.6">
-&#x2022; <b style="color:var(--ac)">Yahoo Finance</b> — finance.yahoo.com/quote/TICKER<br>
-&#x2022; <b style="color:var(--ac)">Google Finance</b> — google.com/finance/quote/TICKER<br>
-&#x2022; <b style="color:var(--ac)">MarketWatch</b> — marketwatch.com/investing/stock/TICKER<br>
-&#x2022; <b style="color:var(--ac)">Investing.com</b> — investing.com/.../NOME-TICKER<br>
-&#x2022; <b style="color:var(--ac)">TradingView</b> — tradingview.com/symbols/TICKER<br>
-&#x2022; <b style="color:var(--ac)">Borsa Italiana</b> — borsaitaliana.it/.../TICKER<br>
-&#x2022; <b style="color:var(--ac)">ISIN</b> — Codice a 12 caratteri (es. US0378331005)<br>
-&#x2022; <b style="color:var(--ac)">Manuale</b> — Inserisci ticker + nome direttamente
-</div>
-</div>
-</div>
-</div>
+<!-- CHART MODAL -->
+<div class="mo-bg" id="MOD" onclick="if(event.target===this)xMod()"><div class="mo"><div class="mo-t"><div class="mo-ti" id="mTi">—</div><button class="mo-x" onclick="xMod()">✕</button></div><div class="mo-b" id="mBo"></div></div></div>
 
 <script>
-// ═══════════ API KEYS ═══════════
-const FK='d721451r01qjeeefflg0d721451r01qjeeefflgg',FH='https://finnhub.io/api/v1';
-const FMP_KEY='oxySZoo7QEhfBVJMvwSc9ymKpx8fNL82';
-const AV_KEY='ERP5YUHMMCFOAES9';
-const EOD_KEY='69c54f15e273b0.67466656';
+const PW='gx*qvegR2c%wV&*xX1ZghD!j7*vqwHP4WWSw3JRC';
+const FH_KEY='d721451r01qjeeefflg0d721451r01qjeeefflgg';
+const PX=[
+  u=>`https://corsproxy.io/?${encodeURIComponent(u)}`,
+  u=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+  u=>`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
+  u=>`https://thingproxy.freeboard.io/fetch/${u}`
+];
 
-// ═══════════ SUPABASE ═══════════
-const SB_URL='https://ttqnteimisiaaixsalhn.supabase.co';
-const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0cW50ZWltaXNpYWFpeHNhbGhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2MjAwODEsImV4cCI6MjA5MDE5NjA4MX0.cWgDQZP4Q1COEssw318hPzR2bZ8jKi0cWc43qcsKIXM';
+// ===== NAV CONFIG =====
+const NAV=[
+  {id:'dash',icon:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',label:'Dashboard'},
+  {id:'azioni',icon:'<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',label:'Azioni'},
+  {id:'etf',icon:'<path d="M21 16V8l-7-4-7 4v8l7 4z"/>',label:'ETF'},
+  {id:'bond',icon:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',label:'Obbligazioni'},
+  {id:'comm',icon:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/>',label:'Materie Prime'},
+  {id:'crypto',icon:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>',label:'Crypto'},
+  {id:'fx',icon:'<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',label:'Valute'},
+  {id:'apple',icon:'<rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>',label:'Apple Tracker'},
+  {id:'viaggi',icon:'<path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2"/>',label:'Viaggi'},
+];
 
-async function saveToSupabase(){
-  // Collect all assets with valid prices
-  const rows=[];
-  const sections={stocks:D.stocks,etfs:D.etfs,bonds:D.bonds,commodities:D.commodities,crypto:D.crypto,currencies:D.currencies};
-  for(const[section,data]of Object.entries(sections)){
-    for(const d of data){
-      if(!d||d.p<=0)continue;
-      rows.push({
-        symbol:d.sym||d.pair||'',
-        section,
-        name:d.name||'',
-        price:d.p,
-        change_pct:d.ch||0,
-        open_price:d.o||0,
-        high:d.h||0,
-        low:d.l||0,
-        currency:d.cur||'',
-        source:d.src||''
-      });
+// ===== ASSET LISTS =====
+let customAssets=JSON.parse(localStorage.getItem('fs_custom')||'{}');
+const STK=[
+{t:'AAPL',n:'Apple',g:'tech,usa'},{t:'MSFT',n:'Microsoft',g:'tech,usa'},{t:'GOOGL',n:'Alphabet',g:'tech,usa'},{t:'AMZN',n:'Amazon',g:'tech,usa'},{t:'NVDA',n:'NVIDIA',g:'tech,usa'},{t:'META',n:'Meta',g:'tech,usa'},{t:'TSLA',n:'Tesla',g:'tech,auto,usa'},{t:'TSM',n:'TSMC',g:'tech,asia'},{t:'ASML',n:'ASML',g:'tech,eu'},{t:'AVGO',n:'Broadcom',g:'tech,usa'},{t:'NFLX',n:'Netflix',g:'tech,usa'},{t:'AMD',n:'AMD',g:'tech,usa'},{t:'CRM',n:'Salesforce',g:'tech,usa'},{t:'ORCL',n:'Oracle',g:'tech,usa'},{t:'INTC',n:'Intel',g:'tech,usa'},
+{t:'RACE',n:'Ferrari',g:'auto,supercar,eu'},{t:'STLA',n:'Stellantis',g:'auto,eu'},{t:'VOW3.DE',n:'Volkswagen',g:'auto,eu'},{t:'MBG.DE',n:'Mercedes-Benz',g:'auto,supercar,eu'},{t:'BMW.DE',n:'BMW',g:'auto,supercar,eu'},{t:'P911.DE',n:'Porsche AG',g:'auto,supercar,eu'},{t:'PAH3.DE',n:'Porsche SE',g:'auto,eu'},{t:'TM',n:'Toyota',g:'auto,asia'},
+{t:'RMS.PA',n:'Hermès',g:'lusso,eu'},{t:'MC.PA',n:'LVMH',g:'lusso,eu'},{t:'CDI.PA',n:'Christian Dior',g:'lusso,eu'},{t:'KER.PA',n:'Kering',g:'lusso,eu'},{t:'BRBY.L',n:'Burberry',g:'lusso,eu'},{t:'CFR.SW',n:'Richemont',g:'lusso,eu'},{t:'MONC.MI',n:'Moncler',g:'lusso,eu'},
+{t:'ENEL.MI',n:'Enel',g:'ita'},{t:'ISP.MI',n:'Intesa Sanpaolo',g:'ita'},{t:'UCG.MI',n:'UniCredit',g:'ita'},{t:'ENI.MI',n:'Eni',g:'ita'},{t:'G.MI',n:'Generali',g:'ita'},{t:'STM.MI',n:'STMicro',g:'ita,tech'},
+{t:'9984.T',n:'SoftBank',g:'tech,asia'},{t:'005930.KS',n:'Samsung',g:'tech,asia'},
+{t:'JPM',n:'JPMorgan',g:'fin,usa'},{t:'V',n:'Visa',g:'fin,usa'},{t:'MA',n:'Mastercard',g:'fin,usa'},{t:'BRK-B',n:'Berkshire H.',g:'fin,usa'},{t:'GS',n:'Goldman Sachs',g:'fin,usa'},{t:'BAC',n:'Bank of America',g:'fin,usa'},
+{t:'WMT',n:'Walmart',g:'usa'},{t:'DIS',n:'Disney',g:'usa'},{t:'NKE',n:'Nike',g:'usa'},{t:'KO',n:'Coca-Cola',g:'usa'},{t:'PEP',n:'PepsiCo',g:'usa'},
+...(customAssets.stocks||[])
+];
+const ETFL=[{t:'VWCE.DE',n:'Vanguard FTSE All-World'},{t:'SWDA.L',n:'iShares MSCI World'},{t:'CSPX.L',n:'iShares S&P 500'},{t:'EUNL.DE',n:'iShares MSCI World EUR'},{t:'QQQ',n:'Invesco QQQ'},{t:'SPY',n:'SPDR S&P 500'},{t:'VTI',n:'Vanguard Total Stock'},{t:'VOO',n:'Vanguard S&P 500'},{t:'ARKK',n:'ARK Innovation'},{t:'VGT',n:'Vanguard Info Tech'},{t:'IWDA.L',n:'iShares MSCI World'},{t:'VUSA.L',n:'Vanguard S&P 500 UCITS'},...(customAssets.etf||[])];
+const BNDL=[{t:'^TNX',n:'US Treasury 10Y'},{t:'^TYX',n:'US Treasury 30Y'},{t:'^FVX',n:'US Treasury 5Y'},{t:'TLT',n:'iShares 20+ Year'},{t:'BND',n:'Vanguard Total Bond'},{t:'AGG',n:'iShares US Agg'},{t:'LQD',n:'iShares Inv Grade'},{t:'HYG',n:'iShares High Yield'},...(customAssets.bonds||[])];
+const COML=[{t:'GC=F',n:'Oro',v:'TVC:GOLD'},{t:'SI=F',n:'Argento',v:'TVC:SILVER'},{t:'CL=F',n:'Petrolio WTI',v:'TVC:USOIL'},{t:'NG=F',n:'Gas Naturale',v:'TVC:NATURALGAS'},{t:'PL=F',n:'Platino',v:'TVC:PLATINUM'},{t:'HG=F',n:'Rame',v:'TVC:COPPER'},...(customAssets.comm||[])];
+const CRYL=[{t:'BTC-USD',n:'Bitcoin',b:'BTC'},{t:'ETH-USD',n:'Ethereum',b:'ETH'},{t:'SOL-USD',n:'Solana',b:'SOL'},{t:'XRP-USD',n:'Ripple',b:'XRP'},{t:'ADA-USD',n:'Cardano',b:'ADA'},{t:'DOGE-USD',n:'Dogecoin',b:'DOGE'},{t:'DOT-USD',n:'Polkadot',b:'DOT'},{t:'AVAX-USD',n:'Avalanche',b:'AVAX'},{t:'MATIC-USD',n:'Polygon',b:'MATIC'},{t:'LINK-USD',n:'Chainlink',b:'LINK'},{t:'UNI-USD',n:'Uniswap',b:'UNI'},{t:'ATOM-USD',n:'Cosmos',b:'ATOM'},...(customAssets.crypto||[])];
+const FXLL=[{t:'EURUSD=X',n:'EUR/USD'},{t:'GBPUSD=X',n:'GBP/USD'},{t:'USDJPY=X',n:'USD/JPY'},{t:'EURGBP=X',n:'EUR/GBP'},{t:'USDCHF=X',n:'USD/CHF'},{t:'AUDUSD=X',n:'AUD/USD'},{t:'USDCAD=X',n:'USD/CAD'},{t:'EURCHF=X',n:'EUR/CHF'},{t:'EURJPY=X',n:'EUR/JPY'},{t:'GBPJPY=X',n:'GBP/JPY'},...(customAssets.fx||[])];
+
+let AP={};
+
+// ===== AUTH =====
+function doLogin(){if(document.getElementById('pw').value===PW){authOk();}else{const e=document.getElementById('lerr');e.style.display='block';document.getElementById('pw').value='';setTimeout(()=>e.style.display='none',3e3);}}
+function authOk(){document.getElementById('LO').classList.add('h');document.getElementById('APP').classList.add('on');sessionStorage.setItem('fs','1');init();}
+document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+
+// Touch ID / WebAuthn
+async function checkBio(){
+  if(window.PublicKeyCredential && await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()){
+    document.getElementById('bioBtn').style.display='flex';
+  }
+}
+async function bioLogin(){
+  try{
+    // Check if credential exists
+    const cred=localStorage.getItem('fs_bio_cred');
+    if(!cred){
+      // Register new credential
+      const challenge=crypto.getRandomValues(new Uint8Array(32));
+      const userId=crypto.getRandomValues(new Uint8Array(16));
+      const createOpts={publicKey:{
+        challenge,rp:{name:'FinScope',id:location.hostname||'localhost'},
+        user:{id:userId,name:'deniss',displayName:'Deniss'},
+        pubKeyCredParams:[{alg:-7,type:'public-key'},{alg:-257,type:'public-key'}],
+        authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required'},
+        timeout:60000
+      }};
+      const credential=await navigator.credentials.create(createOpts);
+      localStorage.setItem('fs_bio_cred',credential.id);
+      authOk();
+    }else{
+      // Authenticate with existing credential
+      const challenge=crypto.getRandomValues(new Uint8Array(32));
+      const getOpts={publicKey:{
+        challenge,rpId:location.hostname||'localhost',
+        allowCredentials:[{id:Uint8Array.from(atob(cred.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0)),type:'public-key',transports:['internal']}],
+        userVerification:'required',timeout:60000
+      }};
+      await navigator.credentials.get(getOpts);
+      authOk();
+    }
+  }catch(e){
+    console.log('Bio auth error:',e);
+    // Fallback: if platform auth available, just verify
+    try{
+      const challenge=crypto.getRandomValues(new Uint8Array(32));
+      const cred=await navigator.credentials.create({publicKey:{
+        challenge,rp:{name:'FinScope',id:location.hostname||'localhost'},
+        user:{id:crypto.getRandomValues(new Uint8Array(16)),name:'deniss',displayName:'Deniss'},
+        pubKeyCredParams:[{alg:-7,type:'public-key'}],
+        authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required'},timeout:60000}});
+      if(cred){localStorage.setItem('fs_bio_cred',cred.id);authOk();}
+    }catch(e2){document.getElementById('lerr').textContent='Touch ID non disponibile';document.getElementById('lerr').style.display='block';}
+  }
+}
+checkBio();
+if(sessionStorage.getItem('fs')==='1'){authOk();}
+
+// ===== NAV =====
+function buildNav(){
+  document.getElementById('navItems').innerHTML=NAV.map(n=>`<div class="ni ${n.id==='dash'?'on':''}" data-p="${n.id}" onclick="go('${n.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${n.icon}</svg>${n.label}</div>`).join('');
+}
+function go(p){document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));document.querySelectorAll('.ni').forEach(x=>x.classList.remove('on'));document.getElementById('pg-'+p)?.classList.add('on');document.querySelector(`.ni[data-p="${p}"]`)?.classList.add('on');document.getElementById('SB').classList.remove('open');}
+
+// ===== BUILD PAGES =====
+function buildPages(){
+  document.getElementById('mainContent').innerHTML=`
+<div class="sts" id="sts"><div class="spin"></div><span id="stsTxt">Caricamento...</span></div>
+
+<section class="pg on" id="pg-dash">
+  <div class="sh"><h2>Dashboard Overview</h2><span class="sh-dt" style="color:var(--text3)">⚙ ◑ ⏰</span></div>
+  <div class="g3"><div class="glass glass-strong" style="grid-column:span 2;padding:20px"><div class="card-h"><span>Performance Mercati</span><span style="color:var(--text3)">···</span></div><canvas id="pC" height="120"></canvas><div style="display:flex;gap:22px;margin-top:10px"><div><div style="font-size:8px;color:var(--text3)">ASSET TOTALI</div><div class="at-m" style="font-size:16px" id="sT">—</div></div><div><div style="font-size:8px;color:var(--text3)">VAR. MEDIA</div><div class="at-m" style="font-size:16px" id="sA">—</div></div><div><div style="font-size:8px;color:var(--text3)">TOP GAINER</div><div class="at-m" style="font-size:16px;color:var(--green)" id="sG">—</div></div></div></div>
+  <div class="glass" style="padding:18px"><div class="card-h"><span>Asset Allocation</span><span style="color:var(--text3)">···</span></div><div class="dn-w"><canvas id="dC" width="140" height="140"></canvas><div class="dn-c"><div class="l">Assets</div><div class="p" id="dP">—</div></div></div><div class="lg mt" id="dL"></div></div></div>
+  <div class="mt"><div class="sh"><h2>Market Live Stream</h2><span class="sh-lk" onclick="go('azioni')">View All →</span></div><div class="g4" id="mS"></div></div>
+  <div class="glass mt" style="padding:16px"><div class="card-h"><span>Top Movers</span><span style="color:var(--text3)">···</span></div><table class="at"><thead><tr><th>Asset</th><th>Prezzo</th><th>Var</th><th></th></tr></thead><tbody id="tmB"></tbody></table></div>
+</section>
+
+<section class="pg" id="pg-azioni"><div class="sh"><h2>Azioni Globali</h2><div class="ts"><input placeholder="Filtra..." oninput="ft('tA',this.value)"></div></div><div class="flt" id="aF"></div><div class="glass p0" style="overflow-x:auto"><table class="at" id="tA"><thead><tr><th>Ticker</th><th>Nome</th><th>Prezzo</th><th>Var</th><th>Segnale</th><th></th></tr></thead><tbody></tbody></table></div></section>
+
+<section class="pg" id="pg-etf"><div class="sh"><h2>ETF</h2><div class="ts"><input placeholder="Filtra..." oninput="ft('tE',this.value)"></div></div><div class="glass p0" style="overflow-x:auto"><table class="at" id="tE"><thead><tr><th>Ticker</th><th>Nome</th><th>Prezzo</th><th>Var</th><th></th></tr></thead><tbody></tbody></table></div></section>
+
+<section class="pg" id="pg-bond"><div class="sh"><h2>Obbligazioni</h2></div><div class="glass p0" style="overflow-x:auto"><table class="at" id="tB"><thead><tr><th>Ticker</th><th>Nome</th><th>Prezzo</th><th>Var</th><th></th></tr></thead><tbody></tbody></table></div></section>
+
+<section class="pg" id="pg-comm"><div class="sh"><h2>Materie Prime</h2></div><div class="glass p0" style="overflow-x:auto"><table class="at" id="tC"><thead><tr><th>Ticker</th><th>Nome</th><th>Prezzo</th><th>Var</th><th></th></tr></thead><tbody></tbody></table></div></section>
+
+<section class="pg" id="pg-crypto"><div class="sh"><h2>Criptovalute</h2></div><div class="g4" id="cS"></div><div class="glass p0 mt" style="overflow-x:auto"><table class="at" id="tCr"><thead><tr><th>Ticker</th><th>Nome</th><th>Prezzo</th><th>Var</th><th></th></tr></thead><tbody></tbody></table></div></section>
+
+<section class="pg" id="pg-fx"><div class="sh"><h2>Valute & Forex</h2></div><div class="glass p0" style="overflow-x:auto"><table class="at" id="tFx"><thead><tr><th>Coppia</th><th>Tasso</th><th>Var</th><th></th></tr></thead><tbody></tbody></table></div></section>
+
+<section class="pg" id="pg-apple"><div class="sh"><h2>Apple Device Upgrade Tracker</h2></div><div class="g2"><div class="glass" style="padding:16px"><label style="font-size:10px;color:var(--text3)">Categoria</label><select class="sel" id="aCat" onchange="popD()"><option value="">Seleziona...</option></select></div><div></div><div class="glass" style="padding:16px"><label style="font-size:10px;color:var(--text3)">Il mio attuale</label><select class="sel" id="aCur" onchange="cmpA()"><option value="">Seleziona...</option></select></div><div class="glass" style="padding:16px"><label style="font-size:10px;color:var(--text3)">Voglio passare a</label><select class="sel" id="aTgt" onchange="cmpA()"><option value="">Seleziona...</option></select></div></div><div class="glass mt" id="aR" style="display:none;padding:16px"></div></section>
+
+<section class="pg" id="pg-viaggi"><div class="sh"><h2>Pianificazione Viaggi</h2></div><div class="glass" style="padding:18px"><p style="color:var(--text2);font-size:12px;margin-bottom:12px">Link rapidi</p><div style="display:flex;gap:8px;flex-wrap:wrap"><a href="https://www.google.com/travel/flights" target="_blank" style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:var(--rs);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--text);text-decoration:none;font-size:12px;font-weight:600">✈️ Google Flights</a><a href="https://www.booking.com" target="_blank" style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:var(--rs);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--text);text-decoration:none;font-size:12px;font-weight:600">🏨 Booking</a><a href="https://www.skyscanner.it" target="_blank" style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:var(--rs);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--text);text-decoration:none;font-size:12px;font-weight:600">🔍 Skyscanner</a></div></div></section>
+`;
+}
+
+// ===== FETCH DATA =====
+// Method 1: Finnhub (CORS native, works in sandbox)
+async function fhQuote(sym){
+  try{
+    const r=await fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${FH_KEY}`,{signal:AbortSignal.timeout(8000)});
+    if(!r.ok)return null;
+    const d=await r.json();
+    if(d&&d.c>0)return{symbol:sym,regularMarketPrice:d.c,regularMarketChangePercent:d.dp,regularMarketChange:d.d,shortName:sym,quoteType:'EQUITY'};
+  }catch(e){}
+  return null;
+}
+
+// Method 2: Yahoo via proxy
+async function yq(tickers){
+  const url=`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${tickers.join(',')}`;
+  for(const px of PX){
+    try{const r=await fetch(px(url),{signal:AbortSignal.timeout(10000)});if(!r.ok)continue;let d;try{d=await r.json();}catch(e){continue;}if(d?.quoteResponse?.result?.length)return d.quoteResponse.result;}catch(e){continue;}
+  }
+  return [];
+}
+
+// Method 3: CoinGecko (CORS native)
+async function cgPrices(ids){
+  try{
+    const r=await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids.join(',')}&vs_currencies=usd&include_24hr_change=true`,{signal:AbortSignal.timeout(8000)});
+    if(!r.ok)return{};return await r.json();
+  }catch(e){return{};}
+}
+
+const slp=ms=>new Promise(r=>setTimeout(r,ms));
+
+// Smart fetch: try Finnhub first (US stocks), then Yahoo
+async function fetchList(list,type){
+  const results=[];
+  // Try Finnhub for simple US tickers first
+  const usSimple=list.filter(x=>!x.t.includes('.')&&!x.t.includes('=')&&!x.t.includes('-')&&!x.t.includes('^'));
+  const rest=list.filter(x=>!usSimple.includes(x));
+
+  // Fetch US stocks via Finnhub (parallel, max 5 at a time)
+  for(let i=0;i<usSimple.length;i+=5){
+    const batch=usSimple.slice(i,i+5);
+    const proms=batch.map(x=>fhQuote(x.t).then(d=>{if(d){d.shortName=x.n||d.shortName;return d;}return null;}));
+    const res=await Promise.all(proms);
+    results.push(...res.filter(Boolean));
+    if(i+5<usSimple.length)await slp(200);
+  }
+
+  // Fetch rest via Yahoo proxy
+  if(rest.length>0){
+    for(let i=0;i<rest.length;i+=3){
+      const batch=rest.slice(i,i+3).map(x=>x.t);
+      try{const d=await yq(batch);results.push(...d);}catch(e){}
+      if(i+3<rest.length)await slp(500);
     }
   }
-  if(!rows.length)return;
-  // Batch insert in chunks of 50
-  for(let i=0;i<rows.length;i+=50){
-    const batch=rows.slice(i,i+50);
-    try{
-      await fetch(SB_URL+'/rest/v1/price_snapshots',{
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json',
-          'apikey':SB_KEY,
-          'Authorization':'Bearer '+SB_KEY,
-          'Prefer':'return=minimal'
-        },
-        body:JSON.stringify(batch),
-        signal:AbortSignal.timeout(10000)
-      });
-    }catch(e){console.warn('Supabase save error:',e)}
+
+  // Any US tickers that Finnhub missed, try Yahoo
+  const gotSymbols=new Set(results.map(r=>r.symbol));
+  const missed=usSimple.filter(x=>!gotSymbols.has(x.t));
+  if(missed.length>0){
+    for(let i=0;i<missed.length;i+=3){
+      const batch=missed.slice(i,i+3).map(x=>x.t);
+      try{const d=await yq(batch);results.push(...d);}catch(e){}
+      if(i+3<missed.length)await slp(500);
+    }
   }
-  console.log('[Supabase] Saved '+rows.length+' snapshots at '+new Date().toLocaleTimeString('it-IT'));
-  updateDbStatus(rows.length);
+
+  return results;
 }
 
-function updateDbStatus(count){
-  let el=document.getElementById('dbStatus');
-  if(!el){
-    el=document.createElement('div');
-    el.id='dbStatus';
-    el.style.cssText='position:fixed;bottom:10px;right:10px;background:var(--cd);border:1px solid var(--bd);border-radius:8px;padding:6px 12px;font-size:9px;color:var(--gn);font-family:"JetBrains Mono",monospace;z-index:200;opacity:.8;transition:opacity .3s';
-    document.body.appendChild(el);
-  }
-  el.textContent='💾 DB: '+count+' salvati · '+new Date().toLocaleTimeString('it-IT');
-  el.style.opacity='1';
-  setTimeout(()=>{el.style.opacity='.3'},4000);
+// Crypto via CoinGecko
+const CG_MAP={
+  'BTC-USD':'bitcoin','ETH-USD':'ethereum','SOL-USD':'solana','XRP-USD':'ripple',
+  'ADA-USD':'cardano','DOGE-USD':'dogecoin','DOT-USD':'polkadot','AVAX-USD':'avalanche-2',
+  'MATIC-USD':'matic-network','LINK-USD':'chainlink','UNI-USD':'uniswap','ATOM-USD':'cosmos'
+};
+
+async function fetchCrypto(){
+  const ids=CRYL.map(c=>CG_MAP[c.t]).filter(Boolean);
+  const data=await cgPrices(ids);
+  return CRYL.map(c=>{
+    const cgId=CG_MAP[c.t];
+    const d=data[cgId];
+    if(d)return{symbol:c.t,shortName:c.n,regularMarketPrice:d.usd,regularMarketChangePercent:d.usd_24h_change||0,quoteType:'CRYPTOCURRENCY'};
+    return null;
+  }).filter(Boolean);
 }
 
-// ═══════════ DATA ═══════════
-const D={stocks:[],etfs:[],bonds:[],commodities:[],crypto:[],currencies:[]};
+function showSts(msg,err=false){const s=document.getElementById('sts');if(!s)return;s.className='sts on'+(err?' err':'');document.getElementById('stsTxt').textContent=msg;}
+function hideSts(){const s=document.getElementById('sts');if(s)s.classList.remove('on');}
 
-// ═══════════ LOCALSTORAGE PERSISTENCE ═══════════
-const LS_KEY='finscope_custom_';
-function saveCustomAssets(key){
-  const dk=DK(key);
-  const defaultSyms=new Set((ALL_DB[key]||ALL_DB[dk]||[]).map(a=>a.s||a.p||a.y));
-  const custom=D[dk].filter(d=>{const sym=d.sym||d.pair;return sym&&!defaultSyms.has(sym)});
-  if(custom.length>0)localStorage.setItem(LS_KEY+dk,JSON.stringify(custom));
-  else localStorage.removeItem(LS_KEY+dk);
-}
-function loadCustomAssets(key){
-  const dk=DK(key);
-  try{const raw=localStorage.getItem(LS_KEY+dk);if(raw)return JSON.parse(raw)}catch(e){}
-  return[];
-}
-async function loadAndMergeCustom(dk,tblId,isFX){
-  const custom=loadCustomAssets(dk);
-  if(!custom.length)return;
-  const key=dk==='commodities'?'comm':dk;
-  for(const c of custom){
-    const existing=D[dk].find(d=>(d.sym||d.pair)===(c.sym||c.pair));
-    if(existing)continue;
-    // Refresh quote for custom asset
-    const sym=c.sym||c.pair;
-    const q=await yhQuote(sym)||await fmpQuote(sym);
-    if(q){Object.assign(c,q)}
-    c.custom=true;
-    D[dk].unshift(c);
-  }
-  buildTable(tblId,D[dk],key,isFX);
-}
-
-// ═══════════ YAHOO → TRADINGVIEW SYMBOL MAP ═══════════
-// For data tables (ticker tape, market overview) — futures OK
-function toTV(s){
-  const m={'GC=F':'COMEX:GC1!','SI=F':'COMEX:SI1!','CL=F':'NYMEX:CL1!','BZ=F':'NYMEX:BB1!','NG=F':'NYMEX:NG1!','HG=F':'COMEX:HG1!','PL=F':'NYMEX:PL1!','PA=F':'NYMEX:PA1!','ZW=F':'CBOT:ZW1!','ZC=F':'CBOT:ZC1!','ZS=F':'CBOT:ZS1!','CC=F':'ICEUS:CC1!','KC=F':'ICEUS:KC1!','CT=F':'ICEUS:CT1!','SB=F':'ICEUS:SB1!','OJ=F':'ICEUS:OJ1!','LE=F':'CME:LE1!','HE=F':'CME:HE1!','BTC-USD':'BITSTAMP:BTCUSD','ETH-USD':'BITSTAMP:ETHUSD','XRP-USD':'BITSTAMP:XRPUSD','SOL-USD':'COINBASE:SOLUSD','ADA-USD':'BITSTAMP:ADAUSD','DOGE-USD':'BINANCE:DOGEUSD','DOT-USD':'BITSTAMP:DOTUSD','AVAX-USD':'COINBASE:AVAXUSD','MATIC-USD':'COINBASE:MATICUSD','LINK-USD':'COINBASE:LINKUSD','BNB-USD':'BINANCE:BNBUSD','UNI-USD':'COINBASE:UNIUSD'};
-  if(m[s])return m[s];
-  if(s.includes('=X'))return'FX:'+s.replace('=X','');
-  if(s.startsWith('^'))return'TVC:'+s.substring(1);
-  if(s.endsWith('.MI'))return'MIL:'+s.replace('.MI','');
-  if(s.endsWith('.DE'))return'XETR:'+s.replace('.DE','');
-  if(s.endsWith('.PA'))return'EURONEXT:'+s.replace('.PA','');
-  if(s.endsWith('.L'))return'LSE:'+s.replace('.L','');
-  if(s.endsWith('.SW'))return'SIX:'+s.replace('.SW','');
-  if(s.endsWith('.T'))return'TSE:'+s.replace('.T','');
-  if(s.endsWith('.HK'))return'HKEX:'+s.replace('.HK','');
-  if(s.endsWith('.NS'))return'NSE:'+s.replace('.NS','');
-  if(s.endsWith('.ST'))return'OMXSTO:'+s.replace('.ST','').replace('-','_');
-  return s;
-}
-// For chart widgets — uses TVC: for commodities (futures blocked in free embeds)
-function toTVChart(s){
-  const cm={'GC=F':'TVC:GOLD','SI=F':'TVC:SILVER','CL=F':'TVC:USOIL','BZ=F':'TVC:UKOIL','NG=F':'PEPPERSTONE:NATGAS','HG=F':'TVC:COPPER','PL=F':'TVC:PLATINUM','PA=F':'TVC:PALLADIUM','ZW=F':'CBOT:ZW1!','ZC=F':'CBOT:ZC1!','ZS=F':'CBOT:ZS1!','CC=F':'TVC:COCOA','KC=F':'TVC:COFFEE','CT=F':'ICEUS:CT1!','SB=F':'TVC:SUGAR','OJ=F':'ICEUS:OJ1!','LE=F':'CME:LE1!','HE=F':'CME:HE1!'};
-  if(cm[s])return cm[s];
-  return toTV(s);
-}
-
-// ═══════════ TRADINGVIEW WIDGETS ═══════════
-function tvWidget(containerId,widgetType,config){
-  const el=document.getElementById(containerId);if(!el)return;
-  el.innerHTML='';
-  const wrap=document.createElement('div');
-  wrap.className='tradingview-widget-container';
-  wrap.style.cssText='width:100%;height:100%';
-  const inner=document.createElement('div');
-  inner.className='tradingview-widget-container__widget';
-  inner.style.cssText='width:100%;height:100%';
-  wrap.appendChild(inner);
-  const sc=document.createElement('script');
-  sc.type='text/javascript';
-  sc.src='https://s3.tradingview.com/external-embedding/'+widgetType+'.js';
-  sc.async=true;
-  sc.textContent=JSON.stringify(config);
-  wrap.appendChild(sc);
-  el.appendChild(wrap);
-}
-
-// Symbol Overview — for Apple section
-function tvSymbolOverview(id,sym){
-  const tvSym=toTVChart(sym);
-  tvWidget(id,'embed-widget-symbol-overview',{
-    symbols:[[tvSym,tvSym]],
-    chartOnly:false,width:'100%',height:'100%',
-    locale:'it',colorTheme:'dark',autosize:true,
-    showVolume:true,showMA:true,
-    hideDateRanges:false,hideMarketStatus:false,hideSymbolLogo:false,
-    scalePosition:'right',scaleMode:'Normal',
-    fontFamily:'Outfit, sans-serif',fontSize:'10',
-    noTimeScale:false,valuesTracking:'1',changeMode:'price-and-percent',
-    chartType:'area',
-    lineColor:'#7c5cfc',topColor:'rgba(124,92,252,0.3)',bottomColor:'rgba(124,92,252,0.02)',
-    lineWidth:2,
-    backgroundColor:'rgba(8,9,13,1)',gridLineColor:'rgba(26,29,46,0.6)'
-  });
-}
-
-// Advanced Chart — direct iframe to TradingView chart (tradingview.com/chart/)
-// Works for ALL symbols including futures/commodities
-function tvAdvancedChart(id,sym){
-  const tvSym=toTVChart(sym);
-  const el=document.getElementById(id);if(!el)return;
-  el.innerHTML='';
-  const iframe=document.createElement('iframe');
-  iframe.src='https://s.tradingview.com/widgetembed/?frameElementId='+id
-    +'&symbol='+encodeURIComponent(tvSym)
-    +'&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=0'
-    +'&toolbarbg=0f1118&theme=dark&style=1'
-    +'&timezone=Europe%2FRome&withdateranges=1'
-    +'&showpopupbutton=0&studies=[]&locale=it'
-    +'&utm_source=www.tradingview.com&utm_medium=widget_new&utm_campaign=chart';
-  iframe.style.cssText='width:100%;height:100%;border:none;border-radius:8px';
-  iframe.allow='fullscreen';
-  iframe.loading='lazy';
-  el.appendChild(iframe);
-}
-
-// All charts use Symbol Overview — universal support
-
-// Market Overview widget
-function tvMarketOverview(id,tabs){
-  tvWidget(id,'embed-widget-market-overview',{
-    colorTheme:'dark',dateRange:'1D',showChart:true,locale:'it',
-    largeChartUrl:'',isTransparent:true,showSymbolLogo:true,
-    showFloatingTooltip:true,width:'100%',height:'100%',
-    plotLineColorGrowing:'rgba(124,92,252,1)',plotLineColorFalling:'rgba(239,68,68,1)',
-    gridLineColor:'rgba(26,29,46,0.4)',scaleFontColor:'rgba(80,88,120,1)',
-    belowLineFillColorGrowing:'rgba(124,92,252,0.12)',belowLineFillColorFalling:'rgba(239,68,68,0.08)',
-    belowLineFillColorGrowingBottom:'rgba(124,92,252,0)',belowLineFillColorFallingBottom:'rgba(239,68,68,0)',
-    symbolActiveColor:'rgba(124,92,252,0.12)',
-    tabs
-  });
-}
-
-function initWidgets(){
-  // TICKER TAPE
-  tvWidget('tickerTape','embed-widget-ticker-tape',{
-    symbols:[{proName:'FOREXCOM:SPXUSD',title:'S&P 500'},{proName:'FOREXCOM:NSXUSD',title:'Nasdaq'},{proName:'INDEX:DEU40',title:'DAX'},{proName:'MIL:FTSEMIB',title:'FTSE MIB'},{proName:'COMEX:GC1!',title:'Oro'},{proName:'NYMEX:CL1!',title:'Petrolio'},{proName:'FX:EURUSD',title:'EUR/USD'},{proName:'BITSTAMP:BTCUSD',title:'Bitcoin'},{proName:'BITSTAMP:ETHUSD',title:'Ethereum'},{proName:'NASDAQ:AAPL',title:'Apple'},{proName:'NASDAQ:NVDA',title:'NVIDIA'},{proName:'NASDAQ:TSLA',title:'Tesla'}],
-    showSymbolDescription:true,colorTheme:'dark',isTransparent:true,displayMode:'adaptive',locale:'it'
-  });
-
-  // OVERVIEW MARKET WIDGETS — top 2 keep MarketOverview
-  tvMarketOverview('tv-mkt-us',[{title:'USA',symbols:[{s:'FOREXCOM:SPXUSD',d:'S&P 500'},{s:'FOREXCOM:NSXUSD',d:'Nasdaq 100'},{s:'FOREXCOM:DJI',d:'Dow Jones'},{s:'AMEX:IWM',d:'Russell 2000'}],originalTitle:'Indici USA'}]);
-  tvMarketOverview('tv-mkt-eu',[{title:'Europa',symbols:[{s:'INDEX:DEU40',d:'DAX'},{s:'MIL:FTSEMIB',d:'FTSE MIB'},{s:'INDEX:CAC40',d:'CAC 40'},{s:'EURONEXT:N100',d:'Euronext 100'},{s:'INDEX:UKX',d:'FTSE 100'}],originalTitle:'Indici EU'}]);
-
-  // Bottom 3 — editable iframe charts with saved symbols
-  const ovCrypto=loadOvSym('crypto','BITSTAMP:BTCUSD');
-  const ovComm=loadOvSym('comm','TVC:GOLD');
-  const ovFx=loadOvSym('fx','FX:EURUSD');
-  document.getElementById('ov-sym-crypto').value=ovCrypto;
-  document.getElementById('ov-sym-comm').value=ovComm;
-  document.getElementById('ov-sym-fx').value=ovFx;
-  tvAdvancedChartDirect('tv-mkt-crypto',ovCrypto);
-  tvAdvancedChartDirect('tv-mkt-comm',ovComm);
-  tvAdvancedChartDirect('tv-mkt-fx',ovFx);
-
-  // SCREENER
-  tvWidget('tv-screener','embed-widget-screener',{
-    width:'100%',height:'100%',defaultColumn:'overview',defaultScreen:'most_capitalized',
-    market:'italy',showToolbar:true,colorTheme:'dark',locale:'it',isTransparent:true
-  });
-
-  // NEWS
-  tvWidget('tv-news','embed-widget-timeline',{
-    feedMode:'market',market:'stock',colorTheme:'dark',isTransparent:true,
-    displayMode:'regular',width:'100%',height:'100%',locale:'it'
-  });
-  tvWidget('tv-news-crypto','embed-widget-timeline',{
-    feedMode:'market',market:'crypto',colorTheme:'dark',isTransparent:true,
-    displayMode:'regular',width:'100%',height:'100%',locale:'it'
-  });
-
-  // ECONOMIC CALENDAR
-  tvWidget('tv-calendar','embed-widget-events',{
-    colorTheme:'dark',isTransparent:true,width:'100%',height:'100%',locale:'it',
-    importanceFilter:'-1,0,1'
-  });
-
-  // DEFAULT CHARTS — advanced candlestick for all sections
-  tvAdvancedChart('tv-chart-stocks','AAPL');
-  tvAdvancedChart('tv-chart-etfs','SPY');
-  tvAdvancedChart('tv-chart-bonds','TLT');
-  // Commodities: use saved override or default
-  const commDefault=getSymOverride('GC=F')||toTVChart('GC=F');
-  document.getElementById('comm-chart-sym').value=commDefault;
-  tvAdvancedChartDirect('tv-chart-comm',commDefault);
-  tvAdvancedChart('tv-chart-crypto','BTC-USD');
-  tvAdvancedChart('tv-chart-fx','EURUSD=X');
-  tvSymbolOverview('tv-chart-apple','AAPL');
-}
-
-// ═══════════ API FUNCTIONS ═══════════
-const fmt=(n,d=2)=>n!=null?Number(n).toLocaleString('it-IT',{minimumFractionDigits:d,maximumFractionDigits:d}):'&#x2014;';
-const pf=n=>n!=null?(n>=0?'+':'')+fmt(n)+'%':'&#x2014;';
-const srcBadge=s=>`<span class="sr ${s==='Finnhub'?'s-fh':s==='FMP'?'s-fp':s==='Yahoo'?'s-yh':'s-na'}">${s||'N/A'}</span>`;
-
-// Finnhub
-let fhOk=true,fhN=0,fhT=Date.now()+60000;
-async function fhQuote(s){
-  if(!fhOk)return null;if(Date.now()>fhT){fhN=0;fhT=Date.now()+60000}if(fhN>=28)return null;fhN++;
-  try{const r=await fetch(`${FH}/quote?symbol=${encodeURIComponent(s)}&token=${FK}`,{signal:AbortSignal.timeout(6000)});if(r.status===401||r.status===403){fhOk=false;return null}if(!r.ok)return null;const d=await r.json();if(d?.c>0)return{p:d.c,ch:d.dp||0,o:d.o,h:d.h,l:d.l,cur:'USD',src:'Finnhub'}}catch(e){}return null}
-async function fhSearch(q){
-  if(!fhOk)return[];if(Date.now()>fhT){fhN=0;fhT=Date.now()+60000}if(fhN>=28)return[];fhN++;
-  try{const r=await fetch(`${FH}/search?q=${encodeURIComponent(q)}&token=${FK}`,{signal:AbortSignal.timeout(5000)});return(await r.json())?.result?.slice(0,10)||[]}catch(e){return[]}}
-
-// FMP
-async function fmpQuote(sym){
-  try{const r=await fetch(`https://financialmodelingprep.com/api/v3/quote/${encodeURIComponent(sym)}?apikey=${FMP_KEY}`,{signal:AbortSignal.timeout(7000)});
-  if(!r.ok)return null;const d=await r.json();
-  if(Array.isArray(d)&&d[0]){const q=d[0];const p=q.price||0;if(p>0)return{p,ch:q.changesPercentage||0,o:q.open||0,h:q.dayHigh||0,l:q.dayLow||0,cur:q.currency||'',src:'FMP'}}}catch(e){}return null}
-
-// Yahoo via CORS proxy
-const PX=[u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u),u=>'https://corsproxy.io/?url='+encodeURIComponent(u),u=>'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(u),u=>'https://cors-anywhere.herokuapp.com/'+u,u=>'https://thingproxy.freeboard.io/fetch/'+u,u=>'https://cors.bridged.cc/'+u];
-let pxi=0;
-async function yhQuote(s){
-  const urls=['https://query1.finance.yahoo.com/v8/finance/chart/'+encodeURIComponent(s)+'?interval=1d&range=5d','https://query2.finance.yahoo.com/v8/finance/chart/'+encodeURIComponent(s)+'?interval=1d&range=5d'];
-  const url=urls[Math.random()>0.5?1:0];
-  for(let i=0;i<PX.length;i++){
-    const idx=(pxi+i)%PX.length;
-    try{const res=await fetch(PX[idx](url),{signal:AbortSignal.timeout(8000)});if(!res.ok)continue;
-    const data=await res.json(),r=data?.chart?.result?.[0];
-    if(r){pxi=idx;const m=r.meta||{},q=r.indicators?.quote?.[0]||{},cl=(q.close||[]).filter(v=>v!=null);
-    const p=m.regularMarketPrice||cl[cl.length-1]||0,pc=m.chartPreviousClose||cl[cl.length-2]||p;
-    if(p>0)return{p:+p.toFixed(4),ch:pc?+((p-pc)/pc*100).toFixed(2):0,o:+(m.regularMarketOpen||0).toFixed(4),h:+(m.regularMarketDayHigh||0).toFixed(4),l:+(m.regularMarketDayLow||0).toFixed(4),cur:m.currency||'',src:'Yahoo'}}}catch(e){}}
-  return null;
-}
-
-// MASTER QUOTE — try Finnhub first (fast), then FMP, then Yahoo
-async function getQuote(sym,fhSym){
-  // Finnhub for US stocks
-  if(fhSym!==''&&fhSym&&fhOk){const q=await fhQuote(fhSym);if(q)return q}
-  // FMP
-  const fmp=await fmpQuote(sym);if(fmp)return fmp;
-  // Yahoo
-  const yh=await yhQuote(sym);if(yh)return yh;
-  return null;
-}
-
-// Signal
-function getSignal(d){
-  if(!d||d.p<=0)return{label:'N/D',cls:'sg-wait'};
-  const ch=d.ch||0;const range=(d.h>0&&d.l>0&&d.h!==d.l)?(d.p-d.l)/(d.h-d.l):0.5;
-  let score=0;
-  if(ch<=-3)score+=35;else if(ch<=-1.5)score+=20;else if(ch<=-0.5)score+=10;
-  else if(ch>=3)score-=30;else if(ch>=1.5)score-=15;else if(ch>=0.5)score-=5;
-  if(range<0.2)score+=20;else if(range<0.35)score+=10;
-  else if(range>0.85)score-=20;else if(range>0.7)score-=10;
-  if(score>=20)return{label:'COMPRA',cls:'sg-buy',score};
-  if(score>=8)return{label:'COMPRA &#x2197;',cls:'sg-buy',score};
-  if(score<=-20)return{label:'VENDI',cls:'sg-sell',score};
-  if(score<=-8)return{label:'VENDI &#x2198;',cls:'sg-sell',score};
-  if(Math.abs(ch)<0.3)return{label:'ATTENDI',cls:'sg-wait',score};
-  return{label:'TIENI',cls:'sg-hold',score};
-}
-
-// ═══════════ ASSET DATABASES ═══════════
-const A_STOCKS=[
-{s:'AAPL',n:'Apple',r:'US'},{s:'MSFT',n:'Microsoft',r:'US'},{s:'GOOGL',n:'Alphabet',r:'US'},{s:'AMZN',n:'Amazon',r:'US'},{s:'NVDA',n:'NVIDIA',r:'US'},{s:'META',n:'Meta',r:'US'},{s:'TSLA',n:'Tesla',r:'US'},{s:'NFLX',n:'Netflix',r:'US'},{s:'AMD',n:'AMD',r:'US'},{s:'JPM',n:'JPMorgan',r:'US'},{s:'V',n:'Visa',r:'US'},{s:'DIS',n:'Disney',r:'US'},
-{s:'ENI.MI',n:'Eni',r:'IT',fh:''},{s:'ENEL.MI',n:'Enel',r:'IT',fh:''},{s:'ISP.MI',n:'Intesa Sanpaolo',r:'IT',fh:''},{s:'UCG.MI',n:'UniCredit',r:'IT',fh:''},{s:'STLAM.MI',n:'Stellantis',r:'IT',fh:''},{s:'RACE',n:'Ferrari',r:'IT'},
-{s:'BMW.DE',n:'BMW',r:'DE',fh:''},{s:'VOW3.DE',n:'Volkswagen',r:'DE',fh:''},{s:'MBG.DE',n:'Mercedes-Benz',r:'DE',fh:''},{s:'P911.DE',n:'Porsche AG',r:'DE',fh:''},{s:'AML.L',n:'Aston Martin',r:'UK',fh:''},{s:'STLA',n:'Stellantis NL',r:'NL'},
-{s:'MC.PA',n:'LVMH',r:'FR',fh:''},{s:'RMS.PA',n:'Hermes',r:'FR',fh:''},{s:'ASML',n:'ASML',r:'NL'},{s:'SAP',n:'SAP',r:'DE'},{s:'BABA',n:'Alibaba',r:'CN'},{s:'TSM',n:'TSMC',r:'TW'}
-];
-const A_ETFS=[
-{s:'SPY',n:'SPDR S&P 500'},{s:'QQQ',n:'Invesco Nasdaq 100'},{s:'VTI',n:'Vanguard Total Stock'},{s:'VOO',n:'Vanguard S&P 500'},{s:'GLD',n:'SPDR Gold'},{s:'SLV',n:'iShares Silver'},{s:'ARKK',n:'ARK Innovation'},{s:'IBIT',n:'iShares Bitcoin Trust'},{s:'ETHE',n:'Grayscale Ethereum'},
-{s:'VWCE.DE',n:'Vanguard FTSE All-World',fh:''},{s:'SWDA.L',n:'iShares MSCI World',fh:''},{s:'CSPX.L',n:'iShares S&P 500 EUR',fh:''}
-];
-const A_BONDS=[
-{s:'TLT',n:'iShares 20+ Year Bond'},{s:'BND',n:'Vanguard Total Bond'},{s:'LQD',n:'iShares IG Corporate'},{s:'HYG',n:'iShares High Yield'},{s:'AGG',n:'iShares Core US Agg Bond'},{s:'SHY',n:'iShares 1-3Y Treasury'},{s:'TIPS',n:'iShares TIPS Bond'},{s:'EMB',n:'iShares EM Bond'}
-];
-const A_COMM=[
-{s:'GC=F',n:'Oro',fh:''},{s:'SI=F',n:'Argento',fh:''},{s:'CL=F',n:'Petrolio WTI',fh:''},{s:'BZ=F',n:'Petrolio Brent',fh:''},{s:'NG=F',n:'Gas Naturale',fh:''},{s:'HG=F',n:'Rame',fh:''},{s:'PL=F',n:'Platino',fh:''},{s:'ZW=F',n:'Grano',fh:''},{s:'CC=F',n:'Cacao',fh:''},{s:'KC=F',n:'Caffe',fh:''}
-];
-const A_CRYPTO=[
-{s:'BTC-USD',n:'Bitcoin',fh:''},{s:'ETH-USD',n:'Ethereum',fh:''},{s:'XRP-USD',n:'XRP',fh:''},{s:'SOL-USD',n:'Solana',fh:''},{s:'ADA-USD',n:'Cardano',fh:''},{s:'DOGE-USD',n:'Dogecoin',fh:''},{s:'DOT-USD',n:'Polkadot',fh:''},{s:'AVAX-USD',n:'Avalanche',fh:''},{s:'LINK-USD',n:'Chainlink',fh:''},{s:'BNB-USD',n:'BNB',fh:''},{s:'UNI-USD',n:'Uniswap',fh:''}
-];
-const A_FX=[
-{p:'EUR/USD',y:'EURUSD=X'},{p:'EUR/GBP',y:'EURGBP=X'},{p:'EUR/CHF',y:'EURCHF=X'},{p:'EUR/JPY',y:'EURJPY=X'},{p:'USD/JPY',y:'USDJPY=X'},{p:'GBP/USD',y:'GBPUSD=X'},{p:'USD/CHF',y:'USDCHF=X'},{p:'AUD/USD',y:'AUDUSD=X'},{p:'EUR/TRY',y:'EURTRY=X'},{p:'BTC/USD',y:'BTC-USD'},{p:'ETH/USD',y:'ETH-USD'}
-];
-const ALL_DB={stocks:A_STOCKS,etfs:A_ETFS,bonds:A_BONDS,comm:A_COMM,crypto:A_CRYPTO,currencies:A_FX};
-const DK=k=>k==='comm'?'commodities':k;
-
-// ═══════════ SORT & BUILD TABLE ═══════════
-let currentSort={};
-
-function initSortButtons(key){
-  const srtEl=document.getElementById('srt-'+key);
-  if(!srtEl)return;
-  const btns=[
-    {label:'Migliori ▲',sort:'best',icon:'🟢'},
-    {label:'Peggiori ▼',sort:'worst',icon:'🔴'},
-    {label:'Prezzo ▲',sort:'priceHigh',icon:'💰'},
-    {label:'Prezzo ▼',sort:'priceLow',icon:'📉'},
-    {label:'Default',sort:'default',icon:'↩'}
-  ];
-  srtEl.innerHTML=btns.map(b=>`<button onclick="sortTable('${key}','${b.sort}',this)" class="${currentSort[key]===b.sort?'on':''}">${b.label}</button>`).join('');
-}
-
-function sortTable(key,sortType,btn){
-  const dk=DK(key);
-  const isFX=key==='currencies';
-  const tblMap={stocks:'tbl-stocks',etfs:'tbl-etfs',bonds:'tbl-bonds',comm:'tbl-comm',commodities:'tbl-comm',crypto:'tbl-crypto',currencies:'tbl-fx'};
-  const containerId=tblMap[key]||tblMap[dk];
-  
-  if(currentSort[key]===sortType){currentSort[key]='default';sortType='default';}
-  else{currentSort[key]=sortType;}
-  
-  // Update button states
-  const srtEl=document.getElementById('srt-'+key);
-  if(srtEl)srtEl.querySelectorAll('button').forEach(b=>b.classList.remove('on'));
-  if(btn&&sortType!=='default')btn.classList.add('on');
-  
-  const data=[...D[dk]];
-  switch(sortType){
-    case'best':data.sort((a,b)=>(b.ch||0)-(a.ch||0));break;
-    case'worst':data.sort((a,b)=>(a.ch||0)-(b.ch||0));break;
-    case'priceHigh':data.sort((a,b)=>(b.p||0)-(a.p||0));break;
-    case'priceLow':data.sort((a,b)=>(a.p||0)-(b.p||0));break;
-    default:break;// keep original order
-  }
-  
-  // Rebuild with sorted data but keep D[dk] reference
-  if(sortType!=='default')D[dk]=[...data];
-  buildTable(containerId,D[dk],key,isFX);
-  initSortButtons(key);
-}
-
-function buildTable(containerId,data,key,isFX){
-  const el=document.getElementById(containerId);if(!el)return;
-  let h='<div class="tw"><table><thead><tr><th>Ticker</th><th>Nome</th><th>Prezzo</th><th>Val.</th><th>Var %</th><th>Segnale</th><th>Src</th></tr></thead><tbody>';
-  data.forEach((d,i)=>{
-    const dp=d.p<10?4:2;const sig=getSignal(d);
-    const sym=isFX?d.pair:d.sym;const name=isFX?'':d.name||'';
-    h+=`<tr onclick="${isFX?'selFX':'selAsset'}('${key}',${i})" id="${key}_r${i}" data-sym="${(sym||'').toLowerCase()}" data-name="${(name||'').toLowerCase()}">`;
-    h+=`<td><span class="tk">${sym}</span></td><td class="nm2">${name}</td>`;
-    h+=`<td class="mono">${d.p>0?fmt(d.p,dp):'&#x2014;'}</td>`;
-    h+=`<td style="color:var(--mt);font-size:9px">${d.cur||''}</td>`;
-    h+=`<td class="${(d.ch||0)>=0?'po':'ne'} mono">${d.p>0?pf(d.ch):'&#x2014;'}</td>`;
-    h+=`<td><span class="${sig.cls}">${sig.label}</span></td>`;
-    h+=`<td>${srcBadge(d.src)}</td></tr>`;
-  });
-  h+='</tbody></table></div>';
-  el.innerHTML=h;
-  initSortButtons(key);
-}
-
-function filterTable(key){
-  const q=document.getElementById('search-'+key)?.value.toLowerCase().trim()||'';
-  const tblMap={stocks:'tbl-stocks',etfs:'tbl-etfs',bonds:'tbl-bonds',comm:'tbl-comm',crypto:'tbl-crypto',currencies:'tbl-fx'};
-  const el=document.getElementById(tblMap[key]);if(!el)return;
-  const rows=el.querySelectorAll('tbody tr');
-  rows.forEach(tr=>{
-    const sym=tr.dataset.sym||'';const name=tr.dataset.name||'';
-    tr.style.display=(!q||sym.includes(q)||name.includes(q))?'':'none';
-  });
-}
-
-function selAsset(key,idx){
-  const data=D[DK(key)];const d=data[idx];if(!d)return;
-  document.querySelectorAll(`[id^="${key}_r"]`).forEach(r=>r.classList.remove('sel'));
-  document.getElementById(key+'_r'+idx)?.classList.add('sel');
-  if(key==='comm'){
-    // Check for saved symbol override
-    const saved=getSymOverride(d.sym);
-    const tvSym=saved||toTVChart(d.sym);
-    const input=document.getElementById('comm-chart-sym');
-    if(input)input.value=tvSym;
-    tvAdvancedChartDirect('tv-chart-comm',tvSym);
-  }else{
-    tvAdvancedChart('tv-chart-'+key,d.sym);
-  }
-}
-
-function selFX(key,idx){
-  const d=D.currencies[idx];if(!d)return;
-  document.querySelectorAll('[id^="currencies_r"]').forEach(r=>r.classList.remove('sel'));
-  document.getElementById('currencies_r'+idx)?.classList.add('sel');
-  tvAdvancedChart('tv-chart-fx',d.ySym||d.pair.replace('/','')+'=X');
-}
-
-// ═══════════ SYMBOL OVERRIDES ═══════════
-const SYM_OV_KEY='finscope_sym_override_';
-
-function getSymOverride(yahooSym){
-  try{return localStorage.getItem(SYM_OV_KEY+yahooSym)||null}catch(e){return null}
-}
-function setSymOverride(yahooSym,tvSym){
-  try{localStorage.setItem(SYM_OV_KEY+yahooSym,tvSym)}catch(e){}
-}
-
-// When user edits the commodity chart symbol input and presses Enter
-function overrideCommChart(){
-  const input=document.getElementById('comm-chart-sym');
-  if(!input)return;
-  const tvSym=input.value.trim();
-  if(!tvSym)return;
-  // Find which commodity is currently selected
-  const selRow=document.querySelector('[id^="comm_r"].sel');
-  if(selRow){
-    const idx=parseInt(selRow.id.replace('comm_r',''));
-    const d=D.commodities[idx];
-    if(d)setSymOverride(d.sym,tvSym);
-  }
-  tvAdvancedChartDirect('tv-chart-comm',tvSym);
-}
-
-// Direct chart load with exact TradingView symbol (no mapping)
-function tvAdvancedChartDirect(id,tvSym){
-  const el=document.getElementById(id);if(!el)return;
-  el.innerHTML='';
-  const iframe=document.createElement('iframe');
-  iframe.src='https://s.tradingview.com/widgetembed/?frameElementId='+id
-    +'&symbol='+encodeURIComponent(tvSym)
-    +'&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=0'
-    +'&toolbarbg=0f1118&theme=dark&style=1'
-    +'&timezone=Europe%2FRome&withdateranges=1'
-    +'&showpopupbutton=0&studies=[]&locale=it'
-    +'&utm_source=www.tradingview.com&utm_medium=widget_new&utm_campaign=chart';
-  iframe.style.cssText='width:100%;height:100%;border:none;border-radius:8px';
-  iframe.allow='fullscreen';
-  iframe.loading='lazy';
-  el.appendChild(iframe);
-}
-
-// Overview widgets — save/load custom symbols
-const OV_SYM_KEY='finscope_ov_sym_';
-function saveOvSym(key){
-  const input=document.getElementById('ov-sym-'+key);
-  if(!input)return;
-  const sym=input.value.trim();
-  if(!sym)return;
-  localStorage.setItem(OV_SYM_KEY+key,sym);
-  tvAdvancedChartDirect('tv-mkt-'+key,sym);
-}
-function loadOvSym(key,defaultSym){
-  try{return localStorage.getItem(OV_SYM_KEY+key)||defaultSym}catch(e){return defaultSym}
-}
-
-// ═══════════ FETCH ALL ═══════════
-async function bat(items,fn,size=3){
-  const o=[];
-  for(let i=0;i<items.length;i+=size){
-    const b=items.slice(i,i+size);
-    const r=await Promise.allSettled(b.map(fn));
-    o.push(...r.map(x=>x.status==='fulfilled'?x.value:null));
-  }
-  return o.filter(Boolean);
-}
-
-let firstLoad=true;
 async function fetchAll(){
-  if(firstLoad){
-    // STOCKS
-    D.stocks=await bat(A_STOCKS,async a=>{
-      const fhS=a.fh!==undefined?a.fh:a.s;
-      const q=await getQuote(a.s,fhS);
-      return q?{sym:a.s,name:a.n,...q}:{sym:a.s,name:a.n,p:0,ch:0,o:0,h:0,l:0,cur:'',src:'N/A'};
-    });
-    buildTable('tbl-stocks',D.stocks,'stocks');
+  showSts('Caricamento azioni...');
+  let st=[],et=[],bo=[],co=[],cr=[],fx=[];
+  try{
+    st=await fetchList(STK,'stocks');showSts(`Azioni: ${st.length}/${STK.length}. ETF...`);
+    et=await fetchList(ETFL,'etf');showSts(`ETF: ${et.length}. Obbligazioni...`);
+    bo=await fetchList(BNDL,'bonds');showSts(`Bond: ${bo.length}. Materie Prime...`);
+    co=await fetchList(COML,'comm');showSts(`Commodities: ${co.length}. Crypto...`);
+    cr=await fetchCrypto();if(cr.length===0)cr=await fetchList(CRYL,'crypto');showSts(`Crypto: ${cr.length}. Forex...`);
+    fx=await fetchList(FXLL,'fx');showSts(`Tutto caricato! Rendering...`);
+  }catch(e){showSts('Errore: '+e.message,true);}
 
-    // ETFs
-    D.etfs=await bat(A_ETFS,async a=>{
-      const fhS=a.fh!==undefined?a.fh:a.s;
-      const q=await getQuote(a.s,fhS);
-      return q?{sym:a.s,name:a.n,...q}:{sym:a.s,name:a.n,p:0,ch:0,o:0,h:0,l:0,cur:'',src:'N/A'};
-    });
-    buildTable('tbl-etfs',D.etfs,'etfs');
+  [...st,...et,...bo,...co,...cr,...fx].forEach(q=>{if(q?.symbol)AP[q.symbol]=q;});
+  rS([...st.slice(0,4),...cr.slice(0,2),co[0]].filter(Boolean));
+  rT('tA',st,true);rT('tE',et);rT('tB',bo);rT('tC',co);rT('tCr',cr);rFx(fx);
+  rCS(cr.slice(0,6));rDn(st,et,cr,co,bo);rMv([...st,...et,...cr]);rPf([...st,...et,...cr]);
 
-    // BONDS
-    D.bonds=await bat(A_BONDS,async a=>{
-      const q=await getQuote(a.s,'');
-      return q?{sym:a.s,name:a.n,...q}:{sym:a.s,name:a.n,p:0,ch:0,o:0,h:0,l:0,cur:'',src:'N/A'};
-    });
-    buildTable('tbl-bonds',D.bonds,'bonds');
+  document.getElementById('clk').textContent=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})+' · Live';
+  setTimeout(hideSts,2000);
+}
 
-    // COMMODITIES
-    D.commodities=await bat(A_COMM,async a=>{
-      const q=await yhQuote(a.s)||await fmpQuote(a.s);
-      return q?{sym:a.s,name:a.n,...q}:{sym:a.s,name:a.n,p:0,ch:0,o:0,h:0,l:0,cur:'',src:'N/A'};
-    });
-    buildTable('tbl-comm',D.commodities,'comm');
+// ===== RENDERERS =====
+const fm=(n,d=2)=>n==null||isNaN(n)?'—':Number(n).toLocaleString('it-IT',{minimumFractionDigits:d,maximumFractionDigits:d});
+const cc=v=>v>=0?'var(--green)':'var(--red)';const cp=v=>v>=0?'+':'';
 
-    // CRYPTO
-    D.crypto=await bat(A_CRYPTO,async a=>{
-      const q=await yhQuote(a.s)||await fmpQuote(a.s);
-      return q?{sym:a.s,name:a.n,...q}:{sym:a.s,name:a.n,p:0,ch:0,o:0,h:0,l:0,cur:'',src:'N/A'};
-    });
-    buildTable('tbl-crypto',D.crypto,'crypto');
+function spark(cv,chg){const ctx=cv.getContext('2d'),w=cv.parentElement.clientWidth||160,h=36;cv.width=w;cv.height=h;const pts=14,data=[];let v=50;for(let i=0;i<pts;i++){v+=(Math.random()-.45+(chg>0?.12:-.12))*5;v=Math.max(10,Math.min(90,v));data.push(v);}if(chg>0)data[pts-1]=Math.max(...data)*.95;else data[pts-1]=Math.min(...data)*1.05;const mn=Math.min(...data),mx=Math.max(...data),rg=mx-mn||1;const col=chg>=0?'#34d399':'#f87171';ctx.clearRect(0,0,w,h);const gd=ctx.createLinearGradient(0,0,0,h);gd.addColorStop(0,col+'20');gd.addColorStop(1,col+'00');ctx.beginPath();data.forEach((v,i)=>{const x=i/(pts-1)*w,y=h-((v-mn)/rg)*(h-4)-2;i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();ctx.fillStyle=gd;ctx.fill();ctx.beginPath();data.forEach((v,i)=>{const x=i/(pts-1)*w,y=h-((v-mn)/rg)*(h-4)-2;i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.stroke();}
 
-    // CURRENCIES
-    D.currencies=await bat(A_FX,async f=>{
-      const q=await yhQuote(f.y);
-      return q?{pair:f.p,ySym:f.y,...q}:{pair:f.p,ySym:f.y,p:0,ch:0,o:0,h:0,l:0,cur:'',src:'N/A'};
-    });
-    buildTable('tbl-fx',D.currencies,'currencies',true);
+function mkCard(q){const chg=q.regularMarketChangePercent||0,p=q.regularMarketPrice||0,n=q.shortName||q.symbol,tk=q.symbol.replace('-USD','').replace('=F','');const col=q.symbol.includes('-USD')?'#22d3ee':q.symbol.includes('=F')?'#fbbf24':'#38bdf8';const uid='s'+Math.random().toString(36).substr(2,6);return{html:`<div class="mk" onclick="oMod('${q.symbol}','${n.replace(/'/g,"\\'")}')"><div class="mk-h"><span class="mk-badge" style="background:${col}15;color:${col}">${tk.substring(0,5)}</span><div><div class="mk-n">${n.substring(0,18)}</div><div class="mk-t">${q.quoteType||''}</div></div><span class="mk-c" style="color:${cc(chg)}">${cp(chg)}${fm(chg)}%</span></div><div class="mk-ch"><canvas id="${uid}" height="36"></canvas></div><div class="mk-p">${p>999?'$'+fm(p,0):'$'+fm(p,p<1?4:2)}</div></div>`,uid,chg};}
 
-    // LOAD CUSTOM ASSETS from localStorage
-    await loadAndMergeCustom('stocks','tbl-stocks',false);
-    await loadAndMergeCustom('etfs','tbl-etfs',false);
-    await loadAndMergeCustom('bonds','tbl-bonds',false);
-    await loadAndMergeCustom('commodities','tbl-comm',false);
-    await loadAndMergeCustom('crypto','tbl-crypto',false);
-    await loadAndMergeCustom('currencies','tbl-fx',true);
+function rS(data){const el=document.getElementById('mS');if(!el)return;const cards=data.map(mkCard);el.innerHTML=cards.map(c=>c.html).join('');cards.forEach(c=>{const cv=document.getElementById(c.uid);if(cv)spark(cv,c.chg);});}
+function rCS(data){const el=document.getElementById('cS');if(!el)return;const cards=data.map(mkCard);el.innerHTML=cards.map(c=>c.html).join('');cards.forEach(c=>{const cv=document.getElementById(c.uid);if(cv)spark(cv,c.chg);});}
 
-    firstLoad=false;
+function rT(id,data,sig=false){const tb=document.querySelector(`#${id} tbody`);if(!tb)return;tb.innerHTML=data.map(q=>{const p=q.regularMarketPrice||0,chg=q.regularMarketChangePercent||0,n=q.shortName||q.symbol;const s=chg>2?'b':chg<-2?'s':'h',sl={b:'BUY',s:'SELL',h:'HOLD'}[s];return`<tr onclick="oMod('${q.symbol}','${n.replace(/'/g,"\\'")}')"><td><span class="at-t">${q.symbol}</span></td><td><span class="at-n">${n.substring(0,24)}</span></td><td class="at-m">${p>999?'$'+fm(p,0):'$'+fm(p,p<1?4:2)}</td><td class="at-m" style="color:${cc(chg)}">${cp(chg)}${fm(chg)}%</td>${sig?`<td><span class="bd bd-${s}">${sl}</span></td>`:''}<td>↗</td></tr>`;}).join('');}
+
+function rFx(data){const tb=document.querySelector('#tFx tbody');if(!tb)return;tb.innerHTML=data.map(q=>{const r=q.regularMarketPrice||0,chg=q.regularMarketChangePercent||0;return`<tr onclick="oMod('${q.symbol}','${q.symbol.replace("=X","")}')"><td class="at-t" style="font-size:12px">${q.symbol.replace('=X','')}</td><td class="at-m">${fm(r,4)}</td><td class="at-m" style="color:${cc(chg)}">${cp(chg)}${fm(chg)}%</td><td>↗</td></tr>`;}).join('');}
+
+function rDn(st,et,cr,co,bo){const ct={Azioni:st.length,ETF:et.length,Crypto:cr.length,Comm:co.length,Bond:bo.length};const tot=Object.values(ct).reduce((a,b)=>a+b,0)||1;const cols=['#38bdf8','#a78bfa','#22d3ee','#fbbf24','#34d399'];const items=Object.entries(ct).map(([k,v],i)=>({n:k,p:Math.round(v/tot*100),c:cols[i]}));const cv=document.getElementById('dC');if(cv){const ctx=cv.getContext('2d');cv.width=140;cv.height=140;let sa=-Math.PI/2;ctx.clearRect(0,0,140,140);items.forEach(p=>{const sw=p.p/100*Math.PI*2;ctx.beginPath();ctx.arc(70,70,54,sa,sa+sw);ctx.strokeStyle=p.c;ctx.lineWidth=13;ctx.lineCap='round';ctx.stroke();sa+=sw+0.04;});}document.getElementById('dP').textContent=tot;document.getElementById('dL').innerHTML=items.map(p=>`<div class="lg-i"><div class="lg-d" style="background:${p.c}"></div><span class="lg-n">${p.n}</span><span class="lg-p">${p.p}%</span></div>`).join('');}
+
+function rMv(all){const sorted=all.filter(q=>q.regularMarketChangePercent!=null).sort((a,b)=>Math.abs(b.regularMarketChangePercent)-Math.abs(a.regularMarketChangePercent)).slice(0,8);const el=document.getElementById('tmB');if(!el)return;el.innerHTML=sorted.map(q=>{const chg=q.regularMarketChangePercent||0,p=q.regularMarketPrice||0;const s=chg>2?'b':chg<-2?'s':'h',sl={b:'BUY',s:'SELL',h:'HOLD'}[s];return`<tr onclick="oMod('${q.symbol}','${(q.shortName||q.symbol).replace(/'/g,"\\'")}')"><td><span class="at-n">${(q.shortName||q.symbol).substring(0,18)}</span><br><span class="at-t">${q.symbol}</span></td><td class="at-m">$${fm(p,p<1?4:2)}</td><td class="at-m" style="color:${cc(chg)}">${cp(chg)}${fm(chg)}%</td><td><span class="bd bd-${s}">${sl}</span></td></tr>`;}).join('');}
+
+function rPf(all){const valid=all.filter(q=>q.regularMarketChangePercent!=null);const cnt=valid.length,avg=valid.reduce((s,q)=>s+(q.regularMarketChangePercent||0),0)/(cnt||1);const top=valid.sort((a,b)=>(b.regularMarketChangePercent||0)-(a.regularMarketChangePercent||0))[0];if(document.getElementById('sT'))document.getElementById('sT').textContent=cnt;const sA=document.getElementById('sA');if(sA){sA.textContent=cp(avg)+fm(avg)+'%';sA.style.color=cc(avg);}if(document.getElementById('sG'))document.getElementById('sG').textContent=top?(top.shortName||top.symbol).substring(0,14):'—';const cv=document.getElementById('pC');if(!cv)return;const ctx=cv.getContext('2d'),w=cv.parentElement.clientWidth-40,h=120;cv.width=w;cv.height=h;ctx.clearRect(0,0,w,h);const sample=valid.slice(0,Math.min(35,valid.length));const maxC=Math.max(...sample.map(q=>Math.abs(q.regularMarketChangePercent||0)),1);const bw=Math.min(w/sample.length-2,12),mid=h/2;sample.forEach((q,i)=>{const chg=q.regularMarketChangePercent||0,bh=Math.abs(chg)/maxC*(mid-6);const x=i*(bw+2)+2,y=chg>=0?mid-bh:mid;ctx.fillStyle=chg>=0?'#34d39950':'#f8717150';ctx.beginPath();ctx.roundRect(x,y,bw,bh,2);ctx.fill();});ctx.strokeStyle='rgba(255,255,255,.05)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,mid);ctx.lineTo(w,mid);ctx.stroke();}
+
+// ===== CHART MODAL =====
+function oMod(sym,name){document.getElementById('mTi').textContent=`${name} (${sym})`;const cm=COML.find(c=>c.t===sym);let tv=sym.replace('=X','').replace('=F','').replace('-USD','USD');if(cm&&cm.v)tv=cm.v;document.getElementById('mBo').innerHTML=`<iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tv&symbol=${encodeURIComponent(tv)}&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=0f1420&theme=dark&style=1&timezone=Europe%2FRome&withdateranges=1&locale=it"></iframe>`;document.getElementById('MOD').classList.add('on');}
+function xMod(){document.getElementById('MOD').classList.remove('on');document.getElementById('mBo').innerHTML='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){xMod();hideAdd();}});
+
+// ===== FILTERS =====
+function ft(tid,q){document.querySelectorAll(`#${tid} tbody tr`).forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(q.toLowerCase())?'':'none';});}
+function initF(){const tags=['tutti','tech','auto','supercar','lusso','ita','eu','usa','asia','fin'];const el=document.getElementById('aF');if(el)el.innerHTML=tags.map(t=>`<button class="fb ${t==='tutti'?'on':''}" onclick="fA('${t}',this)">${t[0].toUpperCase()+t.slice(1)}</button>`).join('');}
+function fA(tag,btn){document.querySelectorAll('#aF .fb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');const rows=document.querySelectorAll('#tA tbody tr');if(tag==='tutti'){rows.forEach(r=>r.style.display='');return;}const ok=STK.filter(s=>s.g.includes(tag)).map(s=>s.t);rows.forEach(r=>{const t=r.querySelector('.at-t')?.textContent;r.style.display=ok.includes(t)?'':'none';});}
+
+// ===== ADD ASSET =====
+function showAdd(){document.getElementById('addBg').classList.add('on');}
+function hideAdd(){document.getElementById('addBg').classList.remove('on');}
+function switchAddTab(tab,btn){document.querySelectorAll('.add-tab').forEach(t=>t.classList.remove('on'));btn.classList.add('on');['addUrl','addManual','addIsin'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('add'+tab.charAt(0).toUpperCase()+tab.slice(1)).style.display='block';}
+
+function parseUrl(url){
+  // Yahoo Finance
+  let m=url.match(/finance\.yahoo\.com\/quote\/([A-Z0-9\.\-\^=]+)/i);if(m)return m[1];
+  // Google Finance
+  m=url.match(/google\.com\/finance\/quote\/([A-Z0-9]+):([A-Z]+)/i);if(m)return m[1];
+  // TradingView
+  m=url.match(/tradingview\.com\/(?:chart|symbols)\/([A-Z0-9:\.]+)/i);if(m)return m[1].replace(':','.');
+  // MarketWatch
+  m=url.match(/marketwatch\.com\/investing\/(?:stock|fund)\/([a-zA-Z0-9\.]+)/i);if(m)return m[1].toUpperCase();
+  // Investing.com
+  m=url.match(/investing\.com\/.*?\/([a-z0-9\-]+)/i);if(m)return null; // Can't reliably extract ticker
+  // Borsa Italiana
+  m=url.match(/borsaitaliana\.it\/.*?isin=([A-Z0-9]+)/i);if(m)return null; // ISIN, handle separately
+  return null;
+}
+
+function addAsset(){
+  const section=document.getElementById('addSection').value;
+  const sectionMap={stocks:'stocks',etf:'etf',bonds:'bonds',comm:'comm',crypto:'crypto',fx:'fx'};
+  const key=sectionMap[section];
+  
+  let ticker='',name='';
+  
+  // Check which tab is active
+  if(document.getElementById('addUrl').style.display!=='none'){
+    const url=document.getElementById('addUrlInput').value.trim();
+    ticker=parseUrl(url);
+    if(!ticker){showAddMsg('URL non riconosciuto. Prova con il tab Manuale.',true);return;}
+  }else if(document.getElementById('addManual').style.display!=='none'){
+    ticker=document.getElementById('addTicker').value.trim().toUpperCase();
+    name=document.getElementById('addName').value.trim();
+    if(!ticker){showAddMsg('Inserisci un ticker.',true);return;}
   }else{
-    // REFRESH — in-place update
-    await refreshData(D.stocks,'stocks');
-    await refreshData(D.etfs,'etfs');
-    await refreshData(D.bonds,'bonds');
-    await refreshData(D.commodities,'comm');
-    await refreshData(D.crypto,'crypto');
-    await refreshFX();
+    const isin=document.getElementById('addIsinInput').value.trim().toUpperCase();
+    if(!isin||isin.length!==12){showAddMsg('ISIN deve essere 12 caratteri.',true);return;}
+    // Try OpenFIGI lookup
+    lookupISIN(isin,section);return;
   }
-  // Save snapshot to Supabase
-  saveToSupabase();
+  
+  if(!customAssets[key])customAssets[key]=[];
+  if(customAssets[key].some(a=>a.t===ticker)){showAddMsg('Asset già presente!',true);return;}
+  customAssets[key].push({t:ticker,n:name||ticker,g:''});
+  localStorage.setItem('fs_custom',JSON.stringify(customAssets));
+  showAddMsg(`${ticker} aggiunto con successo! Ricarica per vedere i dati.`);
+  
+  // Clear inputs
+  document.getElementById('addUrlInput').value='';
+  document.getElementById('addTicker').value='';
+  document.getElementById('addName').value='';
 }
 
-async function refreshData(data,key){
-  const isFuture=key==='comm'||key==='crypto';
-  for(let i=0;i<data.length;i+=3){
-    const batch=data.slice(i,i+3);
-    await Promise.allSettled(batch.map(async d=>{
-      const q=isFuture?(await yhQuote(d.sym)||await fmpQuote(d.sym)):await getQuote(d.sym,d.fh||d.sym);
-      if(q&&q.p>0){d.p=q.p;d.ch=q.ch;d.o=q.o;d.h=q.h;d.l=q.l;d.cur=q.cur;d.src=q.src}
-      updateRow(key,data.indexOf(d),d);
-    }));
-    await new Promise(r=>setTimeout(r,500)); // delay between batches to avoid rate limits
-  }
-}
-async function refreshFX(){
-  for(let i=0;i<D.currencies.length;i+=3){
-    const batch=D.currencies.slice(i,i+3);
-    await Promise.allSettled(batch.map(async d=>{
-      const q=await yhQuote(d.ySym);
-      if(q&&q.p>0){d.p=q.p;d.ch=q.ch;d.o=q.o;d.h=q.h;d.l=q.l;d.cur=q.cur;d.src=q.src}
-      updateRow('currencies',D.currencies.indexOf(d),d,true);
-    }));
-  }
-}
-function updateRow(key,idx,d,isFX){
-  const tr=document.getElementById(key+'_r'+idx);if(!tr)return;
-  const cells=tr.querySelectorAll('td');const dp=d.p<10?4:2;const sig=getSignal(d);
-  if(cells[2])cells[2].textContent=d.p>0?fmt(d.p,dp):'\u2014';
-  if(cells[3])cells[3].textContent=d.cur||'';
-  if(cells[4]){cells[4].innerHTML=d.p>0?pf(d.ch):'\u2014';cells[4].className=(d.ch||0)>=0?'po mono':'ne mono'}
-  if(cells[5])cells[5].innerHTML=`<span class="${sig.cls}">${sig.label}</span>`;
-  if(cells[6])cells[6].innerHTML=srcBadge(d.src);
-}
-
-// ═══════════ ADD MODAL ═══════════
-let addKey='';
-function openAdd(key){addKey=key;document.getElementById('addTitle').textContent='Aggiungi Asset';document.getElementById('addUrl').value='';document.getElementById('addIsin').value='';document.getElementById('addManualSym').value='';document.getElementById('addManualName').value='';document.getElementById('addUrlResult').innerHTML='';document.getElementById('addModal').classList.add('open');setTimeout(()=>document.getElementById('addManualSym').focus(),100)}
-function closeAdd(){document.getElementById('addModal').classList.remove('open');addKey=''}
-async function addAsset(sym,name){
-  const dk=DK(addKey);
-  if(D[dk]&&D[dk].find(x=>(x.sym||x.pair)===sym))return;
-  const q=await getQuote(sym,sym);
-  const item=q?{sym,name,...q,custom:true}:{sym,name,p:0,ch:0,o:0,h:0,l:0,cur:'',src:'N/A',custom:true};
-  D[dk].unshift(item);
-  const tblMap={stocks:'tbl-stocks',etfs:'tbl-etfs',bonds:'tbl-bonds',comm:'tbl-comm',commodities:'tbl-comm',crypto:'tbl-crypto',currencies:'tbl-fx'};
-  buildTable(tblMap[addKey]||tblMap[dk],D[dk],addKey,addKey==='currencies');
-  saveCustomAssets(addKey);
-}
-
-// ═══════════ ADD FROM URL / ISIN ═══════════
-
-// Extract ticker from various URL formats
-function extractTickerFromUrl(url){
-  if(!url)return null;
-  url=url.trim();
-  // Yahoo Finance: finance.yahoo.com/quote/AAPL or /quote/AAPL/
-  let m=url.match(/finance\.yahoo\.com\/quote\/([A-Za-z0-9\.\-\=\^]+)/);
-  if(m)return{sym:m[1],src:'Yahoo Finance'};
-  // Google Finance: google.com/finance/quote/AAPL:NASDAQ
-  m=url.match(/google\.com\/finance\/quote\/([A-Za-z0-9\.\-]+)/);
-  if(m)return{sym:m[1].split(':')[0],src:'Google Finance'};
-  // MarketWatch: marketwatch.com/investing/stock/aapl or /fund/ or /index/
-  m=url.match(/marketwatch\.com\/investing\/(?:stock|fund|index|etf|bond)\/([A-Za-z0-9\.\-]+)/i);
-  if(m)return{sym:m[1].toUpperCase(),src:'MarketWatch'};
-  // Investing.com: investing.com/equities/apple-computer-inc or /currencies/eur-usd
-  m=url.match(/investing\.com\/(?:equities|currencies|commodities|crypto|etfs|indices|bonds)\/([a-z0-9\-]+)/i);
-  if(m){const slug=m[1].toUpperCase().replace(/-/g,' ');return{sym:slug,name:slug,src:'Investing.com',isSlug:true}}
-  // TradingView: tradingview.com/symbols/NASDAQ-AAPL or /chart/?symbol=AAPL
-  m=url.match(/tradingview\.com\/symbols\/(?:[A-Z]+\-)?([A-Za-z0-9\.\-]+)/);
-  if(m)return{sym:m[1],src:'TradingView'};
-  m=url.match(/tradingview\.com\/chart\/.*symbol=([A-Za-z0-9\.\:\-\=\^]+)/);
-  if(m)return{sym:m[1].replace(/.*:/,''),src:'TradingView'};
-  // Borsa Italiana: borsaitaliana.it/borsa/azioni/scheda/IT0003128367.html or similar
-  m=url.match(/borsaitaliana\.it\/.*\/([A-Z0-9]+)\.html/i);
-  if(m)return{sym:m[1]+'.MI',src:'Borsa Italiana'};
-  // JustETF: justetf.com/en/etf-profile.html?isin=IE00B4L5Y983
-  m=url.match(/isin=([A-Z]{2}[A-Z0-9]{10})/i);
-  if(m)return{sym:m[1],src:'JustETF',isIsin:true};
-  // Generic: try to find something that looks like a ticker in the URL
-  m=url.match(/[\/=]([A-Z]{1,5}(?:\.[A-Z]{1,3})?)(?:[\/\?&]|$)/);
-  if(m&&m[1].length>=1)return{sym:m[1],src:'URL'};
-  return null;
-}
-
-// ISIN lookup via FMP or OpenFIGI
-async function isinToTicker(isin){
-  // Try FMP ISIN search
+async function lookupISIN(isin,section){
+  showAddMsg('Ricerca ISIN...');
   try{
-    const r=await fetch('https://financialmodelingprep.com/api/v3/search?query='+encodeURIComponent(isin)+'&apikey='+FMP_KEY,{signal:AbortSignal.timeout(8000)});
-    if(r.ok){const data=await r.json();if(data&&data.length>0){
-      // Find exact ISIN match or first result
-      const exact=data.find(d=>d.symbol&&d.name);
-      if(exact)return{sym:exact.symbol,name:exact.name||exact.symbol,src:'FMP (ISIN)'}
-    }}
-  }catch(e){}
-  // Try OpenFIGI
-  try{
-    const r=await fetch('https://api.openfigi.com/v3/mapping',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify([{idType:'ID_ISIN',idValue:isin}]),
-      signal:AbortSignal.timeout(8000)
-    });
-    if(r.ok){const data=await r.json();if(data[0]&&data[0].data&&data[0].data[0]){
-      const d=data[0].data[0];return{sym:d.ticker,name:d.name||d.ticker,src:'OpenFIGI'}
-    }}
-  }catch(e){}
-  return null;
+    const r=await fetch('https://api.openfigi.com/v3/mapping',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify([{idType:'ID_ISIN',idValue:isin}]),signal:AbortSignal.timeout(8000)});
+    const d=await r.json();
+    if(d[0]?.data?.[0]){
+      const item=d[0].data[0];
+      const ticker=item.ticker;
+      const name=item.name;
+      const key={stocks:'stocks',etf:'etf',bonds:'bonds',comm:'comm',crypto:'crypto',fx:'fx'}[section];
+      if(!customAssets[key])customAssets[key]=[];
+      customAssets[key].push({t:ticker,n:name||ticker,g:''});
+      localStorage.setItem('fs_custom',JSON.stringify(customAssets));
+      showAddMsg(`Trovato: ${name} (${ticker}). Ricarica per i dati.`);
+    }else{showAddMsg('ISIN non trovato.',true);}
+  }catch(e){showAddMsg('Errore ricerca ISIN: '+e.message,true);}
 }
 
-async function addFromUrl(){
-  const urlVal=document.getElementById('addUrl').value.trim();
-  const isinVal=document.getElementById('addIsin').value.trim();
-  const manSym=document.getElementById('addManualSym').value.trim().toUpperCase();
-  const manName=document.getElementById('addManualName').value.trim();
-  const resEl=document.getElementById('addUrlResult');
-  resEl.innerHTML='<div class="ld"><div class="sp"></div><span style="color:var(--mt)">Ricerca in corso...</span></div>';
+function showAddMsg(msg,err=false){const el=document.getElementById('addMsg');el.textContent=msg;el.style.display='block';el.style.color=err?'var(--red)':'var(--green)';setTimeout(()=>el.style.display='none',4000);}
 
-  let sym='',name='';
+// ===== APPLE =====
+const ADB={'iPhone':[{n:'iPhone (2007)',y:2007},{n:'iPhone 3G',y:2008},{n:'iPhone 3GS',y:2009},{n:'iPhone 4',y:2010},{n:'iPhone 4S',y:2011},{n:'iPhone 5',y:2012},{n:'iPhone 5S',y:2013},{n:'iPhone 6',y:2014},{n:'iPhone 6S',y:2015},{n:'iPhone 7',y:2016},{n:'iPhone 8',y:2017},{n:'iPhone X',y:2017},{n:'iPhone XR',y:2018},{n:'iPhone XS',y:2018},{n:'iPhone 11',y:2019},{n:'iPhone 12',y:2020},{n:'iPhone 13',y:2021},{n:'iPhone 14',y:2022},{n:'iPhone 15',y:2023},{n:'iPhone 15 Pro',y:2023},{n:'iPhone 16',y:2024},{n:'iPhone 16 Pro',y:2024},{n:'iPhone 16 Pro Max',y:2024},{n:'iPhone 17',y:2025},{n:'iPhone 17 Pro',y:2025},{n:'iPhone 17 Pro Max',y:2025},{n:'iPhone SE (1st)',y:2016},{n:'iPhone SE (2nd)',y:2020},{n:'iPhone SE (3rd)',y:2022},{n:'iPhone SE (4th)',y:2025}],'iPad':[{n:'iPad (1st)',y:2010},{n:'iPad 2',y:2011},{n:'iPad Air',y:2013},{n:'iPad Air 2',y:2014},{n:'iPad (5th)',y:2017},{n:'iPad (6th)',y:2018},{n:'iPad (7th)',y:2019},{n:'iPad (8th)',y:2020},{n:'iPad (9th)',y:2021},{n:'iPad (10th)',y:2022},{n:'iPad Air M1',y:2022},{n:'iPad Air M2',y:2024},{n:'iPad Air M3',y:2025},{n:'iPad Pro M1',y:2021},{n:'iPad Pro M2',y:2022},{n:'iPad Pro M4',y:2024},{n:'iPad mini (6th)',y:2021},{n:'iPad mini A17',y:2024}],'MacBook Air':[{n:'Air M1',y:2020},{n:'Air M2 13"',y:2022},{n:'Air M2 15"',y:2023},{n:'Air M3 13"',y:2024},{n:'Air M3 15"',y:2024},{n:'Air M4 13"',y:2025},{n:'Air M4 15"',y:2025}],'MacBook Pro':[{n:'MBP 13" M1',y:2020},{n:'MBP 14" M1 Pro',y:2021},{n:'MBP 16" M1 Max',y:2021},{n:'MBP 14" M2 Pro',y:2023},{n:'MBP 16" M2 Max',y:2023},{n:'MBP 14" M3',y:2023},{n:'MBP 14" M3 Pro',y:2023},{n:'MBP 16" M3 Max',y:2023},{n:'MBP 14" M4',y:2024},{n:'MBP 14" M4 Pro',y:2024},{n:'MBP 16" M4 Max',y:2024},{n:'MBP 14" M5 Pro',y:2025},{n:'MBP 16" M5 Max',y:2025}],'Apple Watch':[{n:'Series 3',y:2017},{n:'Series 4',y:2018},{n:'Series 5',y:2019},{n:'Series 6',y:2020},{n:'Series 7',y:2021},{n:'Series 8',y:2022},{n:'Series 9',y:2023},{n:'Series 10',y:2024},{n:'Series 11',y:2025},{n:'SE (1st)',y:2020},{n:'SE (2nd)',y:2022},{n:'SE (3rd)',y:2025},{n:'Ultra',y:2022},{n:'Ultra 2',y:2023},{n:'Ultra 3',y:2025}],'AirPods':[{n:'AirPods (1st)',y:2016},{n:'AirPods (2nd)',y:2019},{n:'AirPods (3rd)',y:2021},{n:'AirPods 4',y:2024},{n:'AirPods 4 ANC',y:2024},{n:'AirPods Pro',y:2019},{n:'AirPods Pro 2',y:2022},{n:'AirPods Pro 3',y:2025},{n:'AirPods Max',y:2020},{n:'AirPods Max USB-C',y:2024},{n:'AirPods Max 2',y:2025}],'iMac':[{n:'iMac 24" M1',y:2021},{n:'iMac 24" M3',y:2023},{n:'iMac 24" M4',y:2024}],'Mac Mini':[{n:'Mac Mini M1',y:2020},{n:'Mac Mini M2',y:2023},{n:'Mac Mini M4',y:2024},{n:'Mac Mini M4 Pro',y:2024}],'Mac Studio':[{n:'Studio M1 Max',y:2022},{n:'Studio M2 Ultra',y:2023},{n:'Studio M4 Max',y:2025},{n:'Studio M4 Ultra',y:2025}],'Vision Pro':[{n:'Vision Pro',y:2024}]};
+function initApple(){const s=document.getElementById('aCat');if(!s)return;Object.keys(ADB).forEach(c=>{s.innerHTML+=`<option value="${c}">${c}</option>`;});}
+function popD(){const c=document.getElementById('aCat').value,ds=ADB[c]||[];['aCur','aTgt'].forEach(id=>{const s=document.getElementById(id);if(!s)return;s.innerHTML='<option value="">Seleziona...</option>';ds.forEach((d,i)=>{s.innerHTML+=`<option value="${i}">${d.n} (${d.y})</option>`;});});const r=document.getElementById('aR');if(r)r.style.display='none';}
+function cmpA(){const c=document.getElementById('aCat')?.value,ci=document.getElementById('aCur')?.value,ti=document.getElementById('aTgt')?.value;if(!c||ci===''||ti==='')return;const ds=ADB[c],cur=ds[+ci],tgt=ds[+ti],diff=tgt.y-cur.y;const el=document.getElementById('aR');if(!el)return;el.style.display='block';let v,col,ico;if(diff>0){v=`Target più recente di ${diff} ann${diff===1?'o':'i'}. Upgrade consigliato!`;col='var(--green)';ico='✅';}else if(diff<0){v=`Target più vecchio di ${Math.abs(diff)} ann${Math.abs(diff)===1?'o':'i'}. Non è un upgrade.`;col='var(--red)';ico='⚠️';}else{v='Stessa generazione.';col='var(--orange)';ico='ℹ️';}el.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><span style="font-size:24px">${ico}</span><div><div style="font-weight:700;font-size:14px;color:${col}">${cur.n} → ${tgt.n}</div><div style="color:var(--text2);margin-top:2px;font-size:12px">${v}</div></div></div>`;}
 
-  // Priority 1: Manual entry
-  if(manSym){
-    sym=manSym;name=manName||manSym;
-    resEl.innerHTML='';
-  }
-  // Priority 2: ISIN
-  else if(isinVal&&/^[A-Z]{2}[A-Z0-9]{10}$/i.test(isinVal)){
-    const result=await isinToTicker(isinVal.toUpperCase());
-    if(result){sym=result.sym;name=result.name;resEl.innerHTML='<span style="color:var(--gn)">'+result.src+': trovato '+sym+'</span>'}
-    else{resEl.innerHTML='<span style="color:var(--rd)">ISIN non trovato. Prova ad aggiungere manualmente.</span>';return}
-  }
-  // Priority 3: URL
-  else if(urlVal){
-    const parsed=extractTickerFromUrl(urlVal);
-    if(parsed){
-      sym=parsed.sym;name=parsed.name||parsed.sym;
-      if(parsed.isIsin){
-        const isinResult=await isinToTicker(sym);
-        if(isinResult){sym=isinResult.sym;name=isinResult.name}
-      }
-      if(parsed.isSlug){
-        // Try searching Finnhub with the slug
-        const results=await fhSearch(parsed.sym.replace(/\s+/g,' ').substring(0,20));
-        if(results.length>0){sym=results[0].symbol;name=results[0].description||sym}
-      }
-      resEl.innerHTML='<span style="color:var(--gn)">Da '+parsed.src+': '+sym+'</span>';
-    }else{resEl.innerHTML='<span style="color:var(--rd)">URL non riconosciuto. Prova un altro formato o inserisci manualmente.</span>';return}
-  }else{resEl.innerHTML='<span style="color:var(--or)">Inserisci un URL, ISIN, o ticker manuale.</span>';return}
-
-  // Add the asset
-  if(sym){
-    await addAsset(sym,name);
-    resEl.innerHTML='<span style="color:var(--gn)">&#x2705; '+sym+' ('+name+') aggiunto con successo!</span>';
-    // Clear inputs
-    document.getElementById('addUrl').value='';
-    document.getElementById('addIsin').value='';
-    document.getElementById('addManualSym').value='';
-    document.getElementById('addManualName').value='';
-  }
-}
-
-// ═══════════ NAV ═══════════
-function go(id,btn){
-  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('ac'));
-  document.getElementById('sec-'+id)?.classList.add('ac');
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
-  if(btn)btn.classList.add('on');
-}
-
-// ═══════════ APPLE TRACKER (Full — 148+ devices, 12 categories) ═══════════
-const APPLE_DB=[
-// ── iPhone (COMPLETO da 2007) ──
-{cat:'iPhone',name:'iPhone (1st gen)',chip:'ARM 1176',year:2007,price:499},{cat:'iPhone',name:'iPhone 3G',chip:'ARM 1176',year:2008,price:199},{cat:'iPhone',name:'iPhone 3GS',chip:'ARM Cortex',year:2009,price:199},{cat:'iPhone',name:'iPhone 4',chip:'A4',year:2010,price:199},{cat:'iPhone',name:'iPhone 4S',chip:'A5',year:2011,price:199},{cat:'iPhone',name:'iPhone 5',chip:'A6',year:2012,price:199},{cat:'iPhone',name:'iPhone 5C',chip:'A6',year:2013,price:99},{cat:'iPhone',name:'iPhone 5S',chip:'A7',year:2013,price:199},{cat:'iPhone',name:'iPhone 6',chip:'A8',year:2014,price:199},{cat:'iPhone',name:'iPhone 6 Plus',chip:'A8',year:2014,price:299},{cat:'iPhone',name:'iPhone 6s',chip:'A9',year:2015,price:229},{cat:'iPhone',name:'iPhone 6s Plus',chip:'A9',year:2015,price:329},{cat:'iPhone',name:'iPhone SE (1st)',chip:'A9',year:2016,price:399},{cat:'iPhone',name:'iPhone 7',chip:'A10',year:2016,price:349},{cat:'iPhone',name:'iPhone 7 Plus',chip:'A10',year:2016,price:449},{cat:'iPhone',name:'iPhone 8',chip:'A11',year:2017,price:399},{cat:'iPhone',name:'iPhone 8 Plus',chip:'A11',year:2017,price:499},{cat:'iPhone',name:'iPhone X',chip:'A11',year:2017,price:999},{cat:'iPhone',name:'iPhone XR',chip:'A12',year:2018,price:749},{cat:'iPhone',name:'iPhone XS',chip:'A12',year:2018,price:999},{cat:'iPhone',name:'iPhone XS Max',chip:'A12',year:2018,price:1099},{cat:'iPhone',name:'iPhone 11',chip:'A13',year:2019,price:699},{cat:'iPhone',name:'iPhone 11 Pro',chip:'A13',year:2019,price:999},{cat:'iPhone',name:'iPhone 11 Pro Max',chip:'A13',year:2019,price:1099},{cat:'iPhone',name:'iPhone SE (2nd)',chip:'A13',year:2020,price:399},{cat:'iPhone',name:'iPhone 12 mini',chip:'A14',year:2020,price:729},{cat:'iPhone',name:'iPhone 12',chip:'A14',year:2020,price:829},{cat:'iPhone',name:'iPhone 12 Pro',chip:'A14',year:2020,price:1059},{cat:'iPhone',name:'iPhone 12 Pro Max',chip:'A14',year:2020,price:1179},{cat:'iPhone',name:'iPhone 13 mini',chip:'A15',year:2021,price:729},{cat:'iPhone',name:'iPhone 13',chip:'A15',year:2021,price:829},{cat:'iPhone',name:'iPhone 13 Pro',chip:'A15 Pro',year:2021,price:1059},{cat:'iPhone',name:'iPhone 13 Pro Max',chip:'A15 Pro',year:2021,price:1179},{cat:'iPhone',name:'iPhone SE (3rd)',chip:'A15',year:2022,price:529},{cat:'iPhone',name:'iPhone 14',chip:'A15',year:2022,price:869},{cat:'iPhone',name:'iPhone 14 Plus',chip:'A15',year:2022,price:979},{cat:'iPhone',name:'iPhone 14 Pro',chip:'A16 Pro',year:2022,price:1179},{cat:'iPhone',name:'iPhone 14 Pro Max',chip:'A16 Pro',year:2022,price:1309},{cat:'iPhone',name:'iPhone 15',chip:'A16',year:2023,price:879},{cat:'iPhone',name:'iPhone 15 Plus',chip:'A16',year:2023,price:989},{cat:'iPhone',name:'iPhone 15 Pro',chip:'A17 Pro',year:2023,price:1199},{cat:'iPhone',name:'iPhone 15 Pro Max',chip:'A17 Pro',year:2023,price:1449},{cat:'iPhone',name:'iPhone 16',chip:'A18',year:2024,price:899},{cat:'iPhone',name:'iPhone 16 Plus',chip:'A18',year:2024,price:999},{cat:'iPhone',name:'iPhone 16 Pro',chip:'A18 Pro',year:2024,price:1199},{cat:'iPhone',name:'iPhone 16 Pro Max',chip:'A18 Pro',year:2024,price:1449},{cat:'iPhone',name:'iPhone 16e',chip:'A18',year:2025,price:599},{cat:'iPhone',name:'iPhone 17',chip:'A19',year:2025,price:899},{cat:'iPhone',name:'iPhone 17 Air',chip:'A19',year:2025,price:999},{cat:'iPhone',name:'iPhone 17 Pro',chip:'A19 Pro',year:2025,price:1199},{cat:'iPhone',name:'iPhone 17 Pro Max',chip:'A19 Pro',year:2025,price:1499},
-// ── iPod ──
-{cat:'iPod',name:'iPod Touch (7th)',chip:'A10',year:2019,price:199},{cat:'iPod',name:'iPod Touch (6th)',chip:'A8',year:2015,price:199},{cat:'iPod',name:'iPod Touch (5th)',chip:'A5',year:2012,price:199},{cat:'iPod',name:'iPod Touch (4th)',chip:'A4',year:2010,price:229},{cat:'iPod',name:'iPod Classic 160GB',chip:'—',year:2009,price:249},{cat:'iPod',name:'iPod nano (7th)',chip:'—',year:2012,price:149},{cat:'iPod',name:'iPod Shuffle (4th)',chip:'—',year:2010,price:49},
-// ── iPad (COMPLETO da 2010) ──
-{cat:'iPad',name:'iPad (1st gen)',chip:'A4',year:2010,price:499},{cat:'iPad',name:'iPad 2',chip:'A5',year:2011,price:499},{cat:'iPad',name:'iPad (3rd gen)',chip:'A5X',year:2012,price:499},{cat:'iPad',name:'iPad (4th gen)',chip:'A6X',year:2012,price:499},{cat:'iPad',name:'iPad Air (1st)',chip:'A7',year:2013,price:499},{cat:'iPad',name:'iPad Air 2',chip:'A8X',year:2014,price:499},{cat:'iPad',name:'iPad mini (1st)',chip:'A5',year:2012,price:329},{cat:'iPad',name:'iPad mini 2',chip:'A7',year:2013,price:399},{cat:'iPad',name:'iPad mini 3',chip:'A7',year:2014,price:399},{cat:'iPad',name:'iPad mini 4',chip:'A8',year:2015,price:399},{cat:'iPad',name:'iPad mini (5th)',chip:'A12',year:2019,price:449},{cat:'iPad',name:'iPad Pro 9.7"',chip:'A9X',year:2016,price:599},{cat:'iPad',name:'iPad Pro 10.5"',chip:'A10X',year:2017,price:649},{cat:'iPad',name:'iPad Pro 11" (1st)',chip:'A12X',year:2018,price:799},{cat:'iPad',name:'iPad Pro 12.9" (1st)',chip:'A9X',year:2015,price:799},{cat:'iPad',name:'iPad Pro 12.9" (2nd)',chip:'A10X',year:2017,price:799},{cat:'iPad',name:'iPad Pro 12.9" (3rd)',chip:'A12X',year:2018,price:999},{cat:'iPad',name:'iPad (5th gen)',chip:'A9',year:2017,price:329},{cat:'iPad',name:'iPad (6th gen)',chip:'A10',year:2018,price:329},{cat:'iPad',name:'iPad (7th gen)',chip:'A10',year:2019,price:329},{cat:'iPad',name:'iPad (8th gen)',chip:'A12',year:2020,price:379},{cat:'iPad',name:'iPad (9th gen)',chip:'A13',year:2021,price:389},{cat:'iPad',name:'iPad (10th gen)',chip:'A14',year:2022,price:529},{cat:'iPad',name:'iPad mini (6th)',chip:'A15',year:2021,price:549},{cat:'iPad',name:'iPad Air (3rd) A12',chip:'A12',year:2019,price:549},{cat:'iPad',name:'iPad Air (4th) A14',chip:'A14',year:2020,price:669},{cat:'iPad',name:'iPad Air (5th) M1',chip:'M1',year:2022,price:699},{cat:'iPad',name:'iPad Air 11" M2',chip:'M2',year:2024,price:699},{cat:'iPad',name:'iPad Air 13" M2',chip:'M2',year:2024,price:899},{cat:'iPad',name:'iPad Air 11" M3',chip:'M3',year:2025,price:699},{cat:'iPad',name:'iPad Air 13" M3',chip:'M3',year:2025,price:899},{cat:'iPad',name:'iPad Pro 11" M1',chip:'M1',year:2021,price:799},{cat:'iPad',name:'iPad Pro 12.9" M1',chip:'M1',year:2021,price:1099},{cat:'iPad',name:'iPad Pro 11" M2',chip:'M2',year:2022,price:899},{cat:'iPad',name:'iPad Pro 12.9" M2',chip:'M2',year:2022,price:1199},{cat:'iPad',name:'iPad Pro 11" M4',chip:'M4',year:2024,price:1099},{cat:'iPad',name:'iPad Pro 13" M4',chip:'M4',year:2024,price:1399},{cat:'iPad',name:'iPad mini (7th) A17 Pro',chip:'A17 Pro',year:2024,price:599},
-// ── MacBook Air ──
-{cat:'MacBook Air',name:'MacBook Air 11" (2010)',chip:'Core 2 Duo',year:2010,price:999},{cat:'MacBook Air',name:'MacBook Air 13" (2010)',chip:'Core 2 Duo',year:2010,price:1299},{cat:'MacBook Air',name:'MacBook Air 11" (2011)',chip:'i5',year:2011,price:999},{cat:'MacBook Air',name:'MacBook Air 13" (2011)',chip:'i5',year:2011,price:1299},{cat:'MacBook Air',name:'MacBook Air 11" (2012)',chip:'i5',year:2012,price:999},{cat:'MacBook Air',name:'MacBook Air 13" (2012)',chip:'i5',year:2012,price:1199},{cat:'MacBook Air',name:'MacBook Air 11" (2013)',chip:'i5 Haswell',year:2013,price:999},{cat:'MacBook Air',name:'MacBook Air 13" (2013)',chip:'i5 Haswell',year:2013,price:1099},{cat:'MacBook Air',name:'MacBook Air 11" (2015)',chip:'i5 Broadwell',year:2015,price:899},{cat:'MacBook Air',name:'MacBook Air 13" (2015)',chip:'i5 Broadwell',year:2015,price:999},{cat:'MacBook Air',name:'MacBook Air 13" Retina (2018)',chip:'i5',year:2018,price:1199},{cat:'MacBook Air',name:'MacBook Air 13" (2019)',chip:'i5',year:2019,price:1099},{cat:'MacBook Air',name:'MacBook Air 13" (2020 Intel)',chip:'i3',year:2020,price:999},{cat:'MacBook Air',name:'MacBook Air 13" M1',chip:'M1',year:2020,price:1149},{cat:'MacBook Air',name:'MacBook Air 13" M2',chip:'M2',year:2022,price:1249},{cat:'MacBook Air',name:'MacBook Air 15" M2',chip:'M2',year:2023,price:1449},{cat:'MacBook Air',name:'MacBook Air 13" M3',chip:'M3',year:2024,price:1249},{cat:'MacBook Air',name:'MacBook Air 15" M3',chip:'M3',year:2024,price:1449},{cat:'MacBook Air',name:'MacBook Air 13" M4',chip:'M4',year:2025,price:1249},{cat:'MacBook Air',name:'MacBook Air 15" M4',chip:'M4',year:2025,price:1449},
-// ── MacBook Pro ──
-{cat:'MacBook Pro',name:'MacBook Pro 13" (2012 Retina)',chip:'i5',year:2012,price:1699},{cat:'MacBook Pro',name:'MacBook Pro 15" (2012 Retina)',chip:'i7',year:2012,price:2199},{cat:'MacBook Pro',name:'MacBook Pro 13" (2013)',chip:'i5 Haswell',year:2013,price:1299},{cat:'MacBook Pro',name:'MacBook Pro 15" (2013)',chip:'i7 Haswell',year:2013,price:1999},{cat:'MacBook Pro',name:'MacBook Pro 13" (2014)',chip:'i5 Haswell',year:2014,price:1299},{cat:'MacBook Pro',name:'MacBook Pro 15" (2014)',chip:'i7 Haswell',year:2014,price:1999},{cat:'MacBook Pro',name:'MacBook Pro 13" (2015)',chip:'i5 Broadwell',year:2015,price:1299},{cat:'MacBook Pro',name:'MacBook Pro 15" (2015)',chip:'i7 Haswell',year:2015,price:1999},{cat:'MacBook Pro',name:'MacBook Pro 13" Touch Bar (2016)',chip:'i5 Skylake',year:2016,price:1799},{cat:'MacBook Pro',name:'MacBook Pro 15" Touch Bar (2016)',chip:'i7 Skylake',year:2016,price:2399},{cat:'MacBook Pro',name:'MacBook Pro 13" (2017)',chip:'i5 Kaby Lake',year:2017,price:1299},{cat:'MacBook Pro',name:'MacBook Pro 15" (2017)',chip:'i7 Kaby Lake',year:2017,price:2399},{cat:'MacBook Pro',name:'MacBook Pro 13" (2018)',chip:'i5',year:2018,price:1799},{cat:'MacBook Pro',name:'MacBook Pro 15" (2018)',chip:'i7',year:2018,price:2399},{cat:'MacBook Pro',name:'MacBook Pro 13" (2019)',chip:'i5',year:2019,price:1299},{cat:'MacBook Pro',name:'MacBook Pro 16" (2019)',chip:'i7/i9',year:2019,price:2399},{cat:'MacBook Pro',name:'MacBook Pro 13" (2020 Intel)',chip:'i5',year:2020,price:1299},{cat:'MacBook Pro',name:'MacBook Pro 13" M1',chip:'M1',year:2020,price:1449},{cat:'MacBook Pro',name:'MacBook Pro 14" M1 Pro',chip:'M1 Pro',year:2021,price:2249},{cat:'MacBook Pro',name:'MacBook Pro 16" M1 Pro',chip:'M1 Pro',year:2021,price:2749},{cat:'MacBook Pro',name:'MacBook Pro 16" M1 Max',chip:'M1 Max',year:2021,price:3499},{cat:'MacBook Pro',name:'MacBook Pro 13" M2',chip:'M2',year:2022,price:1449},{cat:'MacBook Pro',name:'MacBook Pro 14" M2 Pro',chip:'M2 Pro',year:2023,price:2249},{cat:'MacBook Pro',name:'MacBook Pro 16" M2 Pro',chip:'M2 Pro',year:2023,price:2749},{cat:'MacBook Pro',name:'MacBook Pro 16" M2 Max',chip:'M2 Max',year:2023,price:3499},{cat:'MacBook Pro',name:'MacBook Pro 14" M3',chip:'M3',year:2023,price:1799},{cat:'MacBook Pro',name:'MacBook Pro 14" M3 Pro',chip:'M3 Pro',year:2023,price:2249},{cat:'MacBook Pro',name:'MacBook Pro 16" M3 Pro',chip:'M3 Pro',year:2023,price:2749},{cat:'MacBook Pro',name:'MacBook Pro 14" M3 Max',chip:'M3 Max',year:2023,price:3499},{cat:'MacBook Pro',name:'MacBook Pro 16" M3 Max',chip:'M3 Max',year:2023,price:3999},{cat:'MacBook Pro',name:'MacBook Pro 14" M4',chip:'M4',year:2024,price:1799},{cat:'MacBook Pro',name:'MacBook Pro 14" M4 Pro',chip:'M4 Pro',year:2024,price:2249},{cat:'MacBook Pro',name:'MacBook Pro 16" M4 Pro',chip:'M4 Pro',year:2024,price:2749},{cat:'MacBook Pro',name:'MacBook Pro 14" M4 Max',chip:'M4 Max',year:2024,price:3499},{cat:'MacBook Pro',name:'MacBook Pro 16" M4 Max',chip:'M4 Max',year:2024,price:3999},
-// ── Mac Desktop ──
-{cat:'Mac',name:'iMac 21.5" (2012)',chip:'i5',year:2012,price:1299},{cat:'Mac',name:'iMac 27" (2012)',chip:'i5',year:2012,price:1799},{cat:'Mac',name:'iMac 21.5" (2013)',chip:'i5 Haswell',year:2013,price:1299},{cat:'Mac',name:'iMac 27" (2013)',chip:'i5 Haswell',year:2013,price:1799},{cat:'Mac',name:'iMac 21.5" 4K (2015)',chip:'i5',year:2015,price:1499},{cat:'Mac',name:'iMac 27" 5K (2015)',chip:'i5',year:2015,price:1999},{cat:'Mac',name:'iMac 21.5" 4K (2017)',chip:'i5 Kaby Lake',year:2017,price:1299},{cat:'Mac',name:'iMac 27" 5K (2017)',chip:'i5 Kaby Lake',year:2017,price:1799},{cat:'Mac',name:'iMac 21.5" 4K (2019)',chip:'i3',year:2019,price:1299},{cat:'Mac',name:'iMac 27" 5K (2019)',chip:'i5',year:2019,price:1799},{cat:'Mac',name:'iMac 27" 5K (2020)',chip:'i5',year:2020,price:1799},{cat:'Mac',name:'iMac 24" M1',chip:'M1',year:2021,price:1449},{cat:'Mac',name:'iMac 24" M3',chip:'M3',year:2023,price:1449},{cat:'Mac',name:'iMac 24" M4',chip:'M4',year:2024,price:1449},{cat:'Mac',name:'Mac mini (2012)',chip:'i5',year:2012,price:599},{cat:'Mac',name:'Mac mini (2014)',chip:'i5',year:2014,price:499},{cat:'Mac',name:'Mac mini (2018)',chip:'i3',year:2018,price:799},{cat:'Mac',name:'Mac mini M1',chip:'M1',year:2020,price:699},{cat:'Mac',name:'Mac mini M2',chip:'M2',year:2023,price:699},{cat:'Mac',name:'Mac mini M2 Pro',chip:'M2 Pro',year:2023,price:1449},{cat:'Mac',name:'Mac mini M4',chip:'M4',year:2024,price:699},{cat:'Mac',name:'Mac mini M4 Pro',chip:'M4 Pro',year:2024,price:1499},{cat:'Mac',name:'Mac Studio M1 Max',chip:'M1 Max',year:2022,price:2299},{cat:'Mac',name:'Mac Studio M1 Ultra',chip:'M1 Ultra',year:2022,price:4499},{cat:'Mac',name:'Mac Studio M2 Max',chip:'M2 Max',year:2023,price:2299},{cat:'Mac',name:'Mac Studio M2 Ultra',chip:'M2 Ultra',year:2023,price:4499},{cat:'Mac',name:'Mac Studio M4 Max',chip:'M4 Max',year:2025,price:2299},{cat:'Mac',name:'Mac Pro (2013 Cilindro)',chip:'Xeon E5',year:2013,price:2999},{cat:'Mac',name:'Mac Pro (2019 Tower)',chip:'Xeon W',year:2019,price:5999},{cat:'Mac',name:'Mac Pro M2 Ultra',chip:'M2 Ultra',year:2023,price:7999},
-// ── Apple Watch ──
-{cat:'Apple Watch',name:'Apple Watch (1st gen)',chip:'S1',year:2015,price:349},{cat:'Apple Watch',name:'Apple Watch Series 1',chip:'S1P',year:2016,price:269},{cat:'Apple Watch',name:'Apple Watch Series 2',chip:'S2',year:2016,price:369},{cat:'Apple Watch',name:'Apple Watch Series 3',chip:'S3',year:2017,price:329},{cat:'Apple Watch',name:'Apple Watch Series 4',chip:'S4',year:2018,price:399},{cat:'Apple Watch',name:'Apple Watch Series 5',chip:'S5',year:2019,price:399},{cat:'Apple Watch',name:'Apple Watch SE (1st)',chip:'S5',year:2020,price:279},{cat:'Apple Watch',name:'Apple Watch Series 6',chip:'S6',year:2020,price:399},{cat:'Apple Watch',name:'Apple Watch Series 7',chip:'S7',year:2021,price:429},{cat:'Apple Watch',name:'Apple Watch Series 8',chip:'S8',year:2022,price:459},{cat:'Apple Watch',name:'Apple Watch SE (2nd)',chip:'S8',year:2022,price:279},{cat:'Apple Watch',name:'Apple Watch Ultra',chip:'S8',year:2022,price:899},{cat:'Apple Watch',name:'Apple Watch Series 9',chip:'S9',year:2023,price:459},{cat:'Apple Watch',name:'Apple Watch Ultra 2',chip:'S9',year:2023,price:899},{cat:'Apple Watch',name:'Apple Watch Series 10',chip:'S10',year:2024,price:459},{cat:'Apple Watch',name:'Apple Watch SE (3rd)',chip:'S10',year:2025,price:249},{cat:'Apple Watch',name:'Apple Watch Series 11',chip:'S11',year:2025,price:459},{cat:'Apple Watch',name:'Apple Watch Ultra 3',chip:'S11',year:2025,price:899},
-// ── AirPods ──
-{cat:'AirPods',name:'AirPods (1st gen)',chip:'W1',year:2016,price:159},{cat:'AirPods',name:'AirPods (2nd gen)',chip:'H1',year:2019,price:149},{cat:'AirPods',name:'AirPods (3rd gen)',chip:'H1',year:2021,price:199},{cat:'AirPods',name:'AirPods (4th gen)',chip:'H2',year:2024,price:149},{cat:'AirPods',name:'AirPods (4th ANC)',chip:'H2',year:2024,price:199},{cat:'AirPods',name:'AirPods Pro (1st)',chip:'H1',year:2019,price:249},{cat:'AirPods',name:'AirPods Pro (2nd) Lightning',chip:'H2',year:2022,price:279},{cat:'AirPods',name:'AirPods Pro (2nd) USB-C',chip:'H2',year:2023,price:279},{cat:'AirPods',name:'AirPods Pro 3',chip:'H3',year:2025,price:279},{cat:'AirPods',name:'AirPods Max (1st)',chip:'H1',year:2020,price:579},{cat:'AirPods',name:'AirPods Max (2nd) USB-C',chip:'H2',year:2024,price:579},
-// ── Apple TV ──
-{cat:'Apple TV',name:'Apple TV (3rd gen)',chip:'A5',year:2012,price:99},{cat:'Apple TV',name:'Apple TV HD (4th gen)',chip:'A8',year:2015,price:149},{cat:'Apple TV',name:'Apple TV 4K (1st)',chip:'A10X',year:2017,price:179},{cat:'Apple TV',name:'Apple TV 4K (2nd)',chip:'A12',year:2021,price:179},{cat:'Apple TV',name:'Apple TV 4K (3rd)',chip:'A15',year:2022,price:169},
-// ── HomePod ──
-{cat:'HomePod',name:'HomePod (1st gen)',chip:'A8',year:2018,price:349},{cat:'HomePod',name:'HomePod mini',chip:'S5',year:2020,price:109},{cat:'HomePod',name:'HomePod (2nd gen)',chip:'S7',year:2023,price:329},
-// ── Display ──
-{cat:'Display',name:'Thunderbolt Display',chip:'—',year:2011,price:999},{cat:'Display',name:'Studio Display',chip:'A13',year:2022,price:1799},{cat:'Display',name:'Pro Display XDR',chip:'—',year:2019,price:5499},
-// ── Apple Vision ──
-{cat:'Apple Vision',name:'Apple Vision Pro',chip:'M2 + R1',year:2024,price:3999},
-// ── MacBook (12") ──
-{cat:'MacBook',name:'MacBook 12" (2015)',chip:'Core M',year:2015,price:1299},{cat:'MacBook',name:'MacBook 12" (2016)',chip:'Core m3',year:2016,price:1299},{cat:'MacBook',name:'MacBook 12" (2017)',chip:'Core m3',year:2017,price:1299},
-// ── Accessori ──
-{cat:'Accessori',name:'Apple Pencil (1st)',chip:'—',year:2015,price:99},{cat:'Accessori',name:'Apple Pencil (2nd)',chip:'—',year:2018,price:149},{cat:'Accessori',name:'Apple Pencil USB-C',chip:'—',year:2023,price:89},{cat:'Accessori',name:'Apple Pencil Pro',chip:'—',year:2024,price:149},{cat:'Accessori',name:'Smart Keyboard Folio',chip:'—',year:2018,price:199},{cat:'Accessori',name:'Magic Keyboard iPad Pro',chip:'—',year:2024,price:349},{cat:'Accessori',name:'AirTag',chip:'U1',year:2021,price:35},{cat:'Accessori',name:'AirTag (2nd)',chip:'U2',year:2025,price:39},{cat:'Accessori',name:'MagSafe Charger',chip:'—',year:2020,price:45},{cat:'Accessori',name:'Magic Mouse',chip:'—',year:2022,price:99},{cat:'Accessori',name:'Magic Keyboard Touch ID',chip:'—',year:2022,price:219},{cat:'Accessori',name:'Magic Trackpad',chip:'—',year:2022,price:149}
-];
-
-const APPLE_CATS=[...new Set(APPLE_DB.map(d=>d.cat))];
-let appleCatFilter='';
-
-function buildApple(){
-  // Category filter buttons
-  const btnEl=document.getElementById('appleCatBtns');
-  btnEl.innerHTML='<button onclick="filterAppleCat(\'\')" class="srt-btn applecat-btn on" style="padding:3px 8px;border:1px solid var(--bd);border-radius:5px;background:var(--ac);color:#fff;font-size:8px;cursor:pointer;font-weight:600;font-family:inherit;white-space:nowrap">Tutti</button>'+APPLE_CATS.map(c=>`<button onclick="filterAppleCat('${c}')" class="applecat-btn" style="padding:3px 8px;border:1px solid var(--bd);border-radius:5px;background:transparent;color:var(--mt);font-size:8px;cursor:pointer;font-weight:600;font-family:inherit;white-space:nowrap">${c}</button>`).join('');
-  populateAppleDropdowns();
-}
-
-function filterAppleCat(cat){
-  appleCatFilter=cat;
-  document.querySelectorAll('.applecat-btn').forEach(b=>{b.style.background=b.textContent===cat||(cat===''&&b.textContent==='Tutti')?'var(--ac)':'transparent';b.style.color=b.textContent===cat||(cat===''&&b.textContent==='Tutti')?'#fff':'var(--mt)';b.style.borderColor=b.textContent===cat||(cat===''&&b.textContent==='Tutti')?'var(--ac)':'var(--bd)'});
-  populateAppleDropdowns();
-}
-
-function populateAppleDropdowns(){
-  const filtered=appleCatFilter?APPLE_DB.filter(d=>d.cat===appleCatFilter):APPLE_DB;
-  const grouped={};filtered.forEach(d=>{if(!grouped[d.cat])grouped[d.cat]=[];grouped[d.cat].push(d)});
-  let opts='<option value="">Seleziona dispositivo...</option>';
-  for(const cat of Object.keys(grouped)){
-    opts+=`<optgroup label="${cat}">`;
-    grouped[cat].forEach((d,i)=>{const gIdx=APPLE_DB.indexOf(d);opts+=`<option value="${gIdx}">${d.name} (${d.year})</option>`});
-    opts+='</optgroup>';
-  }
-  document.getElementById('appleMio').innerHTML=opts;
-  document.getElementById('appleTarget').innerHTML=opts;
-  document.getElementById('appleResult').style.display='none';
-}
-
-function appleCompare(){
-  const mIdx=document.getElementById('appleMio').value;
-  const tIdx=document.getElementById('appleTarget').value;
-  const resEl=document.getElementById('appleResult');
-  if(mIdx===''||tIdx===''){resEl.style.display='none';return}
-  const mio=APPLE_DB[+mIdx],tgt=APPLE_DB[+tIdx];
-  const yearDiff=tgt.year-mio.year;
-  const priceDiff=tgt.price-mio.price;
-  const isUpgrade=tgt.year>mio.year||(tgt.year===mio.year&&tgt.price>mio.price);
-  const isDowngrade=tgt.year<mio.year;
-  const isSame=mIdx===tIdx;
-  let advice='',acls='';
-  if(isSame){advice='&#x1F504; Hai selezionato lo stesso dispositivo!';acls='color:var(--or)'}
-  else if(isUpgrade){advice=yearDiff>=3?'&#x1F525; Upgrade fortemente consigliato! Il tuo dispositivo ha '+yearDiff+' anni.':yearDiff>=2?'&#x2705; Buon upgrade! Miglioramento sensibile.':'&#x2197;&#xFE0F; Upgrade incrementale — valuta se ne vale la pena.';acls='color:var(--gn)'}
-  else if(isDowngrade){advice='&#x26A0;&#xFE0F; Attenzione: stai passando a un dispositivo più vecchio!';acls='color:var(--rd)'}
-  else{advice='&#x2194;&#xFE0F; Passaggio laterale — generazione simile.';acls='color:var(--or)'}
-  resEl.style.display='block';
-  resEl.innerHTML=`
-  <div style="display:grid;grid-template-columns:1fr 60px 1fr;gap:12px;align-items:start">
-    <div style="background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:14px;text-align:center">
-      <div style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px">Il mio attuale</div>
-      <div style="font-size:14px;font-weight:700;margin-bottom:4px">${mio.name}</div>
-      <div style="font-size:10px;color:var(--mt);margin-bottom:8px">${mio.cat} · ${mio.year}</div>
-      <div style="display:inline-block;background:rgba(124,92,252,.12);color:var(--ac);padding:3px 10px;border-radius:6px;font-size:10px;font-weight:700;margin-bottom:4px">${mio.chip}</div>
-      <div style="font-size:12px;font-weight:600;color:var(--tx);margin-top:6px">€${mio.price.toLocaleString('it-IT')}</div>
-    </div>
-    <div style="display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--ac);padding-top:40px">&#x27A1;&#xFE0F;</div>
-    <div style="background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:14px;text-align:center">
-      <div style="font-size:9px;color:var(--mt);font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px">Nuovo dispositivo</div>
-      <div style="font-size:14px;font-weight:700;margin-bottom:4px">${tgt.name}</div>
-      <div style="font-size:10px;color:var(--mt);margin-bottom:8px">${tgt.cat} · ${tgt.year}</div>
-      <div style="display:inline-block;background:rgba(16,185,129,.12);color:var(--gn);padding:3px 10px;border-radius:6px;font-size:10px;font-weight:700;margin-bottom:4px">${tgt.chip}</div>
-      <div style="font-size:12px;font-weight:600;color:var(--tx);margin-top:6px">€${tgt.price.toLocaleString('it-IT')}</div>
-    </div>
-  </div>
-  <div style="margin-top:14px;padding:12px;background:var(--bg);border:1px solid var(--bd);border-radius:10px;text-align:center">
-    <div style="font-size:12px;font-weight:600;${acls};margin-bottom:6px">${advice}</div>
-    <div style="font-size:10px;color:var(--mt)">Differenza: <span style="font-weight:700;color:${priceDiff>0?'var(--rd)':priceDiff<0?'var(--gn)':'var(--tx)'}">${priceDiff>0?'+':''}€${priceDiff.toLocaleString('it-IT')}</span> · ${Math.abs(yearDiff)} ${Math.abs(yearDiff)===1?'anno':'anni'} di differenza · Chip: ${mio.chip} → ${tgt.chip}</div>
-  </div>`;
-}
-
-// ═══════════ VIAGGI ═══════════
-const AIRPORTS=[
-// ── ITALIA ──
-{code:'MXP',city:'Milano Malpensa',country:'IT'},{code:'LIN',city:'Milano Linate',country:'IT'},{code:'BGY',city:'Bergamo Orio al Serio',country:'IT'},{code:'FCO',city:'Roma Fiumicino',country:'IT'},{code:'CIA',city:'Roma Ciampino',country:'IT'},{code:'VCE',city:'Venezia Marco Polo',country:'IT'},{code:'TSF',city:'Treviso',country:'IT'},{code:'NAP',city:'Napoli Capodichino',country:'IT'},{code:'BLQ',city:'Bologna',country:'IT'},{code:'CTA',city:'Catania',country:'IT'},{code:'PMO',city:'Palermo',country:'IT'},{code:'FLR',city:'Firenze',country:'IT'},{code:'PSA',city:'Pisa',country:'IT'},{code:'BRI',city:'Bari',country:'IT'},{code:'TRN',city:'Torino Caselle',country:'IT'},{code:'VRN',city:'Verona',country:'IT'},{code:'GOA',city:'Genova',country:'IT'},{code:'CAG',city:'Cagliari',country:'IT'},{code:'OLB',city:'Olbia',country:'IT'},{code:'SUF',city:'Lamezia Terme',country:'IT'},{code:'TRS',city:'Trieste',country:'IT'},
-// ── EUROPA ──
-{code:'LHR',city:'Londra Heathrow',country:'GB'},{code:'LGW',city:'Londra Gatwick',country:'GB'},{code:'STN',city:'Londra Stansted',country:'GB'},{code:'LTN',city:'Londra Luton',country:'GB'},{code:'MAN',city:'Manchester',country:'GB'},{code:'EDI',city:'Edimburgo',country:'GB'},{code:'CDG',city:'Parigi Charles de Gaulle',country:'FR'},{code:'ORY',city:'Parigi Orly',country:'FR'},{code:'BVA',city:'Parigi Beauvais',country:'FR'},{code:'NCE',city:'Nizza',country:'FR'},{code:'MRS',city:'Marsiglia',country:'FR'},{code:'LYS',city:'Lione',country:'FR'},{code:'FRA',city:'Francoforte',country:'DE'},{code:'MUC',city:'Monaco di Baviera',country:'DE'},{code:'BER',city:'Berlino Brandenburg',country:'DE'},{code:'DUS',city:'Dusseldorf',country:'DE'},{code:'HAM',city:'Amburgo',country:'DE'},{code:'CGN',city:'Colonia',country:'DE'},{code:'STR',city:'Stoccarda',country:'DE'},{code:'MAD',city:'Madrid Barajas',country:'ES'},{code:'BCN',city:'Barcellona El Prat',country:'ES'},{code:'AGP',city:'Malaga',country:'ES'},{code:'PMI',city:'Palma di Maiorca',country:'ES'},{code:'ALC',city:'Alicante',country:'ES'},{code:'SVQ',city:'Siviglia',country:'ES'},{code:'IBZ',city:'Ibiza',country:'ES'},{code:'TFS',city:'Tenerife Sud',country:'ES'},{code:'LPA',city:'Gran Canaria',country:'ES'},{code:'VLC',city:'Valencia',country:'ES'},{code:'AMS',city:'Amsterdam Schiphol',country:'NL'},{code:'EIN',city:'Eindhoven',country:'NL'},{code:'BRU',city:'Bruxelles',country:'BE'},{code:'CRL',city:'Bruxelles Charleroi',country:'BE'},{code:'ZRH',city:'Zurigo',country:'CH'},{code:'GVA',city:'Ginevra',country:'CH'},{code:'BSL',city:'Basilea',country:'CH'},{code:'VIE',city:'Vienna',country:'AT'},{code:'LIS',city:'Lisbona',country:'PT'},{code:'OPO',city:'Porto',country:'PT'},{code:'FAO',city:'Faro',country:'PT'},{code:'ATH',city:'Atene',country:'GR'},{code:'SKG',city:'Salonicco',country:'GR'},{code:'HER',city:'Heraklion Creta',country:'GR'},{code:'RHO',city:'Rodi',country:'GR'},{code:'CFU',city:'Corfu',country:'GR'},{code:'JMK',city:'Mykonos',country:'GR'},{code:'JTR',city:'Santorini',country:'GR'},{code:'PRG',city:'Praga',country:'CZ'},{code:'BUD',city:'Budapest',country:'HU'},{code:'WAW',city:'Varsavia',country:'PL'},{code:'KRK',city:'Cracovia',country:'PL'},{code:'WRO',city:'Breslavia',country:'PL'},{code:'OTP',city:'Bucarest',country:'RO'},{code:'SOF',city:'Sofia',country:'BG'},{code:'ZAG',city:'Zagabria',country:'HR'},{code:'SPU',city:'Spalato',country:'HR'},{code:'DBV',city:'Dubrovnik',country:'HR'},{code:'BEG',city:'Belgrado',country:'RS'},{code:'LJU',city:'Lubiana',country:'SI'},{code:'TIA',city:'Tirana',country:'AL'},{code:'SKP',city:'Skopje',country:'MK'},{code:'CPH',city:'Copenaghen',country:'DK'},{code:'ARN',city:'Stoccolma Arlanda',country:'SE'},{code:'GOT',city:'Goteborg',country:'SE'},{code:'OSL',city:'Oslo',country:'NO'},{code:'HEL',city:'Helsinki',country:'FI'},{code:'KEF',city:'Reykjavik Keflavik',country:'IS'},{code:'DUB',city:'Dublino',country:'IE'},{code:'IST',city:'Istanbul',country:'TR'},{code:'SAW',city:'Istanbul Sabiha Gokcen',country:'TR'},{code:'AYT',city:'Antalya',country:'TR'},{code:'ADB',city:'Smirne',country:'TR'},{code:'KIV',city:'Chisinau',country:'MD'},{code:'TLL',city:'Tallinn',country:'EE'},{code:'RIX',city:'Riga',country:'LV'},{code:'VNO',city:'Vilnius',country:'LT'},{code:'MSQ',city:'Minsk',country:'BY'},{code:'SVO',city:'Mosca Sheremetyevo',country:'RU'},{code:'LED',city:'San Pietroburgo',country:'RU'},
-// ── MEDIO ORIENTE / AFRICA ──
-{code:'DXB',city:'Dubai',country:'AE'},{code:'AUH',city:'Abu Dhabi',country:'AE'},{code:'DOH',city:'Doha',country:'QA'},{code:'RUH',city:'Riyadh',country:'SA'},{code:'JED',city:'Gedda',country:'SA'},{code:'TLV',city:'Tel Aviv',country:'IL'},{code:'AMM',city:'Amman',country:'JO'},{code:'BEY',city:'Beirut',country:'LB'},{code:'CAI',city:'Il Cairo',country:'EG'},{code:'HRG',city:'Hurghada',country:'EG'},{code:'SSH',city:'Sharm el-Sheikh',country:'EG'},{code:'CMN',city:'Casablanca',country:'MA'},{code:'RAK',city:'Marrakech',country:'MA'},{code:'TUN',city:'Tunisi',country:'TN'},{code:'JNB',city:'Johannesburg',country:'ZA'},{code:'CPT',city:'Città del Capo',country:'ZA'},{code:'NBO',city:'Nairobi',country:'KE'},{code:'ADD',city:'Addis Abeba',country:'ET'},{code:'DSS',city:'Dakar',country:'SN'},{code:'LOS',city:'Lagos',country:'NG'},
-// ── ASIA ──
-{code:'BKK',city:'Bangkok Suvarnabhumi',country:'TH'},{code:'DMK',city:'Bangkok Don Mueang',country:'TH'},{code:'HKT',city:'Phuket',country:'TH'},{code:'SIN',city:'Singapore Changi',country:'SG'},{code:'KUL',city:'Kuala Lumpur',country:'MY'},{code:'CGK',city:'Jakarta',country:'ID'},{code:'DPS',city:'Bali Denpasar',country:'ID'},{code:'MNL',city:'Manila',country:'PH'},{code:'SGN',city:'Ho Chi Minh City',country:'VN'},{code:'HAN',city:'Hanoi',country:'VN'},{code:'PNH',city:'Phnom Penh',country:'KH'},{code:'REP',city:'Siem Reap',country:'KH'},{code:'RGN',city:'Yangon',country:'MM'},{code:'CMB',city:'Colombo',country:'LK'},{code:'MLE',city:'Male Maldive',country:'MV'},{code:'DEL',city:'Nuova Delhi',country:'IN'},{code:'BOM',city:'Mumbai',country:'IN'},{code:'BLR',city:'Bangalore',country:'IN'},{code:'MAA',city:'Chennai',country:'IN'},{code:'GOI',city:'Goa',country:'IN'},{code:'PEK',city:'Pechino',country:'CN'},{code:'PVG',city:'Shanghai Pudong',country:'CN'},{code:'CAN',city:'Guangzhou',country:'CN'},{code:'HKG',city:'Hong Kong',country:'HK'},{code:'NRT',city:'Tokyo Narita',country:'JP'},{code:'HND',city:'Tokyo Haneda',country:'JP'},{code:'KIX',city:'Osaka Kansai',country:'JP'},{code:'ICN',city:'Seoul Incheon',country:'KR'},{code:'TPE',city:'Taipei',country:'TW'},
-// ── AMERICHE ──
-{code:'JFK',city:'New York JFK',country:'US'},{code:'EWR',city:'New York Newark',country:'US'},{code:'LGA',city:'New York LaGuardia',country:'US'},{code:'LAX',city:'Los Angeles',country:'US'},{code:'SFO',city:'San Francisco',country:'US'},{code:'ORD',city:'Chicago O\'Hare',country:'US'},{code:'MIA',city:'Miami',country:'US'},{code:'ATL',city:'Atlanta',country:'US'},{code:'DFW',city:'Dallas Fort Worth',country:'US'},{code:'DEN',city:'Denver',country:'US'},{code:'SEA',city:'Seattle',country:'US'},{code:'BOS',city:'Boston',country:'US'},{code:'LAS',city:'Las Vegas',country:'US'},{code:'IAD',city:'Washington Dulles',country:'US'},{code:'HNL',city:'Honolulu',country:'US'},{code:'YYZ',city:'Toronto Pearson',country:'CA'},{code:'YVR',city:'Vancouver',country:'CA'},{code:'YUL',city:'Montreal',country:'CA'},{code:'MEX',city:'Città del Messico',country:'MX'},{code:'CUN',city:'Cancun',country:'MX'},{code:'GRU',city:'San Paolo Guarulhos',country:'BR'},{code:'GIG',city:'Rio de Janeiro',country:'BR'},{code:'EZE',city:'Buenos Aires Ezeiza',country:'AR'},{code:'SCL',city:'Santiago del Cile',country:'CL'},{code:'BOG',city:'Bogota',country:'CO'},{code:'LIM',city:'Lima',country:'PE'},{code:'PTY',city:'Panama City',country:'PA'},{code:'HAV',city:'L\'Avana',country:'CU'},{code:'SJO',city:'San Jose Costa Rica',country:'CR'},
-// ── OCEANIA ──
-{code:'SYD',city:'Sydney',country:'AU'},{code:'MEL',city:'Melbourne',country:'AU'},{code:'BNE',city:'Brisbane',country:'AU'},{code:'PER',city:'Perth',country:'AU'},{code:'AKL',city:'Auckland',country:'NZ'},{code:'NAN',city:'Nadi Fiji',country:'FJ'},{code:'PPT',city:'Tahiti Papeete',country:'PF'},
-// ── SPECIALI ──
-{code:'ANYWHERE',city:'\u2708\uFE0F Ovunque — Qualsiasi destinazione',country:''},
-{code:'FLEX',city:'\uD83D\uDD04 Date flessibili',country:''}
-];
-
-const POPULAR_DEST=[
-  {city:'Londra',code:'LHR',flag:'\uD83C\uDDEC\uD83C\uDDE7',cur:'GBP'},{city:'Parigi',code:'CDG',flag:'\uD83C\uDDEB\uD83C\uDDF7',cur:'EUR'},
-  {city:'Barcellona',code:'BCN',flag:'\uD83C\uDDEA\uD83C\uDDF8',cur:'EUR'},{city:'Amsterdam',code:'AMS',flag:'\uD83C\uDDF3\uD83C\uDDF1',cur:'EUR'},
-  {city:'New York',code:'JFK',flag:'\uD83C\uDDFA\uD83C\uDDF8',cur:'USD'},{city:'Tokyo',code:'NRT',flag:'\uD83C\uDDEF\uD83C\uDDF5',cur:'JPY'},
-  {city:'Dubai',code:'DXB',flag:'\uD83C\uDDE6\uD83C\uDDEA',cur:'AED'},{city:'Istanbul',code:'IST',flag:'\uD83C\uDDF9\uD83C\uDDF7',cur:'TRY'},
-  {city:'Lisbona',code:'LIS',flag:'\uD83C\uDDF5\uD83C\uDDF9',cur:'EUR'},{city:'Praga',code:'PRG',flag:'\uD83C\uDDE8\uD83C\uDDFF',cur:'CZK'},
-  {city:'Atene',code:'ATH',flag:'\uD83C\uDDEC\uD83C\uDDF7',cur:'EUR'},{city:'Bangkok',code:'BKK',flag:'\uD83C\uDDF9\uD83C\uDDED',cur:'THB'}
-];
-
-// Autocomplete for airports
-function acSearch(inputId,listId){
-  const val=document.getElementById(inputId).value.toLowerCase().trim();
-  const listEl=document.getElementById(listId);
-  if(!val||val.length<1){listEl.classList.remove('show');return}
-  const matches=AIRPORTS.filter(a=>a.city.toLowerCase().includes(val)||a.code.toLowerCase().includes(val)||a.country.toLowerCase().includes(val)).slice(0,12);
-  if(!matches.length){listEl.classList.remove('show');return}
-  listEl.innerHTML=matches.map(a=>`<div class="ac-item" onclick="acSelect('${inputId}','${listId}','${a.code}','${a.city.replace(/'/g,"\\'")}')"><div><span class="ac-city">${a.city}</span> <span class="ac-country">${a.country}</span></div><span class="ac-code">${a.code}</span></div>`).join('');
-  listEl.classList.add('show');
-}
-function acSelect(inputId,listId,code,city){
-  document.getElementById(inputId).value=city+' ('+code+')';
-  document.getElementById(inputId).dataset.code=code;
-  document.getElementById(listId).classList.remove('show');
-}
-// Close autocomplete on click outside
-document.addEventListener('click',e=>{if(!e.target.closest('.ac-wrap')){document.querySelectorAll('.ac-list').forEach(l=>l.classList.remove('show'))}});
-
-function getBookingAdvice(dateOut,dateRet){
-  if(!dateOut)return null;
-  const now=new Date();const dep=new Date(dateOut);
-  const daysAhead=Math.ceil((dep-now)/(1000*60*60*24));
-  const month=dep.getMonth();
-  const isPeak=[5,6,7,11].includes(month);// Jun-Aug, Dec
-  const isShoulder=[3,4,8,9].includes(month);// Apr-May, Sep-Oct
-  let tripDays=0;
-  if(dateRet){tripDays=Math.ceil((new Date(dateRet)-dep)/(1000*60*60*24))}
-
-  let advice={},period={};
-  // Booking timing advice
-  if(daysAhead<0){advice={text:'La data selezionata è nel passato.',cls:'advice-bad',icon:'⛔'}
-  }else if(daysAhead<=7){advice={text:'Prenotazione last-minute! I prezzi saranno probabilmente alti. Prenota subito se hai trovato un buon prezzo, altrimenti valuta di spostare.',cls:'advice-bad',icon:'🔴'}
-  }else if(daysAhead<=21){advice={text:'Prenotazione a breve termine. I prezzi potrebbero essere alti. Se il prezzo è buono, prenota ora — non aspettare.',cls:'advice-warn',icon:'🟡'}
-  }else if(daysAhead<=60){advice={text:'Buon momento per prenotare! In genere 3-8 settimane prima è il periodo ottimale per trovare buoni prezzi.',cls:'advice-good',icon:'🟢'}
-  }else if(daysAhead<=120){advice={text:'Anticipo ragionevole. Monitora i prezzi e attiva alert. Per le tratte popolari, prenotare ora può essere vantaggioso.',cls:'advice-good',icon:'🟢'}
-  }else{advice={text:'Molto in anticipo. I prezzi potrebbero scendere man mano che ci si avvicina. Imposta un alert e attendi, a meno che non trovi un\'offerta imperdibile.',cls:'advice-warn',icon:'🟡'}
-  }
-
-  // Season advice
-  if(isPeak){period={text:'Periodo di alta stagione (estate/Natale). I prezzi saranno più alti del solito. Prenota con almeno 2-3 mesi di anticipo.',icon:'🔥'}
-  }else if(isShoulder){period={text:'Mezza stagione — ottimo periodo! Prezzi ragionevoli, meno folla, meteo generalmente buono.',icon:'✨'}
-  }else{period={text:'Bassa stagione — periodo ideale per risparmiare. Meno turisti, prezzi più bassi, ma controlla il meteo della destinazione.',icon:'💰'}
-  }
-
-  return{advice,period,daysAhead,tripDays};
-}
-
-function buildTravel(){
-  const tom=new Date();tom.setDate(tom.getDate()+7);
-  const ret=new Date();ret.setDate(ret.getDate()+14);
-  document.getElementById('flyDateOut').value=tom.toISOString().split('T')[0];
-  document.getElementById('flyDateRet').value=ret.toISOString().split('T')[0];
-  document.getElementById('flyFrom').value='Milano Malpensa (MXP)';
-  document.getElementById('flyFrom').dataset.code='MXP';
-  const el=document.getElementById('popularDest');
-  el.innerHTML=POPULAR_DEST.map(d=>`<div onclick="document.getElementById('flyTo').value='${d.city} (${d.code})';document.getElementById('flyTo').dataset.code='${d.code}';searchFlights()" style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--bg);border:1px solid var(--bd);border-radius:8px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--ac)'" onmouseout="this.style.borderColor='var(--bd)'"><span style="font-size:20px">${d.flag}</span><div><div style="font-size:12px;font-weight:600">${d.city}</div><div style="font-size:9px;color:var(--mt)">${d.code} · ${d.cur}</div></div></div>`).join('');
-  convertTravel();
-}
-
-async function searchFlights(){
-  const fromInput=document.getElementById('flyFrom');
-  const toInput=document.getElementById('flyTo');
-  const from=fromInput.value.trim()||'Milano Malpensa (MXP)';
-  const to=toInput.value.trim();
-  const dateOut=document.getElementById('flyDateOut').value;
-  const dateRet=document.getElementById('flyDateRet').value;
-  const flexVal=document.getElementById('flyFlex').value;
-  const flex=flexVal!=='exact';
-  const resEl=document.getElementById('flightResults');
-  const advEl=document.getElementById('bookingAdvice');
-  if(!to){resEl.innerHTML='<div style="padding:20px;text-align:center;color:var(--mt);font-size:11px">Inserisci una destinazione per cercare voli.</div>';advEl.innerHTML='';return}
-
-  // Extract codes if available
-  const fromCode=(fromInput.dataset.code||from.match(/\(([A-Z]{3})\)/)?.[1]||'MXP').toUpperCase();
-  const toCode=(toInput.dataset.code||to.match(/\(([A-Z]{3})\)/)?.[1]||'').toUpperCase();
-  const isAnywhere=toCode==='ANYWHERE'||to.toLowerCase().includes('ovunque');
-  const fromCity=from.replace(/\s*\([A-Z]{3}\)/,'');
-  const toCity=to.replace(/\s*\([A-Z]{3}\)/,'');
-
-  // Show booking advice
-  const ba=getBookingAdvice(dateOut,dateRet);
-  if(ba){
-    advEl.innerHTML=`
-    <div class="advice-card ${ba.advice.cls}">
-      <div style="font-size:12px;font-weight:600;margin-bottom:4px">${ba.advice.icon} Consiglio prenotazione</div>
-      <div style="font-size:11px;color:var(--tx);line-height:1.5">${ba.advice.text}</div>
-      <div style="font-size:10px;color:var(--mt);margin-top:6px">${ba.period.icon} ${ba.period.text}</div>
-      ${ba.tripDays>0?'<div style="font-size:9px;color:var(--mt);margin-top:4px">Durata viaggio: '+ba.tripDays+' giorni · Partenza tra '+ba.daysAhead+' giorni</div>':''}
-    </div>`;
-  }
-
-  resEl.innerHTML='<div class="ld"><div class="sp"></div><span style="font-size:11px;color:var(--mt)">Ricerca voli '+fromCity+' \u2192 '+toCity+'...</span></div>';
-
-  const dateOutFmt=dateOut.replace(/-/g,'').substring(2);
-  const dateRetFmt=dateRet?dateRet.replace(/-/g,'').substring(2):'';
-  const flexParam=flex?'+-3':'';
-
-  const links=[
-    {name:'Google Flights',url:'https://www.google.com/travel/flights?q=flights+from+'+encodeURIComponent(fromCity)+'+to+'+(isAnywhere?'anywhere':encodeURIComponent(toCity))+'+on+'+dateOut+(dateRet?'+return+'+dateRet:''),color:'var(--ac)',icon:'\u2708\uFE0F'},
-    {name:'Skyscanner',url:'https://www.skyscanner.it/trasporti/voli/'+fromCode.toLowerCase()+'/'+(isAnywhere?'ovunque':toCode.toLowerCase())+'/'+dateOutFmt+'/'+(dateRetFmt||''),color:'#0770e3',icon:'\uD83D\uDD0D'},
-    {name:'Kayak',url:'https://www.kayak.it/flights/'+fromCode+'-'+(isAnywhere?'anywhere':toCode)+'/'+dateOut+(dateRet?'/'+dateRet:'')+(flex?'/flexible':''),color:'#FF690F',icon:'\uD83D\uDEB6'},
-    {name:'Trip.com',url:'https://www.trip.com/flights/'+(isAnywhere?'':toCity.toLowerCase().replace(/\s+/g,'-'))+'-flights'+(toCode?'-city-'+toCode.toLowerCase():'')+'.html?dcity='+fromCode+'&acity='+(isAnywhere?'':toCode)+'&ddate='+dateOut+(dateRet?'&rdate='+dateRet:''),color:'#287DFA',icon:'\uD83C\uDF0F'},
-    {name:'Ryanair',url:'https://www.ryanair.com/it/it/trip/flights/select?adults=1&dateOut='+dateOut+(dateRet?'&dateIn='+dateRet:'')+'&originIata='+fromCode+(toCode&&!isAnywhere?'&destinationIata='+toCode:''),color:'#073590',icon:'\u2708\uFE0F'},
-    {name:'easyJet',url:'https://www.easyjet.com/it/',color:'#FF6600',icon:'\uD83D\uDFE0'},
-    {name:'Wizz Air',url:'https://wizzair.com/it-it/flights/'+fromCode+'/'+(isAnywhere?'':toCode)+(dateOut?'/'+dateOut:''),color:'#C6007E',icon:'\uD83D\uDFE3'},
-    {name:'Booking.com',url:'https://www.booking.com/searchresults.it.html?ss='+encodeURIComponent(toCity||'ovunque')+'&checkin='+dateOut+(dateRet?'&checkout='+dateRet:''),color:'#003580',icon:'\uD83C\uDFE8'}
-  ];
-
-  resEl.innerHTML=`
-  <div style="padding:14px 0">
-    <div style="font-size:12px;font-weight:600;margin-bottom:4px;color:var(--tx)">\u2708\uFE0F ${fromCity} (${fromCode}) \u2192 ${isAnywhere?'\uD83C\uDF0D Ovunque':toCity+(toCode?' ('+toCode+')':'')}${flex?' · '+{flex3:'±3 giorni',flex7:'±1 settimana',month:'Mese intero',cheap:'Mese economico'}[flexVal]:''}</div>
-    <div style="font-size:10px;color:var(--mt);margin-bottom:10px">${new Date(dateOut).toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short'})}${dateRet?' — '+new Date(dateRet).toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short'}):' · Solo andata'}</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px">
-      ${links.map(l=>`<a href="${l.url}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:5px;padding:11px 8px;background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:${l.color};font-size:10px;font-weight:600;text-decoration:none;transition:all .15s;font-family:inherit" onmouseover="this.style.borderColor='${l.color}';this.style.background='rgba(124,92,252,.03)'" onmouseout="this.style.borderColor='var(--bd)';this.style.background='var(--bg)'">${l.icon} ${l.name} \u2197</a>`).join('')}
-    </div>
-    <div style="font-size:9px;color:var(--mt);margin-top:10px;text-align:center">Clicca per aprire il comparatore e confrontare prezzi in tempo reale</div>
-  </div>`;
-}
-
-let travelRates={};
-async function loadTravelRates(){
-  try{
-    const r=await fetch('https://api.exchangerate-api.com/v4/latest/EUR',{signal:AbortSignal.timeout(8000)});
-    if(r.ok){const d=await r.json();travelRates=d.rates||{}}
-  }catch(e){
-    try{const r2=await fetch('https://open.er-api.com/v6/latest/EUR',{signal:AbortSignal.timeout(8000)});if(r2.ok){const d=await r2.json();travelRates=d.rates||{}}}catch(e2){}
-  }
-}
-async function convertTravel(){
-  if(!Object.keys(travelRates).length)await loadTravelRates();
-  const amt=parseFloat(document.getElementById('travelAmt').value)||1000;
-  const cur=document.getElementById('travelCur').value;
-  const rate=travelRates[cur];
-  const resEl=document.getElementById('travelConvResult');
-  if(rate){
-    const result=amt*rate;
-    resEl.innerHTML=`€${amt.toLocaleString('it-IT')} = <span style="color:var(--gn)">${result.toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2})} ${cur}</span><div style="font-size:10px;color:var(--mt);margin-top:4px">Tasso: 1 EUR = ${rate.toFixed(4)} ${cur}</div>`;
-  }else{resEl.innerHTML='<span style="color:var(--mt);font-size:12px">Caricamento tassi...</span>'}
-}
-
-// ═══════════ AUTH & INIT ═══════════
-function doLogin(){
-  if(document.getElementById('LP').value==='gx*qvegR2c%wV&*xX1ZghD!j7*vqwHP4WWSw3JRC'){
-    document.getElementById('LS').style.display='none';
-    document.getElementById('APP').style.display='block';
-    sessionStorage.setItem('fs','1');
-    initWidgets();fetchAll();buildApple();buildTravel();
-    setInterval(fetchAll,300000); // refresh every 5 min
-  }else{document.getElementById('LE').style.display='block';document.getElementById('LP').value=''}
-}
-if(sessionStorage.getItem('fs')==='1'){
-  document.getElementById('LS').style.display='none';
-  document.getElementById('APP').style.display='block';
-  initWidgets();fetchAll();buildApple();buildTravel();
-  setInterval(fetchAll,300000);
-}
-setInterval(()=>{document.getElementById('CK').textContent=new Date().toLocaleTimeString('it-IT')+' &#183; '+new Date().toLocaleDateString('it-IT')},1000);
+// ===== INIT =====
+function init(){buildNav();buildPages();initF();initApple();fetchAll();setInterval(fetchAll,300000);}
 </script>
 </body>
 </html>
